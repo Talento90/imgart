@@ -10,7 +10,7 @@ import (
 func CreateServer() {
 	router := httprouter.New()
 
-	RegisterImagesController(router)
+	NewImagesController(router)
 
 	log.Fatal(http.ListenAndServe(":4005", router))
 }
