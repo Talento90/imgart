@@ -4,10 +4,16 @@ import (
 	"image"
 )
 
-type ImageParameters map[string]string
+type EffectParameter struct {
+	Value    interface{}
+	Required bool
+	Example  string
+}
+
+type EffectParameters map[string]EffectParameter
 
 type Effect interface {
-	Description() ImageParameters
+	Validate() error
 
-	Transform(img image.Image, params ImageParameters) image.Image
+	Transform(img image.Image, params EffectParameters) (image.Image, error)
 }
