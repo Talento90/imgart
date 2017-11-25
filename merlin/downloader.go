@@ -1,4 +1,4 @@
-package gomage
+package merlin
 
 import (
 	"image"

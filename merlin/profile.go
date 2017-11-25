@@ -1,4 +1,4 @@
-package gomage
+package merlin
 
 type Filter struct {
 	Id     string                 `json:"id"`
