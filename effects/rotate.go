@@ -1,25 +1,29 @@
 package effects
 
-import "image"
+import (
+	"image"
+
+	"github.com/talento90/merlin/merlin"
+)
 
 type Rotate struct {
-	EffectDescriptor
+	descriptor merlin.EffectDescriptor
 }
 
 func NewRotate() Effect {
 	return Rotate{
-		EffectDescriptor{
+		descriptor: merlin.EffectDescriptor{
 			Id:          "rotate",
 			Description: "This effect rotate an image",
-			Parameters: EffectParameters{
-				"teste": EffectParameter{Value: 1, Required: true, Example: ""},
+			Parameters: merlin.EffectParameters{
+				"teste": merlin.EffectParameter{Value: 1, Required: true, Example: ""},
 			},
 		},
 	}
 }
 
-func (r Rotate) Id() string {
-	return r.EffectDescriptor.Id
+func (r Rotate) EffectDescriptor() EffectDescriptor {
+	return r.descriptor
 }
 
 func (r Rotate) Validate() error {

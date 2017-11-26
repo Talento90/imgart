@@ -3,17 +3,17 @@ package httpservice
 import (
 	"bytes"
 	"fmt"
-	"go-mage/downloaders"
-	"go-mage/gomage"
 	"image/png"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/talento90/merlin/downloaders"
+	"github.com/talento90/merlin/merlin"
 )
 
 type ImagesControler struct {
-	downloader gomage.Downloader
+	downloader merlin.Downloader
 }
 
 func NewImagesController(router *httprouter.Router) {

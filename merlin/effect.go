@@ -14,9 +14,7 @@ type EffectParameters map[string]EffectParameter
 
 type Effect interface {
 	Descriptor() EffectDescriptor
-
 	Validate() []error
-
 	Transform(img image.Image, params EffectParameters) (image.Image, error)
 }
 

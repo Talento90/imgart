@@ -1,16 +1,17 @@
 package downloaders
 
 import (
-	"go-mage/gomage"
 	"image"
 	"net/http"
+
+	"github.com/talento90/merlin/merlin"
 )
 
 type HTTPDownloader struct {
 	client *http.Client
 }
 
-func NewHTTPDownloader() gomage.Downloader {
+func NewHTTPDownloader() merlin.Downloader {
 	return &HTTPDownloader{
 		client: http.DefaultClient,
 	}

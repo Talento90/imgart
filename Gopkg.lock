@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  name = "github.com/anthonynsimon/bild"
-  packages = ["clone","math/f64","parallel","transform"]
-  revision = "35fd1904d43f809ded0959922164885e25577aa2"
-  version = "v0.10.0"
+  branch = "feature-project-structure"
+  name = "github.com/Talento90/merlin"
+  packages = ["downloaders"]
+  revision = "c101cd1f74273be9a38aba1a748073481adca714"
 
 [[projects]]
   name = "github.com/julienschmidt/httprouter"
@@ -13,9 +13,15 @@
   revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
   version = "v1.1"
 
+[[projects]]
+  branch = "feature-project-structure"
+  name = "github.com/talento90/go-mage"
+  packages = ["."]
+  revision = "c101cd1f74273be9a38aba1a748073481adca714"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a49687e3a7ab371f2d1b72f7633be8347827ee72f4e1acdad15f8285b8f172f2"
+  inputs-digest = "b0c32014b6974d273ea258bdce0cf337985c8d135896069ab5bfe051b4afd256"
   solver-name = "gps-cdcl"
   solver-version = 1

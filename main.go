@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-mage/http-service"
+	"github.com/talento90/merlin/http-service"
 )
 
 func main() {

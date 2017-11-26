@@ -1,28 +1,28 @@
 package effects
 
 import (
-	"github.com/talento90/go-mage"
+	"github.com/talento90/merlin/merlin"
 )
 
 type EffectManager struct {
-	effects []Effect
+	effects []merlin.Effect
 }
 
 func NewEffectManager() EffectManager {
 	return EffectManager{
-		effects: []Effect{},
+		effects: []merlin.Effect{NewRotate()},
 	}
 }
 
-func (m *EffectManager) GetEffects() []Effect {
+func (m *EffectManager) GetEffects() []merlin.Effect {
 	return m.effects
 }
 
-func (m *EffectManager) GetEffect(id string) Effect {
-
-	for _, effect := m.effects {
-		if (effect.Id == id)
+func (m *EffectManager) GetEffect(id string) merlin.Effect {
+	for _, effect := range m.effects {
+		if effect.Descriptor().Id == id {
 			return effect
+		}
 	}
 
 	return nil
