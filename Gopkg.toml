@@ -28,7 +28,3 @@
 [[constraint]]
   name = "github.com/anthonynsimon/bild"
   version = "0.10.0"
-
-[[constraint]]
-  branch = "feature-project-structure"
-  name = "github.com/Talento90/merlin"

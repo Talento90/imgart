@@ -28,3 +28,8 @@ type EffectManager interface {
 	GetEffects() []Effect
 	GetEffect(id string) Effect
 }
+
+type EffectRepository interface {
+	GetEffects() []Effect
+	GetEffect(id string) Effect
+}

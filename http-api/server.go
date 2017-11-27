@@ -1,4 +1,4 @@
-package httpservice
+package httpapi
 
 import (
 	"log"
