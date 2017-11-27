@@ -24,7 +24,7 @@ type EffectDescriptor struct {
 	Parameters  EffectParameters `json:"parameters"`
 }
 
-type EffectManager interface {
+type ServiceManager interface {
 	GetEffects() []Effect
 	GetEffect(id string) Effect
 }
