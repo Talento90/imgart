@@ -1,24 +1,24 @@
 package memory
 
 import (
-	"github.com/talento90/merlin/pkg/merlin"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
 type EffectRepository struct {
-	effects []merlin.Effect
+	effects []gorpo.Effect
 }
 
 func NewEffectRepository() EffectRepository {
 	return EffectRepository{
-		effects: []merlin.Effect{effects.NewRotate()},
+		effects: []gorpo.Effect{effects.NewRotate()},
 	}
 }
 
-func (r *EffectRepository) GetEffects() ([]merlin.Effect, error) {
+func (r *EffectRepository) GetEffects() ([]gorpo.Effect, error) {
 	return r.effects, nil
 }
 
-func (r *EffectRepository) GetEffect(id string) (merlin.Effect, error) {
+func (r *EffectRepository) GetEffect(id string) (gorpo.Effect, error) {
 	for _, effect := range r.effects {
 		if effect.Descriptor().Id == id {
 			return effect, nil

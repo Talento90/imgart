@@ -3,20 +3,20 @@ package effects
 import (
 	"image"
 
-	"github.com/talento90/merlin/merlin"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type Rotate struct {
-	descriptor merlin.EffectDescriptor
+	descriptor gorpo.EffectDescriptor
 }
 
 func NewRotate() Effect {
 	return Rotate{
-		descriptor: merlin.EffectDescriptor{
+		descriptor: gorpo.EffectDescriptor{
 			Id:          "rotate",
 			Description: "This effect rotate an image",
-			Parameters: merlin.EffectParameters{
-				"teste": merlin.EffectParameter{Value: 1, Required: true, Example: ""},
+			Parameters: gorpo.EffectParameters{
+				"teste": gorpo.EffectParameter{Value: 1, Required: true, Example: ""},
 			},
 		},
 	}

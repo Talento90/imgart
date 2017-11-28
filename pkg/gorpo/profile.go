@@ -1,4 +1,4 @@
-package merlin
+package gorpo
 
 type Filter struct {
 	Id     string                 `json:"id"`

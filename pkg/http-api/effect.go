@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/merlin/merlin"
-	"github.com/talento90/merlin/effects"
+	"github.com/talento90/gorpo/gorpo"
+	"github.com/talento90/gorpo/effects"
 )
 
 type EffectsControler struct {

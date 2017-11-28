@@ -1,4 +1,4 @@
-# merlin
+# gorpo
 Service to modify images.
 
 ## Third Party Dependencies
@@ -44,3 +44,13 @@ domain/core/root - contains our application domain
     - *only* standard library dependencies
     - interfaces everywhere
     - managers that handles application logic (dependencies must be interfaces)
+
+
+
+
+
+
+## Best Practises
+
+- packages should be singular or at least follow a convention
+- package name should be representative of their content just by reading the name

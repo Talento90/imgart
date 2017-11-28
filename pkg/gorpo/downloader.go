@@ -1,4 +1,4 @@
-package merlin
+package gorpo
 
 import (
 	"image"

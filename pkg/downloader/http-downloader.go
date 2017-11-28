@@ -4,14 +4,14 @@ import (
 	"image"
 	"net/http"
 
-	"github.com/talento90/merlin/merlin"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
 type HTTPDownloader struct {
 	client *http.Client
 }
 
-func NewHTTPDownloader() merlin.Downloader {
+func NewHTTPDownloader() gorpo.Downloader {
 	return &HTTPDownloader{
 		client: http.DefaultClient,
 	}

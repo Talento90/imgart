@@ -1,4 +1,4 @@
-package merlin
+package gorpo
 
 import (
 	"image"
@@ -24,12 +24,30 @@ type EffectDescriptor struct {
 	Parameters  EffectParameters `json:"parameters"`
 }
 
-type EffectService interface {
-	GetEffects() []Effect
-	GetEffect(id string) Effect
-}
-
 type EffectRepository interface {
 	GetEffects() ([]Effect, error)
 	GetEffect(id string) (Effect, error)
+}
+
+type EffectService interface {
+	GetEffects() ([]Effect, error)
+	GetEffect(id string) (Effect, error)
+}
+
+type effectService struct {
+	repository *EffectRepository
+}
+
+func NewEffectService(repository *EffectRepository) EffectService {
+	return &effectService{
+		repository: repository,
+	}
+}
+
+func (es *effectService) GetEffects() ([]Effect, error) {
+	return es.repository.GetEffects()
+}
+
+func (es *effectService) GetEffect(id string) (Effect, error) {
+	return es.repository.GetEffect(id)
 }

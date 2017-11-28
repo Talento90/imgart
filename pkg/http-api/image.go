@@ -8,12 +8,12 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/merlin/downloaders"
-	"github.com/talento90/merlin/merlin"
+	"github.com/talento90/gorpo/downloaders"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type ImagesControler struct {
-	downloader merlin.Downloader
+	downloader gorpo.Downloader
 }
 
 func NewImagesController(router *httprouter.Router) {
