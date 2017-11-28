@@ -24,12 +24,12 @@ type EffectDescriptor struct {
 	Parameters  EffectParameters `json:"parameters"`
 }
 
-type ServiceManager interface {
+type EffectService interface {
 	GetEffects() []Effect
 	GetEffect(id string) Effect
 }
 
 type EffectRepository interface {
-	GetEffects() []Effect
-	GetEffect(id string) Effect
+	GetEffects() ([]Effect, error)
+	GetEffect(id string) (Effect, error)
 }

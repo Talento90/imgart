@@ -1,8 +1,7 @@
 package memory
 
 import (
-	"merlin/effects"
-	"merlin/merlin"
+	"github.com/talento90/merlin/pkg/merlin"
 )
 
 type EffectRepository struct {
@@ -15,16 +14,16 @@ func NewEffectRepository() EffectRepository {
 	}
 }
 
-func (r *EffectRepository) GetEffects() []merlin.Effect {
-	return r.effects
+func (r *EffectRepository) GetEffects() ([]merlin.Effect, error) {
+	return r.effects, nil
 }
 
-func (r *EffectRepository) GetEffect(id string) merlin.Effect {
+func (r *EffectRepository) GetEffect(id string) (merlin.Effect, error) {
 	for _, effect := range r.effects {
 		if effect.Descriptor().Id == id {
-			return effect
+			return effect, nil
 		}
 	}
 
-	return nil
+	return nil, nil
 }
