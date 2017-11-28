@@ -5,14 +5,18 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/gorpo"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-func CreateServer(effectService gorpo.EffectService) {
+func CreateServer(effectService gorpo.EffectService) Server {
 	router := httprouter.New()
 
 	NewImagesController(router)
-	NewEffectsControler(router)
+	NewEffectsControler(effectService)
 
-	log.Fatal(http.ListenAndServe(":4005", router))
+
+	return http.Server{
+		Addr: ":4005",
+		Handler: router
+	} 
 }

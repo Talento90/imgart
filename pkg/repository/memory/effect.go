@@ -1,6 +1,7 @@
 package memory
 
 import (
+	"github.com/talento90/gorpo/pkg/effect"
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
@@ -10,7 +11,7 @@ type EffectRepository struct {
 
 func NewEffectRepository() EffectRepository {
 	return EffectRepository{
-		effects: []gorpo.Effect{effects.NewRotate()},
+		effects: []gorpo.Effect{effect.NewRotate()},
 	}
 }
 

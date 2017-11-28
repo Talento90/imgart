@@ -5,12 +5,12 @@ import (
 	"net/http"
 )
 
-func toJSON(w http.ResponseWrite, statusCode int) {
+func toJSON(w http.ResponseWrite, body: {}interface statusCode int) {
 
 	w.Header().Set("Content-Type", "image/application/json")
 	w.WriteHeader(statusCode)
 
-	json, err := json.Marshal(gomage.GetAllEffects)
+	json, err := json.Marshal(body)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

@@ -13,27 +13,35 @@ type EffectsControler struct {
 	service: gorpo.EffectService 
 }
 
-func NewEffectsControler(router *httprouter.Router, gorpo.EffectService) {
+func NewEffectsControler(gorpo.EffectService) {
 	controller := &EffectsControler{
 		service: gorpo
 	}
-
-	router.GET("/api/v1/effect/:id", controller.GetEffectByIdHandler)
-	router.GET("/api/v1/effects", controller.GetAllEffectsHandler)
 }
 
-func (c *EffectsControler) GetEffectByIdHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *EffectsControler) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	id := params.ByName("id")
+	
+	effect, err := c.service.GetEffectById(id)
 
-	w.Header().Set("Content-Type", "image/application/json")
-
-	body, _ := json.Marshal(gomage.GetAllEffects)
-
-	w.Write(body)
+	if err != nil {
+		toJSON(w, err, http.StatusInternalServerError)
+		return
+	} 
+	
+	if effect != nil {
+		toJSON(w, effect, http.StatusOK)
+	} else {
+		toJSON(w, nil, http.NotFound)
+	}
 }
 
-func (c *EffectsControler) GetAllEffectsHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	body, _ := json.Marshal(gomage.GetAllEffects())
+func (c *EffectsControler) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	effects, err := c.service.GetAllEffects()
 
-	w.Write(body)
-	w.Header().Set("Content-Type", "image/application/json")
+	if err != nil {
+		toJSON(w, err, http.StatusInternalServerError)
+	} else if effect != nil {
+		toJSON(w, effects, http.StatusOK)
+	}
 }
