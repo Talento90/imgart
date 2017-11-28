@@ -1,9 +1,9 @@
-package effects
+package effect
 
 import (
 	"image"
 
-	"github.com/talento90/gorpo/gorpo"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
 type Rotate struct {

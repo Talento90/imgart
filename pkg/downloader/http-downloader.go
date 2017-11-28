@@ -1,4 +1,4 @@
-package downloaders
+package downloader
 
 import (
 	"image"

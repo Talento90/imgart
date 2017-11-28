@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/downloaders"
-	"github.com/talento90/gorpo/gorpo"
+	"github.com/talento90/gorpo/pkg/downloader"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
 type ImagesControler struct {
@@ -18,7 +18,7 @@ type ImagesControler struct {
 
 func NewImagesController(router *httprouter.Router) {
 	controller := &ImagesControler{
-		downloader: downloaders.NewHTTPDownloader(),
+		downloader: downloader.NewHTTPDownloader(),
 	}
 
 	router.GET("/api/v1/images", controller.ImageHandler)

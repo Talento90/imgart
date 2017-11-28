@@ -35,10 +35,10 @@ type EffectService interface {
 }
 
 type effectService struct {
-	repository *EffectRepository
+	repository EffectRepository
 }
 
-func NewEffectService(repository *EffectRepository) EffectService {
+func NewEffectService(repository EffectRepository) EffectService {
 	return &effectService{
 		repository: repository,
 	}

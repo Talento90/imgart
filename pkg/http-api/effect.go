@@ -5,17 +5,17 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/gorpo"
-	"github.com/talento90/gorpo/effects"
+	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/pkg/effect"
 )
 
 type EffectsControler struct {
-	manager: effects.manager 
+	service: gorpo.EffectService 
 }
 
-func NewEffectsControler(router *httprouter.Router) {
+func NewEffectsControler(router *httprouter.Router, gorpo.EffectService) {
 	controller := &EffectsControler{
-		manager: effects.NewEffectManager()
+		service: gorpo
 	}
 
 	router.GET("/api/v1/effect/:id", controller.GetEffectByIdHandler)

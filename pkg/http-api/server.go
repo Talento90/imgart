@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/talento90/gorpo/gorpo"
 )
 
-func CreateServer() {
+func CreateServer(effectService gorpo.EffectService) {
 	router := httprouter.New()
 
 	NewImagesController(router)
