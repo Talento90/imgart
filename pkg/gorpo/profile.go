@@ -7,7 +7,7 @@ type Filter struct {
 
 type Profile struct {
 	Id          string   `json:"id"`
-	Filters     []Filter `json:"array"`
+	Filters     []Filter `json:"filters"`
 	FallbackUri string   `json:"fallback_uri,omitempty"`
 }
 

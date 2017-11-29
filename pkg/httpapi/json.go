@@ -9,12 +9,12 @@ func toJSON(w http.ResponseWriter, body interface{}, statusCode int) {
 	json, err := json.Marshal(body)
 
 	if err != nil {
-		w.Write([]byte(err.Error()))
 		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
 	} else {
-		w.Write(json)
 		w.WriteHeader(statusCode)
+		w.Write(json)
 	}
 
-	w.Header().Set("Content-Type", "image/application/json")
+	w.Header().Set("Content-Type", "application/json")
 }

@@ -2,6 +2,7 @@ package httpapi
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"image/png"
 	"log"
@@ -22,8 +23,20 @@ func newImagesController(downloader gorpo.Downloader) imagesController {
 }
 
 func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
 	imgSrc := r.URL.Query().Get("imgSrc")
+	profileId := r.URL.Query().Get("profile")
+	jsonProfile := r.URL.Query().Get("json")
+
+	var profile gorpo.Profile
+
+	println(imgSrc)
+	println(profileId)
+	println(jsonProfile)
+
+	if err := json.Unmarshal([]byte(jsonProfile), &profile); err != nil {
+		toJSON(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	img, imgType, err := c.downloader.DownloadImage(imgSrc)
 
