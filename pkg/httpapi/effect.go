@@ -28,7 +28,7 @@ func (c *effectsController) GetEffectById(w http.ResponseWriter, r *http.Request
 	}
 
 	if effect != nil {
-		toJSON(w, effect, http.StatusOK)
+		toJSON(w, effect.Descriptor(), http.StatusOK)
 	} else {
 		toJSON(w, nil, http.StatusNotFound)
 	}
@@ -40,6 +40,12 @@ func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		toJSON(w, err, http.StatusInternalServerError)
 	} else {
-		toJSON(w, effects, http.StatusOK)
+		descriptors := make([]gorpo.EffectDescriptor, len(effects), len(effects))
+
+		for _, e := range effects {
+			descriptors = append(descriptors, e.Descriptor())
+		}
+
+		toJSON(w, descriptors, http.StatusOK)
 	}
 }

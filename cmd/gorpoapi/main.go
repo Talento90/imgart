@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/talento90/gorpo/pkg/downloader"
@@ -10,10 +11,13 @@ import (
 )
 
 func main() {
-	httpDownloader := downloader.NewHttpDownloader()
+
+	log.Println("Starting gorpo API")
+
+	httpDownloader := downloader.NewHTTPDownloader()
 
 	effectRepo := memory.NewEffectRepository()
-	effectService := gorpo.NewEffectService(effectRepo)
+	effectService := gorpo.NewEffectService(&effectRepo)
 
 	server := httpapi.CreateServer(httpDownloader, effectService)
 
