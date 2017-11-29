@@ -19,5 +19,4 @@ run:
 	$(GOBUILD) -o $(BINARY_NAME) -v ./...
 	./$(BINARY_NAME)
 deps:
-	$(GOGET) github.com/markbates/goth
-	$(GOGET) github.com/markbates/pop
+	$(GOGET) github.com/talento90/gorpo

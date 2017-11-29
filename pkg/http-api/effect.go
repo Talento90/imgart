@@ -9,17 +9,17 @@ import (
 	"github.com/talento90/gorpo/pkg/effect"
 )
 
-type EffectsControler struct {
+type EffectsController struct {
 	service: gorpo.EffectService 
 }
 
-func NewEffectsControler(gorpo.EffectService) {
-	controller := &EffectsControler{
+func NewEffectsController(gorpo.EffectService) EffectsController{
+	return &EffectsController{
 		service: gorpo
 	}
 }
 
-func (c *EffectsControler) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func (c *EffectsController) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	id := params.ByName("id")
 	
 	effect, err := c.service.GetEffectById(id)
@@ -36,7 +36,7 @@ func (c *EffectsControler) GetEffectById(w http.ResponseWriter, r *http.Request,
 	}
 }
 
-func (c *EffectsControler) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *EffectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	effects, err := c.service.GetAllEffects()
 
 	if err != nil {

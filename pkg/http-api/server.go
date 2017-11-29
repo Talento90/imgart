@@ -8,12 +8,16 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-func CreateServer(effectService gorpo.EffectService) Server {
+func CreateServer(downloader gorpo.Downloader, effectService gorpo.EffectService) Server {
 	router := httprouter.New()
 
-	NewImagesController(router)
-	NewEffectsControler(effectService)
+	imgCtrl := NewImagesController(downloader)
+	effectCtrl := NewEffectsController(effectService)
 
+	router.GET("/api/v1/images", imgCtrl.ImageHandler)
+
+	router.GET("/api/v1/effects/:id", effectCtrl.)
+	router.GET("/api/v1/effects", effectCtrl.)
 
 	return http.Server{
 		Addr: ":4005",

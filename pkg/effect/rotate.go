@@ -6,12 +6,12 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-type Rotate struct {
+type rotate struct {
 	descriptor gorpo.EffectDescriptor
 }
 
-func NewRotate() Effect {
-	return Rotate{
+func NewRotate() gorpo.Effect {
+	return &rotate{
 		descriptor: gorpo.EffectDescriptor{
 			Id:          "rotate",
 			Description: "This effect rotate an image",
@@ -22,14 +22,14 @@ func NewRotate() Effect {
 	}
 }
 
-func (r Rotate) EffectDescriptor() EffectDescriptor {
+func (r *rotate) Descriptor() gorpo.EffectDescriptor {
 	return r.descriptor
 }
 
-func (r Rotate) Validate() error {
+func (r *rotate) Validate() []error {
 	return nil
 }
 
-func (r Rotate) Transform(img image.Image, params EffectParameters) (image.Image, error) {
+func (r *rotate) Transform(img image.Image, params gorpo.EffectParameters) (image.Image, error) {
 	return img, nil
 }
