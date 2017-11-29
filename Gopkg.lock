@@ -7,9 +7,15 @@
   revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
   version = "v1.1"
 
+[[projects]]
+  branch = "master"
+  name = "github.com/talento90/gorpo"
+  packages = ["pkg/downloader","pkg/effect","pkg/gorpo","pkg/httpapi","pkg/repository/memory"]
+  revision = "0aef936a7d8150bb42b73b01432c528be05dd07c"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "abf6c1278947d37fc7f725d08d0179cdbba8c2b12ada6570364a3bc4d826dab5"
+  inputs-digest = "a68b7b1f6284fb26f01c118e6beebf93905443339c727a7c41dab6278e9da9db"
   solver-name = "gps-cdcl"
   solver-version = 1
