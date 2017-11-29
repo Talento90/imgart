@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/talento90/gorpo"
   packages = ["pkg/effect","pkg/gorpo"]
-  revision = "645c9db745ee0dccb1df0a6435af1b102cd6f3ab"
+  revision = "1d492907a3db6f91333136b8cbc690c6ee95def3"
 
 [solve-meta]
   analyzer-name = "dep"

@@ -11,17 +11,17 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-type ImagesControler struct {
+type imagesController struct {
 	downloader gorpo.Downloader
 }
 
-func NewImagesController(downloader gorpo.Downloader) ImagesControler {
-	return &ImagesControler{
+func newImagesController(downloader gorpo.Downloader) imagesController {
+	return imagesController{
 		downloader: downloader,
 	}
 }
 
-func (c *ImagesControler) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	imgSrc := r.URL.Query().Get("imgSrc")
 
