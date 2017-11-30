@@ -7,12 +7,12 @@ import (
 )
 
 type rotate struct {
-	descriptor gorpo.EffectDescriptor
+	gorpo.EffectDescriptor
 }
 
 func NewRotate() gorpo.Effect {
 	return &rotate{
-		descriptor: gorpo.EffectDescriptor{
+		EffectDescriptor: gorpo.EffectDescriptor{
 			Id:          "rotate",
 			Description: "This effect rotate an image",
 			Parameters: gorpo.EffectParameters{
@@ -23,7 +23,7 @@ func NewRotate() gorpo.Effect {
 }
 
 func (r *rotate) Descriptor() gorpo.EffectDescriptor {
-	return r.descriptor
+	return r.EffectDescriptor
 }
 
 func (r *rotate) Validate() []error {

@@ -7,6 +7,7 @@ import (
 type EffectParameter struct {
 	Value    interface{}
 	Required bool
+	Type     string
 	Example  string
 }
 
