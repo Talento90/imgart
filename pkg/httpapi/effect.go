@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -23,29 +24,25 @@ func (c *effectsController) GetEffectById(w http.ResponseWriter, r *http.Request
 	effect, err := c.service.GetEffect(id)
 
 	if err != nil {
-		toJSON(w, err, http.StatusInternalServerError)
+		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
 		return
 	}
 
-	if effect != nil {
-		toJSON(w, effect.Descriptor(), http.StatusOK)
-	} else {
-		toJSON(w, nil, http.StatusNotFound)
+	if effect == nil {
+		toJSON(w, http.StatusNotFound, NewApiResponse(false, fmt.Sprintf("Effect %s does not exists.", id), effect))
+		return
 	}
+
+	toJSON(w, http.StatusOK, NewApiResponse(true, "", effect))
 }
 
 func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	effects, err := c.service.GetEffects()
 
 	if err != nil {
-		toJSON(w, err, http.StatusInternalServerError)
-	} else {
-		var descriptors []gorpo.EffectDescriptor
-
-		for _, e := range effects {
-			descriptors = append(descriptors, e.Descriptor())
-		}
-
-		toJSON(w, descriptors, http.StatusOK)
+		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
+		return
 	}
+
+	toJSON(w, http.StatusOK, NewApiResponse(true, "", effects))
 }

@@ -15,8 +15,6 @@ func logRequest(logger *log.Logger, handler httprouter.Handle) httprouter.Handle
 
 		handler(w, r, params)
 
-		requestTime := time.Since(start).Seconds() / 1000
-
-		logger.Printf("%s %s %s %f ms\n", r.Method, r.RemoteAddr, r.URL, requestTime)
+		logger.Printf("%s %s %s %s ms\n", r.Method, r.RemoteAddr, r.URL, time.Now().Sub(start))
 	})
 }

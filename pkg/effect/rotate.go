@@ -16,7 +16,7 @@ func NewRotate() gorpo.Effect {
 			Id:          "rotate",
 			Description: "This effect rotate an image",
 			Parameters: gorpo.EffectParameters{
-				"teste": gorpo.EffectParameter{Value: 1, Required: true, Example: ""},
+				"teste": gorpo.EffectParameter{Required: true, Example: "", Type: "integer"},
 			},
 		},
 	}
@@ -26,10 +26,6 @@ func (r *rotate) Descriptor() gorpo.EffectDescriptor {
 	return r.EffectDescriptor
 }
 
-func (r *rotate) Validate() []error {
-	return nil
-}
-
-func (r *rotate) Transform(img image.Image, params gorpo.EffectParameters) (image.Image, error) {
+func (r *rotate) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
 	return img, nil
 }

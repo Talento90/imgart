@@ -4,8 +4,12 @@ import (
 	"image"
 )
 
+type Filter struct {
+	Id         string                 `json:"id"`
+	Parameters map[string]interface{} `json:"parameters"`
+}
+
 type EffectParameter struct {
-	Value    interface{}
 	Required bool
 	Type     string
 	Example  string
@@ -15,8 +19,7 @@ type EffectParameters map[string]EffectParameter
 
 type Effect interface {
 	Descriptor() EffectDescriptor
-	Validate() []error
-	Transform(img image.Image, params EffectParameters) (image.Image, error)
+	Transform(img image.Image, params map[string]interface{}) (image.Image, error)
 }
 
 type EffectDescriptor struct {

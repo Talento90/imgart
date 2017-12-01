@@ -2,9 +2,9 @@ package httpapi
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"image/png"
-	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -22,12 +22,29 @@ func newImagesController(downloader gorpo.Downloader) imagesController {
 }
 
 func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var filters []gorpo.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
+	filtersJSON := r.URL.Query().Get("effects")
+
+	if imgSrc == "" {
+		toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Missing imgSrc parameter", nil))
+		return
+	}
+
+	if filtersJSON != "" {
+		err := json.Unmarshal([]byte(filtersJSON), &filters)
+
+		if err != nil {
+			toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Error parsing filters", nil))
+			return
+		}
+	}
 
 	img, imgType, err := c.downloader.DownloadImage(imgSrc)
 
 	if err != nil {
-		log.Fatal(err)
+		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
+		return
 	}
 
 	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", imgType))

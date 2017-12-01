@@ -14,9 +14,7 @@ func CreateServer(logger *log.Logger, downloader gorpo.Downloader, effectService
 	imgCtrl := newImagesController(downloader)
 	effectCtrl := newEffectsController(effectService)
 
-	var x httprouter.Handle = logRequest(logger, imgCtrl.ImageHandler)
-
-	router.GET("/api/v1/images", x)
+	router.GET("/api/v1/images", logRequest(logger, imgCtrl.ImageHandler))
 
 	router.GET("/api/v1/effects/:id", effectCtrl.GetEffectById)
 	router.GET("/api/v1/effects", effectCtrl.GetAllEffects)
