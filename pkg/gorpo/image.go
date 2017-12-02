@@ -2,19 +2,23 @@ package gorpo
 
 import "image"
 
-type ImageService struct {
+type ImageService interface {
+	Process(imgSrc string, filters []Filter) (image.Image, error)
+}
+
+type imageService struct {
 	downloader Downloader
 	repository EffectRepository
 }
 
-func NewImageService(downloader Downloader, repo EffectRepository) *ImageService {
-	return &ImageService{
+func NewImageService(downloader Downloader, repo EffectRepository) ImageService {
+	return &imageService{
 		downloader: downloader,
 		repository: repo,
 	}
 }
 
-func (i *ImageService) Process(imgSrc string, filters []Filter) (image.Image, error) {
+func (i *imageService) Process(imgSrc string, filters []Filter) (image.Image, error) {
 	img, _, err := i.downloader.DownloadImage(imgSrc)
 
 	if err != nil {
