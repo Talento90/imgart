@@ -2,68 +2,60 @@ package httpapi
 
 import (
 	"encoding/json"
-	"encoding/xml"
-	"errors"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-type AppResponse struct {
-	Code int
-	Body interface{}
+type appResponse struct {
+	StatusCode int
+	Body       interface{}
 }
 
-func Response(code int, body interface{}) AppResponse {
-	return AppResponse{
-		Code: code,
-		Body: body,
+func response(statusCode int, body interface{}) appResponse {
+	return appResponse{
+		StatusCode: statusCode,
+		Body:       body,
 	}
 }
 
-type AppHandle func(http.ResponseWriter, *http.Request, httprouter.Params) AppResponse
+type appHandle func(http.ResponseWriter, *http.Request, httprouter.Params) appResponse
 
-func SerializeBody(r *http.Request, response *AppResponse) (string, []byte) {
-	var err error
-	var bytes []byte
-	var contentType = "application/json"
+func serializeResponse(r *http.Request, response *appResponse) (string, []byte) {
+	const contentType = "application/json"
 
-	if accept := r.Header.Get("Accept"); strings.Contains(accept, "application/xml") {
-		bytes, err = xml.Marshal(response.Body)
-		contentType = "application/xml"
-	} else {
-		bytes, err = json.Marshal(response.Body)
-	}
+	bytes, err := json.Marshal(response.Body)
 
 	if err != nil {
-		response.Code = http.StatusInternalServerError
-		bytes, _ = json.Marshal(errors.New(""))
+		response.StatusCode = http.StatusInternalServerError
+		bytes, _ = json.Marshal(err)
 	}
 
 	return contentType, bytes
 }
 
-func LogHandler(logger *log.Logger, handler httprouter.Handle) httprouter.Handle {
-	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		start := time.Now()
+func LogHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.Handle {
+	return func(handler httprouter.Handle) httprouter.Handle {
+		return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+			start := time.Now()
 
-		handler(w, r, params)
+			handler(w, r, params)
 
-		logger.Printf("%s %s %s %s ms\n", r.Method, r.RemoteAddr, r.URL, time.Now().Sub(start))
-	})
+			logger.Printf("%s %s %s %s\n", r.Method, r.RemoteAddr, r.URL, time.Now().Sub(start))
+		})
+	}
 }
 
-func ResponseHandler(handler AppHandle) httprouter.Handle {
+func ResponseHandler(handler appHandle) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		response := handler(w, r, params)
 
-		contentType, bytes := SerializeBody(r, &response)
+		contentType, bytes := serializeResponse(r, &response)
 
-		w.WriteHeader(response.Code)
 		w.Header().Set("Content-Type", contentType)
+		w.WriteHeader(response.StatusCode)
 		w.Write(bytes)
 	})
 }
