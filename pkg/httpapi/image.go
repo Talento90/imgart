@@ -27,7 +27,7 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 	filtersJSON := r.URL.Query().Get("effects")
 
 	if imgSrc == "" {
-		toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Missing imgSrc parameter", nil))
+		//toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Missing imgSrc parameter", nil))
 		return
 	}
 
@@ -35,7 +35,7 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 		err := json.Unmarshal([]byte(filtersJSON), &filters)
 
 		if err != nil {
-			toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Error parsing filters", nil))
+			//toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Error parsing filters", nil))
 			return
 		}
 	}
@@ -43,7 +43,7 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 	img, imgType, err := c.downloader.DownloadImage(imgSrc)
 
 	if err != nil {
-		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
+		//toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
 		return
 	}
 

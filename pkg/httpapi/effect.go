@@ -18,31 +18,28 @@ func newEffectsController(service gorpo.EffectService) effectsController {
 	}
 }
 
-func (c *effectsController) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+func (c *effectsController) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) AppResponse {
 	id := params.ByName("id")
 
 	effect, err := c.service.GetEffect(id)
 
 	if err != nil {
-		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
-		return
+		return Response(http.StatusInternalServerError, err)
 	}
 
 	if effect == nil {
-		toJSON(w, http.StatusNotFound, NewApiResponse(false, fmt.Sprintf("Effect %s does not exists.", id), effect))
-		return
+		return Response(http.StatusNotFound, fmt.Sprintf("Effect %s does not exists.", id))
 	}
 
-	toJSON(w, http.StatusOK, NewApiResponse(true, "", effect))
+	return Response(http.StatusOK, effect)
 }
 
-func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) AppResponse {
 	effects, err := c.service.GetEffects()
 
 	if err != nil {
-		toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
-		return
+		return Response(http.StatusInternalServerError, err)
 	}
 
-	toJSON(w, http.StatusOK, NewApiResponse(true, "", effects))
+	return Response(http.StatusOK, effects)
 }
