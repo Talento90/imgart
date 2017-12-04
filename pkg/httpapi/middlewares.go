@@ -48,7 +48,7 @@ func LogHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.H
 	}
 }
 
-func ResponseHandler(handler appHandle) httprouter.Handle {
+func responseHandler(handler appHandle) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		response := handler(w, r, params)
 
