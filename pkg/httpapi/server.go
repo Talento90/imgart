@@ -8,10 +8,10 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-func CreateServer(logger *log.Logger, downloader gorpo.Downloader, effectService gorpo.EffectService) http.Server {
+func CreateServer(logger *log.Logger, downloader gorpo.Downloader, effectService gorpo.EffectService, imgService gorpo.ImageService) http.Server {
 	router := httprouter.New()
 
-	imgCtrl := newImagesController(downloader)
+	imgCtrl := newImagesController(imgService)
 	effectCtrl := newEffectsController(effectService)
 
 	loggerHandler := LogHandler(logger)

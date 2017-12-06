@@ -10,9 +10,10 @@ type Filter struct {
 }
 
 type EffectParameter struct {
-	Required bool
-	Type     string
-	Example  string
+	Description string `json:"description"`
+	Required    bool   `json:"required"`
+	Type        string `json:"type"`
+	Example     string `json:"example"`
 }
 
 type EffectParameters map[string]EffectParameter

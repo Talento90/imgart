@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/disintegration/imaging"
+  packages = ["."]
+  revision = "dd50a3ee9985ccd313a2f03c398fcaedc96dc707"
+  version = "v1.2.4"
+
+[[projects]]
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
   revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
@@ -21,6 +27,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/image"
+  packages = ["bmp","tiff","tiff/lzw"]
+  revision = "f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
   revision = "8b4580aae2a0dd0c231a45d3ccb8434ff533b840"
@@ -28,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4a6d48e4e978bef1ca9e0f564a5dc36c2adf064a433ba5662a7f108c308a321e"
+  inputs-digest = "5c6dbf23f44cb112666b5c98ffefae449ca79c47a52c91161d2604333d086a8f"
   solver-name = "gps-cdcl"
   solver-version = 1

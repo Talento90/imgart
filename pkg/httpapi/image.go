@@ -12,12 +12,12 @@ import (
 )
 
 type imagesController struct {
-	downloader gorpo.Downloader
+	service gorpo.ImageService
 }
 
-func newImagesController(downloader gorpo.Downloader) imagesController {
+func newImagesController(service gorpo.ImageService) imagesController {
 	return imagesController{
-		downloader: downloader,
+		service: service,
 	}
 }
 
@@ -40,14 +40,14 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 		}
 	}
 
-	img, imgType, err := c.downloader.DownloadImage(imgSrc)
+	img, err := c.service.Process(imgSrc, filters)
 
 	if err != nil {
 		//toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
 		return
 	}
 
-	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", imgType))
+	w.Header().Set("Content-Type", fmt.Sprintf("image/png"))
 
 	buf := new(bytes.Buffer)
 	png.Encode(buf, img)
