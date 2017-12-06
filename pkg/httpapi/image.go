@@ -21,30 +21,27 @@ func newImagesController(service gorpo.ImageService) imagesController {
 	}
 }
 
-func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	var filters []gorpo.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("effects")
 
 	if imgSrc == "" {
-		//toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Missing imgSrc parameter", nil))
-		return
+		return response(http.StatusBadRequest, fmt.Errorf("Missing imgSrc query parameter"))
 	}
 
 	if filtersJSON != "" {
 		err := json.Unmarshal([]byte(filtersJSON), &filters)
 
 		if err != nil {
-			//toJSON(w, http.StatusBadRequest, NewApiResponse(false, "Error parsing filters", nil))
-			return
+			return response(http.StatusBadRequest, err)
 		}
 	}
 
 	img, err := c.service.Process(imgSrc, filters)
 
 	if err != nil {
-		//toJSON(w, http.StatusInternalServerError, NewApiResponse(false, err.Error(), nil))
-		return
+		return response(http.StatusBadRequest, err)
 	}
 
 	w.Header().Set("Content-Type", fmt.Sprintf("image/png"))
@@ -53,4 +50,6 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 	png.Encode(buf, img)
 
 	w.Write(buf.Bytes())
+
+	return response(http.StatusOK, nil)
 }

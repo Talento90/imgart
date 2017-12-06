@@ -36,7 +36,7 @@ func serializeResponse(r *http.Request, response *appResponse) (string, []byte) 
 	return contentType, bytes
 }
 
-func LogHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.Handle {
+func logHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.Handle {
 	return func(handler httprouter.Handle) httprouter.Handle {
 		return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 			start := time.Now()
@@ -51,6 +51,10 @@ func LogHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.H
 func responseHandler(handler appHandle) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		response := handler(w, r, params)
+
+		if response.Body == nil {
+			return
+		}
 
 		contentType, bytes := serializeResponse(r, &response)
 
