@@ -3,22 +3,45 @@ package gorpo
 import "fmt"
 
 type Error struct {
-	Code    int     `json:"code"`
-	Message string  `json:"message"`
-	Errors  []error `json:"errors,omitempty"`
+	errorType   string
+	originalErr error
+	Message     string  `json:"message"`
+	Errors      []Error `json:"errors,omitempty"`
 }
 
-func NewError(code int, message string, errors ...error) Error {
-	return Error{
-		Code:    code,
-		Message: message,
-		Errors:  errors,
+func (e Error) Error() string {
+	return fmt.Sprintf("Message: %s", e.Message)
+}
+
+const validationType = "validation"
+const notExistsType = "notExists"
+
+func EValidation(msg string) error {
+	return &Error{
+		errorType: validationType,
+		Message:   msg,
 	}
 }
 
-func (e *Error) Error() string {
-	return fmt.Sprintf("ErrorCode: %d Message: %s", e.Code, e.Message)
+func ENotExists(msg string) error {
+	return &Error{
+		errorType: notExistsType,
+		Message:   msg,
+	}
 }
 
-var downloadError = NewError(100, "Error downloading image")
-var processImageError = NewError(100, "Error processing image")
+func EProcessing(msg string, err error) error {
+	return &Error{
+		errorType:   notExistsType,
+		originalErr: err,
+		Message:     msg,
+	}
+}
+
+func IsEValidation(err error) bool {
+	if e, ok := err.(Error); ok {
+		return e.errorType == validationType
+	}
+
+	return false
+}
