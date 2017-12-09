@@ -1,7 +1,9 @@
 package effect
 
 import (
+	"fmt"
 	"image"
+	"reflect"
 
 	"github.com/disintegration/imaging"
 	"github.com/talento90/gorpo/pkg/gorpo"
@@ -54,4 +56,12 @@ func (r *resize) Transform(img image.Image, params map[string]interface{}) (imag
 	img = imaging.Resize(img, w, h, imaging.Linear)
 
 	return img, nil
+}
+
+func extractParameter(t reflect.Type, key string, params map[string]interface{}) (interface{}, error) {
+	if value, ok := params["width"]; ok {
+		return value, nil
+	}
+
+	return nil, gorpo.EValidation(fmt.Sprintf("Parameter %s required", key))
 }
