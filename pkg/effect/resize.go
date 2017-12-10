@@ -1,9 +1,7 @@
 package effect
 
 import (
-	"fmt"
 	"image"
-	"reflect"
 
 	"github.com/disintegration/imaging"
 	"github.com/talento90/gorpo/pkg/gorpo"
@@ -47,21 +45,19 @@ func (r *resize) Descriptor() gorpo.EffectDescriptor {
 }
 
 func (r *resize) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
-	width, _ := params["width"]
-	height, _ := params["height"]
+	width, err := integerBinder("width", params)
 
-	w, _ := width.(int)
-	h, _ := height.(int)
-
-	img = imaging.Resize(img, w, h, imaging.Linear)
-
-	return img, nil
-}
-
-func extractParameter(t reflect.Type, key string, params map[string]interface{}) (interface{}, error) {
-	if value, ok := params["width"]; ok {
-		return value, nil
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, gorpo.EValidation(fmt.Sprintf("Parameter %s required", key))
+	height, err := integerBinder("height", params)
+
+	if err != nil {
+		return nil, err
+	}
+
+	img = imaging.Resize(img, width, height, imaging.Linear)
+
+	return img, nil
 }
