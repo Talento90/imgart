@@ -35,7 +35,7 @@ func NewResize() gorpo.Effect {
 					Example:     "linear",
 					Type:        "string",
 					Default:     "linear",
-					Values:      "",
+					Values:      "lanczos,catmull-rom,mitchell-netravali,bs-pline,linear,box,nearest-neighbor",
 				},
 			},
 		},
