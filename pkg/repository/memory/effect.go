@@ -11,7 +11,10 @@ type EffectRepository struct {
 
 func NewEffectRepository() EffectRepository {
 	return EffectRepository{
-		effects: []gorpo.Effect{effect.NewRotate()},
+		effects: []gorpo.Effect{
+			effect.NewRotate(),
+			effect.NewResize(),
+		},
 	}
 }
 

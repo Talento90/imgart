@@ -26,7 +26,7 @@ func (i *imageService) Process(imgSrc string, filters []Filter) (image.Image, er
 	}
 
 	for _, filter := range filters {
-		effect, err := i.repository.GetEffect(filter.Id)
+		effect, err := i.repository.GetEffect(filter.ID)
 
 		if err != nil {
 			return nil, err

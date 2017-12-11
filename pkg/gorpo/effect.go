@@ -5,15 +5,17 @@ import (
 )
 
 type Filter struct {
-	Id         string                 `json:"id"`
+	ID         string                 `json:"id"`
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
 type EffectParameter struct {
-	Description string `json:"description"`
-	Required    bool   `json:"required"`
-	Type        string `json:"type"`
-	Example     string `json:"example"`
+	Description string      `json:"description"`
+	Required    bool        `json:"required"`
+	Type        string      `json:"type"`
+	Example     interface{} `json:"example"`
+	Default     interface{} `json:"default,omitempty"`
+	Values      string      `json:"values,omitempty"`
 }
 
 type EffectParameters map[string]EffectParameter

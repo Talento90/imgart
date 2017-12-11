@@ -16,12 +16,12 @@ func NewRotate() gorpo.Effect {
 	return &rotate{
 		EffectDescriptor: gorpo.EffectDescriptor{
 			Id:          "rotate",
-			Description: "This effect rotate an image",
+			Description: "Rotate - rotates an image",
 			Parameters: gorpo.EffectParameters{
 				"angle": gorpo.EffectParameter{
 					Description: "Rotation angle in degreesº",
 					Required:    true,
-					Example:     "-90",
+					Example:     -90,
 					Type:        "integer",
 				},
 				"bgcolor": gorpo.EffectParameter{
@@ -29,6 +29,8 @@ func NewRotate() gorpo.Effect {
 					Required:    false,
 					Example:     "black",
 					Type:        "string",
+					Default:     "transparent",
+					Values:      "black,opaque,transparent,white",
 				},
 			},
 		},
@@ -40,11 +42,19 @@ func (r *rotate) Descriptor() gorpo.EffectDescriptor {
 }
 
 func (r *rotate) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
-	angle, _ := params["angle"]
+	angle, err := floatBinder("angle", params)
 
-	a, _ := angle.(float64)
+	if err != nil {
+		return nil, err
+	}
 
-	img = imaging.Rotate(img, a, color.Black)
+	bgColor, err := colorBinder("bgcolor", params)
+
+	if err != nil {
+		bgColor = color.Transparent
+	}
+
+	img = imaging.Rotate(img, angle, bgColor)
 
 	return img, nil
 }

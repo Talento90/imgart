@@ -15,25 +15,27 @@ func NewResize() gorpo.Effect {
 	return &resize{
 		EffectDescriptor: gorpo.EffectDescriptor{
 			Id:          "resize",
-			Description: "This effect resizes an image",
+			Description: "Resize - resizes an image",
 			Parameters: gorpo.EffectParameters{
 				"width": gorpo.EffectParameter{
 					Description: "Width in px",
 					Required:    true,
-					Example:     "500",
+					Example:     500,
 					Type:        "integer",
 				},
 				"height": gorpo.EffectParameter{
 					Description: "Height in px",
 					Required:    true,
-					Example:     "350",
+					Example:     350,
 					Type:        "integer",
 				},
 				"filter": gorpo.EffectParameter{
 					Description: "Resample filter",
 					Required:    false,
-					Example:     "black",
+					Example:     "linear",
 					Type:        "string",
+					Default:     "linear",
+					Values:      "",
 				},
 			},
 		},
@@ -57,7 +59,13 @@ func (r *resize) Transform(img image.Image, params map[string]interface{}) (imag
 		return nil, err
 	}
 
-	img = imaging.Resize(img, width, height, imaging.Linear)
+	filter, err := filterBinder("filter", params)
+
+	if err != nil {
+		filter = imaging.Linear
+	}
+
+	img = imaging.Resize(img, width, height, filter)
 
 	return img, nil
 }
