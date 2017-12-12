@@ -2,6 +2,7 @@ package gorpo
 
 import "image"
 
+// ImageService interface has the logic for processing images by the given a list of filters
 type ImageService interface {
 	Process(imgSrc string, filters []Filter) (image.Image, error)
 }
@@ -11,6 +12,7 @@ type imageService struct {
 	repository EffectRepository
 }
 
+// NewImageService creates an ImageService
 func NewImageService(downloader Downloader, repo EffectRepository) ImageService {
 	return &imageService{
 		downloader: downloader,

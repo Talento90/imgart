@@ -8,17 +8,18 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-type HTTPDownloader struct {
+type httpdownloader struct {
 	client *http.Client
 }
 
+// NewHTTPDownloader creates a Downloader that download images over the HTTP protocol.
 func NewHTTPDownloader() gorpo.Downloader {
-	return &HTTPDownloader{
+	return &httpdownloader{
 		client: http.DefaultClient,
 	}
 }
 
-func (d *HTTPDownloader) DownloadImage(path string) (image.Image, string, error) {
+func (d *httpdownloader) DownloadImage(path string) (image.Image, string, error) {
 	response, err := d.client.Get(path)
 
 	if err != nil {

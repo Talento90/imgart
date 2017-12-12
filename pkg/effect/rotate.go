@@ -12,6 +12,7 @@ type rotate struct {
 	gorpo.EffectDescriptor
 }
 
+// NewRotate creates an Effect that rotates an image
 func NewRotate() gorpo.Effect {
 	return &rotate{
 		EffectDescriptor: gorpo.EffectDescriptor{
@@ -30,7 +31,7 @@ func NewRotate() gorpo.Effect {
 					Example:     "black",
 					Type:        "string",
 					Default:     "transparent",
-					Values:      "black,opaque,transparent,white",
+					Values:      colorsList,
 				},
 			},
 		},

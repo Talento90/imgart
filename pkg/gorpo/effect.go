@@ -15,7 +15,7 @@ type EffectParameter struct {
 	Type        string      `json:"type"`
 	Example     interface{} `json:"example"`
 	Default     interface{} `json:"default,omitempty"`
-	Values      string      `json:"values,omitempty"`
+	Values      interface{} `json:"values,omitempty"`
 }
 
 type EffectParameters map[string]EffectParameter

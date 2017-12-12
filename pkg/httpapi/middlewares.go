@@ -21,7 +21,7 @@ func response(statusCode int, body interface{}) appResponse {
 	}
 }
 
-type appHandle func(http.ResponseWriter, *http.Request, httprouter.Params) appResponse
+type appHandler func(http.ResponseWriter, *http.Request, httprouter.Params) appResponse
 
 func serializeResponse(r *http.Request, response *appResponse) (string, []byte) {
 	const contentType = "application/json"
@@ -36,7 +36,7 @@ func serializeResponse(r *http.Request, response *appResponse) (string, []byte) 
 	return contentType, bytes
 }
 
-func logHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.Handle {
+func loggerMiddleware(logger *log.Logger) func(handler httprouter.Handle) httprouter.Handle {
 	return func(handler httprouter.Handle) httprouter.Handle {
 		return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 			start := time.Now()
@@ -48,7 +48,7 @@ func logHandler(logger *log.Logger) func(handler httprouter.Handle) httprouter.H
 	}
 }
 
-func responseHandler(handler appHandle) httprouter.Handle {
+func responseMiddleware(handler appHandler) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		response := handler(w, r, params)
 

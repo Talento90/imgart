@@ -11,6 +11,7 @@ type resize struct {
 	gorpo.EffectDescriptor
 }
 
+// NewResize creates an Effect that resizes an image
 func NewResize() gorpo.Effect {
 	return &resize{
 		EffectDescriptor: gorpo.EffectDescriptor{
@@ -35,7 +36,7 @@ func NewResize() gorpo.Effect {
 					Example:     "linear",
 					Type:        "string",
 					Default:     "linear",
-					Values:      "lanczos,catmull-rom,mitchell-netravali,bs-pline,linear,box,nearest-neighbor",
+					Values:      filtersList,
 				},
 			},
 		},

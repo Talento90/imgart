@@ -9,6 +9,7 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
+var colorsList = []string{"black", "opaque", "transparent", "white"}
 var colorMapping = map[string]color.Color{
 	"black":       color.Black,
 	"opaque":      color.Opaque,
@@ -16,6 +17,7 @@ var colorMapping = map[string]color.Color{
 	"white":       color.White,
 }
 
+var filtersList = []string{"lanczos", "catmull-rom", "mitchell-netravali", "bs-pline", "linear", "box", "nearest-neighbor"}
 var filterMapping = map[string]imaging.ResampleFilter{
 	"lanczos":            imaging.Lanczos,
 	"catmull-rom":        imaging.CatmullRom,
@@ -27,7 +29,7 @@ var filterMapping = map[string]imaging.ResampleFilter{
 }
 
 func extractParameter(key string, params map[string]interface{}) (interface{}, error) {
-	if value, ok := params["width"]; ok {
+	if value, ok := params[key]; ok {
 		return value, nil
 	}
 

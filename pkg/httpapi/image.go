@@ -15,8 +15,8 @@ type imagesController struct {
 	service gorpo.ImageService
 }
 
-func newImagesController(service gorpo.ImageService) imagesController {
-	return imagesController{
+func newImagesController(service gorpo.ImageService) *imagesController {
+	return &imagesController{
 		service: service,
 	}
 }

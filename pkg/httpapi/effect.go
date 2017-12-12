@@ -12,13 +12,13 @@ type effectsController struct {
 	service gorpo.EffectService
 }
 
-func newEffectsController(service gorpo.EffectService) effectsController {
-	return effectsController{
+func newEffectsController(service gorpo.EffectService) *effectsController {
+	return &effectsController{
 		service: service,
 	}
 }
 
-func (c *effectsController) GetEffectById(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
+func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
 	id := params.ByName("id")
 
 	effect, err := c.service.GetEffect(id)
