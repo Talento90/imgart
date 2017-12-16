@@ -15,7 +15,7 @@ type resize struct {
 func NewResize() gorpo.Effect {
 	return &resize{
 		EffectDescriptor: gorpo.EffectDescriptor{
-			Id:          "resize",
+			ID:          "resize",
 			Description: "Resize - resizes an image",
 			Parameters: gorpo.EffectParameters{
 				"width": gorpo.EffectParameter{

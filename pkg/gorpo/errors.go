@@ -39,9 +39,13 @@ func EProcessing(msg string, err error) error {
 }
 
 func IsEValidation(err error) bool {
-	if e, ok := err.(Error); ok {
-		return e.errorType == validationType
-	}
+	e, ok := err.(Error)
 
-	return false
+	return ok && e.errorType == validationType
+}
+
+func IsNotExists(err error) bool {
+	e, ok := err.(Error)
+
+	return ok && e.errorType == notExistsType
 }

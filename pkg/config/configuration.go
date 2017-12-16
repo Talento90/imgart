@@ -1,4 +1,5 @@
+package config
 
-type ServerConfiguration interface {
+type ServerConfiguration struct {
 	Port string
 }

@@ -18,8 +18,8 @@ func main() {
 	httpDownloader := downloader.NewHTTPDownloader()
 
 	effectRepo := memory.NewEffectRepository()
-	effectService := gorpo.NewEffectService(&effectRepo)
-	imgService := gorpo.NewImageService(httpDownloader, &effectRepo)
+	effectService := gorpo.NewEffectService(effectRepo)
+	imgService := gorpo.NewImageService(httpDownloader, effectRepo)
 
 	server := httpapi.CreateServer(logger, httpDownloader, effectService, imgService)
 

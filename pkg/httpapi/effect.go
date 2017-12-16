@@ -28,7 +28,7 @@ func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request
 	}
 
 	if effect == nil {
-		return response(http.StatusNotFound, fmt.Sprintf("Effect %s does not exists.", id))
+		return response(http.StatusNotFound, fmt.Sprintf("Effect %s does not exist.", id))
 	}
 
 	return response(http.StatusOK, effect)

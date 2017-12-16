@@ -12,7 +12,7 @@ type httpdownloader struct {
 	client *http.Client
 }
 
-// NewHTTPDownloader creates a Downloader that download images over the HTTP protocol.
+// NewHTTPDownloader creates a Downloader that get an image over the HTTP protocol.
 func NewHTTPDownloader() gorpo.Downloader {
 	return &httpdownloader{
 		client: http.DefaultClient,

@@ -27,10 +27,10 @@ func (r *effectRepository) GetEffects() ([]gorpo.Effect, error) {
 
 func (r *effectRepository) GetEffect(id string) (gorpo.Effect, error) {
 	for _, effect := range r.effects {
-		if effect.Descriptor().Id == id {
+		if effect.Descriptor().ID == id {
 			return effect, nil
 		}
 	}
 
-	return nil, gorpo.ENotExists(fmt.Sprintf("Effect %s does not exists", id))
+	return nil, gorpo.ENotExists(fmt.Sprintf("Effect %s does not exist", id))
 }

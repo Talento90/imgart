@@ -16,7 +16,7 @@ type rotate struct {
 func NewRotate() gorpo.Effect {
 	return &rotate{
 		EffectDescriptor: gorpo.EffectDescriptor{
-			Id:          "rotate",
+			ID:          "rotate",
 			Description: "Rotate - rotates an image",
 			Parameters: gorpo.EffectParameters{
 				"angle": gorpo.EffectParameter{

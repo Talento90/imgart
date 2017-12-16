@@ -4,11 +4,13 @@ import (
 	"image"
 )
 
+// Filter represents an effect with all it's parameters
 type Filter struct {
 	ID         string                 `json:"id"`
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
+// EffectParameter contains all properties of a single effect parameter
 type EffectParameter struct {
 	Description string      `json:"description"`
 	Required    bool        `json:"required"`
@@ -18,15 +20,18 @@ type EffectParameter struct {
 	Values      interface{} `json:"values,omitempty"`
 }
 
+// EffectParameters it's a map that contains all parameters of an effect
 type EffectParameters map[string]EffectParameter
 
+// Effect represents an image transformation (ex: rotate, resize, overlay...)
 type Effect interface {
 	Descriptor() EffectDescriptor
 	Transform(img image.Image, params map[string]interface{}) (image.Image, error)
 }
 
+// EffectDescriptor it's a struct that contains detailed information about an effect
 type EffectDescriptor struct {
-	Id          string           `json:"id"`
+	ID          string           `json:"id"`
 	Description string           `json:"description"`
 	Parameters  EffectParameters `json:"parameters"`
 }
