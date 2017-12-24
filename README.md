@@ -54,3 +54,10 @@ domain/core/root - contains our application domain
 
 - packages should be singular or at least follow a convention
 - package name should be representative of their content just by reading the name
+
+
+# Missing Features
+
+* Context (implement context mechanism)
+* Graceful Shutdown
+* Metrics

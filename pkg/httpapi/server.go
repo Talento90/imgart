@@ -22,12 +22,10 @@ func CreateServer(logger *log.Logger, downloader gorpo.Downloader, effectService
 	imgCtrl := newImagesController(imgService)
 	effectCtrl := newEffectsController(effectService)
 
-	loggerHandler := loggerMiddleware(logger)
+	router.GET("/api/v1/images", loggerMiddleware(logger, responseMiddleware(imgCtrl.ImageHandler)))
 
-	router.GET("/api/v1/images", loggerHandler(responseMiddleware(imgCtrl.ImageHandler)))
-
-	router.GET("/api/v1/effects/:id", loggerHandler(responseMiddleware(effectCtrl.GetEffectByID)))
-	router.GET("/api/v1/effects", loggerHandler(responseMiddleware(effectCtrl.GetAllEffects)))
+	router.GET("/api/v1/effects/:id", loggerMiddleware(logger, responseMiddleware(effectCtrl.GetEffectByID)))
+	router.GET("/api/v1/effects", loggerMiddleware(logger, responseMiddleware(effectCtrl.GetAllEffects)))
 
 	return http.Server{
 		Addr:    ":4005",

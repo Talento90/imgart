@@ -5,7 +5,6 @@ import (
 	"image/color"
 
 	"github.com/disintegration/imaging"
-
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 

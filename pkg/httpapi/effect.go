@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -24,11 +23,7 @@ func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request
 	effect, err := c.service.GetEffect(id)
 
 	if err != nil {
-		return response(http.StatusInternalServerError, err)
-	}
-
-	if effect == nil {
-		return response(http.StatusNotFound, fmt.Sprintf("Effect %s does not exist.", id))
+		return errResponse(err)
 	}
 
 	return response(http.StatusOK, effect)
@@ -38,7 +33,7 @@ func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request
 	effects, err := c.service.GetEffects()
 
 	if err != nil {
-		return response(http.StatusInternalServerError, err)
+		return errResponse(err)
 	}
 
 	return response(http.StatusOK, effects)
