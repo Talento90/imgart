@@ -2,18 +2,24 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/talento90/gorpo/pkg/downloader"
 	"github.com/talento90/gorpo/pkg/gorpo"
 	"github.com/talento90/gorpo/pkg/httpapi"
-	"github.com/talento90/gorpo/pkg/logger"
+	"github.com/talento90/gorpo/pkg/log"
 	"github.com/talento90/gorpo/pkg/repository/memory"
 )
 
 func main() {
-	logger := logger.NewLogger()
+	logConfig := log.Configuration{
+		Level:  "debug",
+		Output: os.Stdout,
+	}
 
-	logger.Println("Starting gorpo API")
+	logger, _ := log.NewLogger(logConfig)
+
+	logger.Info("Starting gorpo API")
 
 	httpDownloader := downloader.NewHTTPDownloader()
 

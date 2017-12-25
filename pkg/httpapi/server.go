@@ -1,22 +1,21 @@
 package httpapi
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/pkg/log"
 )
 
 type Dependencies struct {
-	log.Logger
 	gorpo.Downloader
 	gorpo.EffectService
 	gorpo.ImageService
 }
 
 // CreateServer creates an http server
-func CreateServer(logger *log.Logger, downloader gorpo.Downloader, effectService gorpo.EffectService, imgService gorpo.ImageService) http.Server {
+func CreateServer(logger log.Logger, downloader gorpo.Downloader, effectService gorpo.EffectService, imgService gorpo.ImageService) http.Server {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(imgService)

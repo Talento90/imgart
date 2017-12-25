@@ -47,7 +47,15 @@ domain/core/root - contains our application domain
 
 
 
-
+## Server
+- Effects
+- Server Configurations
+- Server Dependencies
+- Error Handling
+- Refactor Controllers
+- Tests
+- Panic Handler
+- Logger
 
 
 ## Best Practises

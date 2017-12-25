@@ -2,11 +2,11 @@ package httpapi
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/talento90/gorpo/pkg/log"
 )
 
 type appHandler func(http.ResponseWriter, *http.Request, httprouter.Params) appResponse
@@ -24,12 +24,18 @@ func serializeResponse(r *http.Request, response *appResponse) (string, []byte) 
 	return contentType, bytes
 }
 
-func loggerMiddleware(logger *log.Logger, handler appHandler) httprouter.Handle {
+func loggerMiddleware(logger log.Logger, handler appHandler) httprouter.Handle {
 	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		start := time.Now()
 		response := handler(w, r, params)
 
-		logger.Printf("%s %s %d %s\n", r.Method, r.URL, response.StatusCode, time.Now().Sub(start))
+		logger.InfoWithFields(
+			log.Fields{
+				"method":      r.Method,
+				"url":         r.URL,
+				"status_code": response.StatusCode,
+				"time":        time.Now().Sub(start),
+			}, "api request")
 	})
 }
 
@@ -38,8 +44,6 @@ func responseMiddleware(handler appHandler) appHandler {
 		response := handler(w, r, params)
 
 		contentType, bytes := serializeResponse(r, &response)
-
-		// w.Header().Add("X-Count", strconv.Itoa(len(effects)))
 
 		w.Header().Set("Content-Type", contentType)
 		w.WriteHeader(response.StatusCode)
