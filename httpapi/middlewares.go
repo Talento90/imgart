@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/log"
+	"github.com/talento90/gorpo/log"
 )
 
 type appHandler func(http.ResponseWriter, *http.Request, httprouter.Params) appResponse

@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/effect"
 )
 
 type effectsController struct {
-	service gorpo.EffectService
+	service effect.Service
 }
 
-func newEffectsController(service gorpo.EffectService) *effectsController {
+func newEffectsController(service effect.Service) *effectsController {
 	return &effectsController{
 		service: service,
 	}

@@ -1,4 +1,4 @@
-package gorpo
+package errors
 
 import "fmt"
 

@@ -5,7 +5,7 @@ import (
 	"image/color"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/errors"
 )
 
 var colorsList = []string{"black", "opaque", "transparent", "white"}
@@ -32,7 +32,7 @@ func extractParameter(key string, params map[string]interface{}) (interface{}, e
 		return value, nil
 	}
 
-	return nil, gorpo.EValidation(fmt.Sprintf("Parameter %s required", key))
+	return nil, errors.EValidation(fmt.Sprintf("Parameter %s required", key))
 }
 
 func integerBinder(key string, params map[string]interface{}) (int, error) {
@@ -45,7 +45,7 @@ func integerBinder(key string, params map[string]interface{}) (int, error) {
 	valueInt, ok := value.(int)
 
 	if !ok {
-		return 0, gorpo.EValidation(fmt.Sprintf("Parameter %s needs to be an integer", key))
+		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an integer", key))
 	}
 
 	return valueInt, nil
@@ -61,7 +61,7 @@ func floatBinder(key string, params map[string]interface{}) (float64, error) {
 	valueFloat, ok := value.(float64)
 
 	if !ok {
-		return 0, gorpo.EValidation(fmt.Sprintf("Parameter %s needs to be a float", key))
+		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a float", key))
 	}
 
 	return valueFloat, nil
@@ -77,13 +77,13 @@ func colorBinder(key string, params map[string]interface{}) (color.Color, error)
 	colorKey, ok := value.(string)
 
 	if !ok {
-		return nil, gorpo.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
+		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
 	}
 
 	color, ok := colorMapping[colorKey]
 
 	if !ok {
-		return nil, gorpo.EValidation(fmt.Sprintf("Value %s not supported", colorKey))
+		return nil, errors.EValidation(fmt.Sprintf("Value %s not supported", colorKey))
 	}
 
 	return color, nil
@@ -99,13 +99,13 @@ func filterBinder(key string, params map[string]interface{}) (imaging.ResampleFi
 	filterKey, ok := value.(string)
 
 	if !ok {
-		return imaging.ResampleFilter{}, gorpo.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
+		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
 	}
 
 	filter, ok := filterMapping[filterKey]
 
 	if !ok {
-		return imaging.ResampleFilter{}, gorpo.EValidation(fmt.Sprintf("Value %s not supported", filterKey))
+		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Value %s not supported", filterKey))
 	}
 
 	return filter, nil

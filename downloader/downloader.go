@@ -1,4 +1,4 @@
-package gorpo
+package downloader
 
 import (
 	"image"

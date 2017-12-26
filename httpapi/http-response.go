@@ -3,7 +3,7 @@ package httpapi
 import (
 	"net/http"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/errors"
 )
 
 type appResponse struct {
@@ -19,13 +19,13 @@ func response(statusCode int, body interface{}) appResponse {
 }
 
 func getHTTPError(err error) int {
-	if appErr, ok := err.(gorpo.Error); ok {
+	if appErr, ok := err.(errors.Error); ok {
 
-		if gorpo.IsNotExists(appErr) {
+		if errors.IsNotExists(appErr) {
 			return http.StatusNotFound
 		}
 
-		if gorpo.IsEValidation(appErr) {
+		if errors.IsEValidation(appErr) {
 			return http.StatusUnprocessableEntity
 		}
 	}

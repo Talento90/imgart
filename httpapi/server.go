@@ -4,18 +4,14 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/log"
+	"github.com/talento90/gorpo/downloader"
+	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/image"
+	"github.com/talento90/gorpo/log"
 )
 
-type Dependencies struct {
-	gorpo.Downloader
-	gorpo.EffectService
-	gorpo.ImageService
-}
-
 // CreateServer creates an http server
-func CreateServer(logger log.Logger, downloader gorpo.Downloader, effectService gorpo.EffectService, imgService gorpo.ImageService) http.Server {
+func CreateServer(logger log.Logger, downloader downloader.Downloader, effectService effect.Service, imgService image.Service) http.Server {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(imgService)

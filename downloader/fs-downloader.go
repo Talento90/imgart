@@ -5,13 +5,13 @@ import (
 	"image"
 	"os"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/errors"
 )
 
 type fsdownloader struct{}
 
 // NewFSDownloader creates a Downloader that get an image over the File System.
-func NewFSDownloader() gorpo.Downloader {
+func NewFSDownloader() Downloader {
 	return &fsdownloader{}
 }
 
@@ -19,7 +19,7 @@ func (d *fsdownloader) DownloadImage(path string) (image.Image, string, error) {
 	file, err := os.Open(path)
 
 	if err == os.ErrNotExist {
-		return nil, "", gorpo.ENotExists(fmt.Sprintf("Image path: %s not exists", path))
+		return nil, "", errors.ENotExists(fmt.Sprintf("Image path: %s not exists", path))
 	}
 
 	defer file.Close()

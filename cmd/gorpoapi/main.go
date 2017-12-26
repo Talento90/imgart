@@ -4,11 +4,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/talento90/gorpo/pkg/downloader"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/httpapi"
-	"github.com/talento90/gorpo/pkg/log"
-	"github.com/talento90/gorpo/pkg/repository/memory"
+	"github.com/talento90/gorpo/downloader"
+	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/httpapi"
+	"github.com/talento90/gorpo/image"
+	"github.com/talento90/gorpo/log"
+	"github.com/talento90/gorpo/repository/memory"
 )
 
 func main() {
@@ -24,8 +25,8 @@ func main() {
 	httpDownloader := downloader.NewHTTPDownloader()
 
 	effectRepo := memory.NewEffectRepository()
-	effectService := gorpo.NewEffectService(effectRepo)
-	imgService := gorpo.NewImageService(httpDownloader, effectRepo)
+	effectService := effect.NewService(effectRepo)
+	imgService := image.NewService(httpDownloader, effectRepo)
 
 	server := httpapi.CreateServer(logger, httpDownloader, effectService, imgService)
 

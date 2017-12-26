@@ -8,21 +8,22 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/image"
 )
 
 type imagesController struct {
-	service gorpo.ImageService
+	service image.Service
 }
 
-func newImagesController(service gorpo.ImageService) *imagesController {
+func newImagesController(service image.Service) *imagesController {
 	return &imagesController{
 		service: service,
 	}
 }
 
 func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
-	var filters []gorpo.Filter
+	var filters []effect.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("effects")
 
