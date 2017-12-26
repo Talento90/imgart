@@ -26,7 +26,7 @@ func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	return response(http.StatusOK, effect)
+	return response(http.StatusOK, effect.Descriptor())
 }
 
 func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
@@ -36,5 +36,11 @@ func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	return response(http.StatusOK, effects)
+	var effectDesc = make([]effect.Descriptor, 0, len(effects))
+
+	for _, e := range effects {
+		effectDesc = append(effectDesc, e.Descriptor())
+	}
+
+	return response(http.StatusOK, effectDesc)
 }

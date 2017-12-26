@@ -1,0 +1,30 @@
+[
+    {
+        "id": "rotate",
+        "parameters": {
+            "angle": 190
+        }
+    },
+    {
+        "id": "overlay",
+        "parameters": {
+            "x": 0,
+            "y": 0,
+            "url": "http://www.officialpsds.com/images/thumbs/Santa-Hat-psd89865.png"
+        }
+    },
+    {
+        "id": "resize",
+        "parameters": {
+            "height": 300,
+            "width": 150
+        }
+    }
+]
+
+
+
+[{"id":"overlay","parameters":{"x":200,"y":200,"url":"http://www.officialpsds.com/images/thumbs/Santa-Hat-psd89865.png"}}]
+
+
+{"id": "crop","parameters":{"rectangle":[0,0,100,100]}}

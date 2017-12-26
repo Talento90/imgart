@@ -2,7 +2,9 @@ package effect
 
 import (
 	"fmt"
+	"image"
 	"image/color"
+	"net/url"
 
 	"github.com/disintegration/imaging"
 	"github.com/talento90/gorpo/errors"
@@ -32,7 +34,7 @@ func extractParameter(key string, params map[string]interface{}) (interface{}, e
 		return value, nil
 	}
 
-	return nil, errors.EValidation(fmt.Sprintf("Parameter %s required", key))
+	return nil, errors.EValidation(fmt.Sprintf("Parameter %s required", key), nil)
 }
 
 func integerBinder(key string, params map[string]interface{}) (int, error) {
@@ -42,13 +44,13 @@ func integerBinder(key string, params map[string]interface{}) (int, error) {
 		return 0, err
 	}
 
-	valueInt, ok := value.(int)
+	valueInt, ok := value.(float64)
 
 	if !ok {
-		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an integer", key))
+		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an integer", key), nil)
 	}
 
-	return valueInt, nil
+	return int(valueInt), nil
 }
 
 func floatBinder(key string, params map[string]interface{}) (float64, error) {
@@ -61,7 +63,7 @@ func floatBinder(key string, params map[string]interface{}) (float64, error) {
 	valueFloat, ok := value.(float64)
 
 	if !ok {
-		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a float", key))
+		return 0, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a float", key), nil)
 	}
 
 	return valueFloat, nil
@@ -77,13 +79,13 @@ func colorBinder(key string, params map[string]interface{}) (color.Color, error)
 	colorKey, ok := value.(string)
 
 	if !ok {
-		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
+		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key), nil)
 	}
 
 	color, ok := colorMapping[colorKey]
 
 	if !ok {
-		return nil, errors.EValidation(fmt.Sprintf("Value %s not supported", colorKey))
+		return nil, errors.EValidation(fmt.Sprintf("Value %s not supported", colorKey), nil)
 	}
 
 	return color, nil
@@ -99,14 +101,57 @@ func filterBinder(key string, params map[string]interface{}) (imaging.ResampleFi
 	filterKey, ok := value.(string)
 
 	if !ok {
-		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key))
+		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key), nil)
 	}
 
 	filter, ok := filterMapping[filterKey]
 
 	if !ok {
-		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Value %s not supported", filterKey))
+		return imaging.ResampleFilter{}, errors.EValidation(fmt.Sprintf("Value %s not supported", filterKey), nil)
 	}
 
 	return filter, nil
+}
+
+func urlBinder(key string, params map[string]interface{}) (*url.URL, error) {
+	value, err := extractParameter(key, params)
+
+	if err != nil {
+		return nil, err
+	}
+
+	urlString, ok := value.(string)
+
+	if !ok {
+		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a string", key), nil)
+	}
+
+	imgURL, err := url.ParseRequestURI(urlString)
+
+	if err != nil {
+		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be a valid url", key), err)
+	}
+
+	return imgURL, nil
+}
+
+func rectangleBinder(key string, params map[string]interface{}) (image.Rectangle, error) {
+	value, err := extractParameter(key, params)
+
+	if err != nil {
+		return image.Rectangle{}, err
+	}
+
+	coordinates, ok := value.([]int)
+
+	if !ok || len(coordinates) != 4 {
+		return image.Rectangle{}, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an array of ints with length of 4", key), nil)
+	}
+
+	rectangle := image.Rectangle{
+		Min: image.Point{X: coordinates[0], Y: coordinates[1]},
+		Max: image.Point{X: coordinates[2], Y: coordinates[3]},
+	}
+
+	return rectangle, nil
 }

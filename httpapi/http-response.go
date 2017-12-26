@@ -7,35 +7,50 @@ import (
 )
 
 type appResponse struct {
-	StatusCode int
-	Body       interface{}
+	statusCode int
+	body       interface{}
+	err        error
+}
+
+type appError struct {
+	ErrorCode errors.Type `json:"error_code"`
+	ErrorType string      `json:"error_type"`
+	Message   string      `json:"message"`
 }
 
 func response(statusCode int, body interface{}) appResponse {
 	return appResponse{
-		StatusCode: statusCode,
-		Body:       body,
+		statusCode: statusCode,
+		body:       body,
+		err:        nil,
 	}
-}
-
-func getHTTPError(err error) int {
-	if appErr, ok := err.(errors.Error); ok {
-
-		if errors.IsNotExists(appErr) {
-			return http.StatusNotFound
-		}
-
-		if errors.IsEValidation(appErr) {
-			return http.StatusUnprocessableEntity
-		}
-	}
-
-	return http.StatusInternalServerError
 }
 
 func errResponse(err error) appResponse {
+	statusCode := http.StatusInternalServerError
+	appError := appError{
+		ErrorCode: errors.Internal,
+		ErrorType: errors.Internal.String(),
+		Message:   err.Error(),
+	}
+
+	if e, ok := err.(*errors.Error); ok {
+		appError.ErrorCode = e.ErrorType
+		appError.ErrorType = e.ErrorType.String()
+
+		switch e.ErrorType {
+		case errors.NotExist:
+			statusCode = http.StatusNotFound
+		case errors.Validation:
+			statusCode = http.StatusUnprocessableEntity
+		case errors.Malformed:
+			statusCode = http.StatusBadRequest
+		}
+	}
+
 	return appResponse{
-		StatusCode: getHTTPError(err),
-		Body:       err,
+		statusCode: statusCode,
+		body:       appError,
+		err:        err,
 	}
 }

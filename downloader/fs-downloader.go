@@ -19,7 +19,9 @@ func (d *fsdownloader) DownloadImage(path string) (image.Image, string, error) {
 	file, err := os.Open(path)
 
 	if err == os.ErrNotExist {
-		return nil, "", errors.ENotExists(fmt.Sprintf("Image path: %s not exists", path))
+		return nil, "", errors.ENotExists(fmt.Sprintf("Image path: %s not exists", path), nil)
+	} else if err != nil {
+		return nil, "", errors.EInternal("Error trying to get image", err)
 	}
 
 	defer file.Close()
@@ -27,7 +29,7 @@ func (d *fsdownloader) DownloadImage(path string) (image.Image, string, error) {
 	img, imgType, err := image.Decode(file)
 
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.EInternal("Error decoding image", err)
 	}
 
 	return img, imgType, nil

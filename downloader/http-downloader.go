@@ -23,19 +23,19 @@ func (d *httpdownloader) DownloadImage(path string) (image.Image, string, error)
 	response, err := d.client.Get(path)
 
 	if err != nil {
-		return nil, "", errors.ENotExists("")
+		return nil, "", errors.EInternal("Error trying to download image", err)
 	}
 
 	defer response.Body.Close()
 
 	if response.StatusCode == http.StatusNotFound {
-		return nil, "", errors.ENotExists(fmt.Sprintf("Image %s not found", path))
+		return nil, "", errors.ENotExists(fmt.Sprintf("Image %s not found", path), nil)
 	}
 
 	img, imgType, err := image.Decode(response.Body)
 
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.EInternal("Error decoding image", err)
 	}
 
 	return img, imgType, nil

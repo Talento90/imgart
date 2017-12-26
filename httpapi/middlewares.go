@@ -14,10 +14,10 @@ type appHandler func(http.ResponseWriter, *http.Request, httprouter.Params) appR
 func serializeResponse(r *http.Request, response *appResponse) (string, []byte) {
 	const contentType = "application/json"
 
-	bytes, err := json.Marshal(response.Body)
+	bytes, err := json.Marshal(response.body)
 
 	if err != nil {
-		response.StatusCode = http.StatusInternalServerError
+		response.statusCode = http.StatusInternalServerError
 		bytes, _ = json.Marshal(err)
 	}
 
@@ -29,11 +29,15 @@ func loggerMiddleware(logger log.Logger, handler appHandler) httprouter.Handle {
 		start := time.Now()
 		response := handler(w, r, params)
 
+		if response.err != nil {
+			logger.Error(response.err)
+		}
+
 		logger.InfoWithFields(
 			log.Fields{
 				"method":      r.Method,
 				"url":         r.URL,
-				"status_code": response.StatusCode,
+				"status_code": response.statusCode,
 				"time":        time.Now().Sub(start),
 			}, "api request")
 	})
@@ -46,7 +50,7 @@ func responseMiddleware(handler appHandler) appHandler {
 		contentType, bytes := serializeResponse(r, &response)
 
 		w.Header().Set("Content-Type", contentType)
-		w.WriteHeader(response.StatusCode)
+		w.WriteHeader(response.statusCode)
 		w.Write(bytes)
 
 		return response

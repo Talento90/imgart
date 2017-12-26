@@ -1,51 +1,78 @@
 package errors
 
-import "fmt"
-
+// Error is an application error
 type Error struct {
-	errorType   string
-	originalErr error
-	Message     string  `json:"message"`
-	Errors      []Error `json:"errors,omitempty"`
+	ErrorType     Type
+	OriginalError error
+	Message       string
 }
 
 func (e Error) Error() string {
-	return fmt.Sprintf("Message: %s", e.Message)
+	return e.Message
 }
 
-const validationType = "validation"
-const notExistsType = "notExists"
+// Type defines the type of an error
+type Type int
 
-func EValidation(msg string) error {
+const (
+	_ Type = (iota * 10000) << 1
+	// Internal error
+	Internal
+	// NotExist error means that a specific item does not exist
+	NotExist
+	// Malformed error represents data that not respect the standard format
+	Malformed
+	// Validation error
+	Validation
+)
+
+func (t Type) String() string {
+	switch t {
+	case Internal:
+		return "Internal Error"
+	case NotExist:
+		return "Item does not exist"
+	case Malformed:
+		return "Malformed error"
+	case Validation:
+		return "Validation error"
+	}
+
+	return "Unknown error"
+}
+
+// New creates a new error
+func New(t Type, msg string, originalErr error) error {
 	return &Error{
-		errorType: validationType,
-		Message:   msg,
+		ErrorType:     t,
+		Message:       msg,
+		OriginalError: originalErr,
 	}
 }
 
-func ENotExists(msg string) error {
-	return &Error{
-		errorType: notExistsType,
-		Message:   msg,
-	}
+// EValidation creates an error of type Validationn
+func EValidation(msg string, err error) error {
+	return New(Validation, msg, err)
 }
 
-func EProcessing(msg string, err error) error {
-	return &Error{
-		errorType:   notExistsType,
-		originalErr: err,
-		Message:     msg,
-	}
+// ENotExists creates an error of type NotExist
+func ENotExists(msg string, err error) error {
+	return New(NotExist, msg, err)
 }
 
-func IsEValidation(err error) bool {
-	e, ok := err.(Error)
-
-	return ok && e.errorType == validationType
+// EMalformed creates an error of type Malformed
+func EMalformed(msg string, err error) error {
+	return New(Malformed, msg, err)
 }
 
-func IsNotExists(err error) bool {
-	e, ok := err.(Error)
+// EInternal creates an error of type Internal
+func EInternal(msg string, err error) error {
+	return New(Internal, msg, err)
+}
 
-	return ok && e.errorType == notExistsType
+// Is checks if an error is of a determined type
+func Is(t Type, err error) bool {
+	e, ok := err.(*Error)
+
+	return ok && e.ErrorType == t
 }

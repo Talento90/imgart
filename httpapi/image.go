@@ -9,6 +9,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/errors"
 	"github.com/talento90/gorpo/image"
 )
 
@@ -28,24 +29,24 @@ func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, 
 	filtersJSON := r.URL.Query().Get("effects")
 
 	if imgSrc == "" {
-		return response(http.StatusBadRequest, fmt.Errorf("Missing imgSrc query parameter"))
+		return errResponse(errors.EMalformed("Missing imgSrc query parameter", nil))
 	}
 
 	if filtersJSON != "" {
 		err := json.Unmarshal([]byte(filtersJSON), &filters)
 
 		if err != nil {
-			return response(http.StatusBadRequest, err)
+			return errResponse(errors.EMalformed("effects query parameter is malformed", err))
 		}
 	}
 
 	img, err := c.service.Process(imgSrc, filters)
 
 	if err != nil {
-		return response(http.StatusBadRequest, err)
+		return errResponse(err)
 	}
 
-	w.Header().Set("Content-Type", fmt.Sprintf("image/png"))
+	w.Header().Set("Content-Type", fmt.Sprintf("image/jpg"))
 
 	buf := new(bytes.Buffer)
 	png.Encode(buf, img)

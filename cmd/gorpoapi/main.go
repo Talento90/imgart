@@ -24,11 +24,18 @@ func main() {
 
 	httpDownloader := downloader.NewHTTPDownloader()
 
-	effectRepo := memory.NewEffectRepository()
+	effectRepo := memory.NewEffectRepository(httpDownloader)
 	effectService := effect.NewService(effectRepo)
 	imgService := image.NewService(httpDownloader, effectRepo)
 
-	server := httpapi.CreateServer(logger, httpDownloader, effectService, imgService)
+	dependencies := &httpapi.ServerDependencies{
+		Logger:        logger,
+		Downloader:    httpDownloader,
+		EffectService: effectService,
+		ImgService:    imgService,
+	}
+
+	server := httpapi.NewServer(dependencies)
 
 	http.ListenAndServe(server.Addr, server.Handler)
 }

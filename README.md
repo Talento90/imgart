@@ -51,12 +51,10 @@ domain/core/root - contains our application domain
 - Effects
 - Server Configurations
 - Server Dependencies
-- Error Handling
-- Refactor Controllers
 - Tests
 - Panic Handler
 - Logger
-
+- Makefile
 
 ## Best Practises
 
