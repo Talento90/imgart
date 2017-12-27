@@ -28,3 +28,6 @@
 
 
 {"id": "crop","parameters":{"rectangle":[0,0,100,100]}}
+
+
+http://localhost:4005/api/v1/images?imgSrc=https://res.cloudinary.com/demo/image/upload/q_90/happy_dog.jpg&effects=[{%22id%22:%22overlay%22,%22parameters%22:{%22x%22:200,%22y%22:200,%22url%22:%22http://www.officialpsds.com/images/thumbs/Santa-Hat-psd89865.png%22}}]

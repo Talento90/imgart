@@ -37,6 +37,28 @@ func extractParameter(key string, params map[string]interface{}) (interface{}, e
 	return nil, errors.EValidation(fmt.Sprintf("Parameter %s required", key), nil)
 }
 
+func integerArrayBinder(key string, array interface{}, expectedLen int) ([]int, error) {
+
+	genericArray, ok := array.([]interface{})
+	intArray := make([]int, 0, expectedLen)
+
+	if !ok || len(genericArray) != expectedLen {
+		return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an array of integers with length of 4", key), nil)
+	}
+
+	for _, number := range genericArray {
+		n, ok := number.(float64)
+
+		if !ok {
+			return nil, errors.EValidation(fmt.Sprintf("Parameter %s needs to be array of integers", key), nil)
+		}
+
+		intArray = append(intArray, int(n))
+	}
+
+	return intArray, nil
+}
+
 func integerBinder(key string, params map[string]interface{}) (int, error) {
 	value, err := extractParameter(key, params)
 
@@ -142,16 +164,34 @@ func rectangleBinder(key string, params map[string]interface{}) (image.Rectangle
 		return image.Rectangle{}, err
 	}
 
-	coordinates, ok := value.([]int)
+	rectangeCoords, err := integerArrayBinder(key, value, 4)
 
-	if !ok || len(coordinates) != 4 {
-		return image.Rectangle{}, errors.EValidation(fmt.Sprintf("Parameter %s needs to be an array of ints with length of 4", key), nil)
+	if err != nil {
+		return image.Rectangle{}, err
 	}
 
 	rectangle := image.Rectangle{
-		Min: image.Point{X: coordinates[0], Y: coordinates[1]},
-		Max: image.Point{X: coordinates[2], Y: coordinates[3]},
+		Min: image.Point{X: rectangeCoords[0], Y: rectangeCoords[1]},
+		Max: image.Point{X: rectangeCoords[2], Y: rectangeCoords[3]},
 	}
 
 	return rectangle, nil
+}
+
+func pointBinder(key string, params map[string]interface{}) (image.Point, error) {
+	value, err := extractParameter(key, params)
+
+	if err != nil {
+		return image.Point{}, err
+	}
+
+	pointCoords, err := integerArrayBinder(key, value, 2)
+
+	if err != nil {
+		return image.Point{}, err
+	}
+
+	point := image.Point{X: pointCoords[0], Y: pointCoords[1]}
+
+	return point, nil
 }
