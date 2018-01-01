@@ -2,8 +2,8 @@ package main
 
 import (
 	"net/http"
-	"os"
 
+	"github.com/talento90/gorpo/config"
 	"github.com/talento90/gorpo/downloader"
 	"github.com/talento90/gorpo/effect"
 	"github.com/talento90/gorpo/httpapi"
@@ -13,29 +13,39 @@ import (
 )
 
 func main() {
-	logConfig := log.Configuration{
-		Level:  "debug",
-		Output: os.Stdout,
+	logConfig, err := config.GetLogConfiguration()
+
+	if err != nil {
+		panic(err)
 	}
 
-	logger, _ := log.NewLogger(logConfig)
+	logger, err := log.NewLogger(logConfig)
 
-	logger.Info("Starting gorpo API")
+	if err != nil {
+		panic(err)
+	}
 
 	httpDownloader := downloader.NewHTTPDownloader()
-
 	effectRepo := memory.NewEffectRepository(httpDownloader)
 	effectService := effect.NewService(effectRepo)
 	imgService := image.NewService(httpDownloader, effectRepo)
 
-	dependencies := &httpapi.ServerDependencies{
+	serverDeps := &httpapi.ServerDependencies{
 		Logger:        logger,
 		Downloader:    httpDownloader,
 		EffectService: effectService,
 		ImgService:    imgService,
 	}
 
-	server := httpapi.NewServer(dependencies)
+	serverConfig, err := config.GetServerConfiguration()
+
+	if err != nil {
+		logger.Panic(err)
+	}
+
+	server := httpapi.NewServer(&serverConfig, serverDeps)
+
+	logger.Info("Starting gorpo API")
 
 	http.ListenAndServe(server.Addr, server.Handler)
 }

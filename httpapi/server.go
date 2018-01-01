@@ -19,19 +19,21 @@ type ServerDependencies struct {
 }
 
 // NewServer creates an http server
-func NewServer(dep *ServerDependencies) http.Server {
+func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(dep.ImgService)
 	effectCtrl := newEffectsController(dep.EffectService)
 
-	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.ImageHandler)))
+	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
-	router.GET("/api/v1/effects/:id", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.GetEffectByID)))
-	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.GetAllEffects)))
+	router.GET("/api/v1/effects/:id", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getEffectByID)))
+	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getAllEffects)))
 
 	return http.Server{
-		Addr:    ":4005",
-		Handler: router,
+		Addr:         config.Address,
+		ReadTimeout:  config.ReadTimeout,
+		WriteTimeout: config.WriteTimeout,
+		Handler:      router,
 	}
 }

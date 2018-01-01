@@ -17,7 +17,7 @@ func newEffectsController(service effect.Service) *effectsController {
 	}
 }
 
-func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
+func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
 	id := params.ByName("id")
 
 	effect, err := c.service.GetEffect(id)
@@ -29,7 +29,7 @@ func (c *effectsController) GetEffectByID(w http.ResponseWriter, r *http.Request
 	return response(http.StatusOK, effect.Descriptor())
 }
 
-func (c *effectsController) GetAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+func (c *effectsController) getAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	effects, err := c.service.GetEffects()
 
 	if err != nil {

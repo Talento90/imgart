@@ -1,7 +1,6 @@
 package log
 
 import (
-	"io"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -26,14 +25,6 @@ type Logger interface {
 
 	Panic(args ...interface{})
 	PanicWithFields(fields map[string]interface{}, args ...interface{})
-}
-
-// Configuration contains all configurations for logger
-type Configuration struct {
-	// Level of logging (panic, fatal, error, warn, info, default: debug)
-	Level string
-	// Ouput (default: os.Stdout)
-	Output io.Writer
 }
 
 // NewLogger creates a new logger

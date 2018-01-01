@@ -10,10 +10,10 @@ CLI_BINARY_NAME=gorpo-cli
 all: test build
 
 build-server: 
-	$(GOBUILD) -o $(SERVER_BINARY_NAME) -v ./cmd/gorpoapi
+	$(GOBUILD) -o $(SERVER_BINARY_NAME) -v ./cmd/httpserver
 
 build-cli: 
-	$(GOBUILD) -o $(CLI_BINARY_NAME) -v ./cmd/gorpocli
+	$(GOBUILD) -o $(CLI_BINARY_NAME) -v ./cmd/cli
 
 test: 
 	$(GOTEST) -v ./...

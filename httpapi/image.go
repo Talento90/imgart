@@ -23,7 +23,7 @@ func newImagesController(service image.Service) *imagesController {
 	}
 }
 
-func (c *imagesController) ImageHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	var filters []effect.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("effects")
