@@ -29,10 +29,11 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
 ## Server
 
-- Configurations
+- Docker
 - Tests
 - Panic Handler
 - Makefile
 - Context (implement context mechanism)
 - Graceful Shutdown
 - Metrics
+- HealthCheck
