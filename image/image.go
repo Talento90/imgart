@@ -12,17 +12,17 @@ type Service interface {
 	Process(imgSrc string, filters []effect.Filter) (image.Image, error)
 }
 
-type service struct {
-	downloader downloader.Downloader
-	repository effect.Repository
-}
-
 // NewService creates an ImageService
 func NewService(downloader downloader.Downloader, repo effect.Repository) Service {
 	return &service{
 		downloader: downloader,
 		repository: repo,
 	}
+}
+
+type service struct {
+	downloader downloader.Downloader
+	repository effect.Repository
 }
 
 func (i *service) Process(imgSrc string, filters []effect.Filter) (image.Image, error) {
