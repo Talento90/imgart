@@ -1,4 +1,4 @@
-# Golang alpine image
+# Build Stage
 FROM golang:alpine AS build
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
@@ -9,7 +9,7 @@ WORKDIR ${GOPATH}/src/github.com/talento90/gorpo
 COPY . .
 
 # Build our source to generate an executable file
-RUN go build -o gorpo-server ./cmd/httpserver
+RUN go build -o gorpoapi ./cmd/gorpoapi
 
 # Run Stage
 FROM alpine
@@ -19,10 +19,10 @@ LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 WORKDIR /app
 
 # Copy just the binary file from the build stage
-COPY --from=build go/src/github.com/talento90/gorpo/gorpo-server .
+COPY --from=build go/src/github.com/talento90/gorpo/gorpoapi .
 
 # Expose http port
 EXPOSE 4005
 
 # Run our executable application
-CMD [ "./gorpo-server" ]
+CMD [ "./gorpoapi" ]

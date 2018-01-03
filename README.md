@@ -30,6 +30,8 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 ## Server
 
 - Docker
+- Redis
+- Effects Hash (effects order can have a different order but the result is the same...)
 - Tests
 - Panic Handler
 - Makefile

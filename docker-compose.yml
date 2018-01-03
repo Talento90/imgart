@@ -1,0 +1,22 @@
+version: '2.1'
+services:
+  gorpo-api:
+    depends_on:
+      - "redis-db"
+    build: .
+    ports:
+      - "4005:4005"
+    environment:
+      - GO_ENV=dev
+      - REDIS_SERVICE_NAME=redis-db
+    network_mode: bridge
+
+  redis-db:
+    image: redis:4-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis.conf:/config/redis.conf
+    command: redis-server /config/redis.conf
+    restart: always
+    network_mode: bridge
