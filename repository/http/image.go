@@ -1,9 +1,11 @@
-package downloader
+package http
 
 import (
 	"fmt"
 	"image"
 	"net/http"
+
+	"github.com/talento90/gorpo/gorpo"
 
 	"github.com/talento90/gorpo/errors"
 )
@@ -12,14 +14,14 @@ type httpdownloader struct {
 	client *http.Client
 }
 
-// NewHTTPDownloader creates a Downloader that get an image over the HTTP protocol.
-func NewHTTPDownloader() Downloader {
+// NewImageRepository creates a Downloader that get an image over the HTTP protocol.
+func NewImageRepository() gorpo.ImageRepository {
 	return &httpdownloader{
 		client: http.DefaultClient,
 	}
 }
 
-func (d *httpdownloader) DownloadImage(path string) (image.Image, string, error) {
+func (d *httpdownloader) Get(path string) (image.Image, string, error) {
 	response, err := d.client.Get(path)
 
 	if err != nil {

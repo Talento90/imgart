@@ -27,17 +27,14 @@ type Parameters map[string]Parameter
 
 // Effect represents an image transformation (ex: rotate, resize, overlay...)
 type Effect interface {
-	// Descriptor returns the detailed description of the effect
-	Descriptor() Descriptor
+	ID() string
+
+	Description() string
+
+	Parameters() Parameters
+
 	// Transform applies the specific transformation to the given image
 	Transform(img image.Image, params map[string]interface{}) (image.Image, error)
-}
-
-// Descriptor struct has a detailed description about the effect
-type Descriptor struct {
-	ID          string     `json:"id"`
-	Description string     `json:"description"`
-	Parameters  Parameters `json:"parameters"`
 }
 
 // EffectRepository to store effects
@@ -52,23 +49,4 @@ type EffectService interface {
 	GetEffects() ([]Effect, error)
 	// GetEffect returns an effect by the given id
 	GetEffect(id string) (Effect, error)
-}
-
-// NewEffectService creates effect service
-func NewEffectService(repository EffectRepository) EffectService {
-	return &effectService{
-		repository: repository,
-	}
-}
-
-type effectService struct {
-	repository EffectRepository
-}
-
-func (es *effectService) GetEffects() ([]Effect, error) {
-	return es.repository.GetEffects()
-}
-
-func (es *effectService) GetEffect(id string) (Effect, error) {
-	return es.repository.GetEffect(id)
 }

@@ -1,21 +1,23 @@
-package downloader
+package fs
 
 import (
 	"fmt"
 	"image"
 	"os"
 
+	"github.com/talento90/gorpo/gorpo"
+
 	"github.com/talento90/gorpo/errors"
 )
 
 type fsdownloader struct{}
 
-// NewFSDownloader creates a Downloader that get an image over the File System.
-func NewFSDownloader() Downloader {
+// NewImageRepository creates a Downloader that get an image over the File System.
+func NewImageRepository() gorpo.ImageRepository {
 	return &fsdownloader{}
 }
 
-func (d *fsdownloader) DownloadImage(path string) (image.Image, string, error) {
+func (d *fsdownloader) Get(path string) (image.Image, string, error) {
 	file, err := os.Open(path)
 
 	if err == os.ErrNotExist {

@@ -3,37 +3,31 @@ package image
 import (
 	"image"
 
-	"github.com/talento90/gorpo/downloader"
-	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/gorpo"
 )
 
-// Service interface has the logic for processing images by the given a list of filters
-type Service interface {
-	Process(imgSrc string, filters []effect.Filter) (image.Image, error)
-}
-
 // NewService creates an ImageService
-func NewService(downloader downloader.Downloader, repo effect.Repository) Service {
+func NewService(imageRepo gorpo.ImageRepository, effectRepo gorpo.EffectRepository) gorpo.ImageService {
 	return &service{
-		downloader: downloader,
-		repository: repo,
+		imageRepo:  imageRepo,
+		effectRepo: effectRepo,
 	}
 }
 
 type service struct {
-	downloader downloader.Downloader
-	repository effect.Repository
+	imageRepo  gorpo.ImageRepository
+	effectRepo gorpo.EffectRepository
 }
 
-func (i *service) Process(imgSrc string, filters []effect.Filter) (image.Image, error) {
-	img, _, err := i.downloader.DownloadImage(imgSrc)
+func (i *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
+	img, _, err := i.imageRepo.Get(imgSrc)
 
 	if err != nil {
 		return nil, err
 	}
 
 	for _, filter := range filters {
-		effect, err := i.repository.GetEffect(filter.ID)
+		effect, err := i.effectRepo.GetEffect(filter.ID)
 
 		if err != nil {
 			return nil, err

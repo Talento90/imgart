@@ -3,19 +3,19 @@ package memory
 import (
 	"fmt"
 
-	"github.com/talento90/gorpo/downloader"
 	"github.com/talento90/gorpo/effect"
 	"github.com/talento90/gorpo/errors"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type effectRepository struct {
-	effects []effect.Effect
+	effects []gorpo.Effect
 }
 
 // NewEffectRepository creates a memory repository for Effect entity
-func NewEffectRepository(downloader downloader.Downloader) effect.Repository {
+func NewEffectRepository(downloader gorpo.ImageRepository) gorpo.EffectRepository {
 	return &effectRepository{
-		effects: []effect.Effect{
+		effects: []gorpo.Effect{
 			effect.NewRotate(),
 			effect.NewResize(),
 			effect.NewOverlay(downloader),
@@ -28,11 +28,11 @@ func NewEffectRepository(downloader downloader.Downloader) effect.Repository {
 	}
 }
 
-func (r *effectRepository) GetEffects() ([]effect.Effect, error) {
+func (r *effectRepository) GetEffects() ([]gorpo.Effect, error) {
 	return r.effects, nil
 }
 
-func (r *effectRepository) GetEffect(id string) (effect.Effect, error) {
+func (r *effectRepository) GetEffect(id string) (gorpo.Effect, error) {
 	for _, effect := range r.effects {
 		if effect.Descriptor().ID == id {
 			return effect, nil
