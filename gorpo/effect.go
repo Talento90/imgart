@@ -4,14 +4,6 @@ import (
 	"image"
 )
 
-// Filter represents an effect with all parameters
-type Filter struct {
-	// ID of the effect
-	ID string `json:"id"`
-	// Parameters to apply
-	Parameters map[string]interface{} `json:"parameters"`
-}
-
 // Parameter contains all properties of a single effect parameter
 type Parameter struct {
 	Description string      `json:"description"`

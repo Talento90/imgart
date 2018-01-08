@@ -4,32 +4,33 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type resize struct {
-	descriptor Descriptor
+	effect
 }
 
 // NewResize creates an Effect that resizes an image
-func NewResize() Effect {
+func NewResize() gorpo.Effect {
 	return &resize{
-		descriptor: Descriptor{
-			ID:          "resize",
-			Description: "Resize - resizes an image",
-			Parameters: Parameters{
-				"width": Parameter{
+		effect: effect{
+			id:          "resize",
+			description: "Resize - resizes an image",
+			parameters: gorpo.Parameters{
+				"width": gorpo.Parameter{
 					Description: "Width in px",
 					Required:    true,
 					Example:     500,
 					Type:        "integer",
 				},
-				"height": Parameter{
+				"height": gorpo.Parameter{
 					Description: "Height in px",
 					Required:    true,
 					Example:     350,
 					Type:        "integer",
 				},
-				"filter": Parameter{
+				"filter": gorpo.Parameter{
 					Description: "Resample filter",
 					Required:    false,
 					Example:     "linear",
@@ -40,10 +41,6 @@ func NewResize() Effect {
 			},
 		},
 	}
-}
-
-func (r *resize) Descriptor() Descriptor {
-	return r.descriptor
 }
 
 func (r *resize) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {

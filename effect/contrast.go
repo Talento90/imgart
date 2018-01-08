@@ -4,20 +4,21 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type contrast struct {
-	descriptor Descriptor
+	effect
 }
 
 // NewContrast creates an Effect changes the image contrast
-func NewContrast() Effect {
+func NewContrast() gorpo.Effect {
 	return &contrast{
-		descriptor: Descriptor{
-			ID:          "contrast",
-			Description: "Contrast - Change the image contrast",
-			Parameters: Parameters{
-				"percentage": Parameter{
+		effect: effect{
+			id:          "contrast",
+			description: "Contrast - Change the image contrast",
+			parameters: gorpo.Parameters{
+				"percentage": gorpo.Parameter{
 					Description: "Percentage of the contrast.",
 					Required:    true,
 					Example:     10,
@@ -26,10 +27,6 @@ func NewContrast() Effect {
 			},
 		},
 	}
-}
-
-func (r *contrast) Descriptor() Descriptor {
-	return r.descriptor
 }
 
 func (r *contrast) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {

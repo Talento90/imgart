@@ -12,13 +12,13 @@ type effectRepository struct {
 	effects []gorpo.Effect
 }
 
-// NewEffectRepository creates a memory repository for Effect entity
-func NewEffectRepository(downloader gorpo.ImageRepository) gorpo.EffectRepository {
+// NewImageRepository creates a memory repository for Effect entity
+func NewImageRepository(imgRepo gorpo.ImageRepository) gorpo.EffectRepository {
 	return &effectRepository{
 		effects: []gorpo.Effect{
 			effect.NewRotate(),
 			effect.NewResize(),
-			effect.NewOverlay(downloader),
+			effect.NewOverlay(imgRepo),
 			effect.NewBlur(),
 			effect.NewBrightness(),
 			effect.NewGamma(),
@@ -34,7 +34,7 @@ func (r *effectRepository) GetEffects() ([]gorpo.Effect, error) {
 
 func (r *effectRepository) GetEffect(id string) (gorpo.Effect, error) {
 	for _, effect := range r.effects {
-		if effect.Descriptor().ID == id {
+		if effect.ID() == id {
 			return effect, nil
 		}
 	}

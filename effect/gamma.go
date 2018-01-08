@@ -4,20 +4,21 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type gamma struct {
-	descriptor Descriptor
+	effect
 }
 
 // NewGamma creates an Effect changes the image gamma
-func NewGamma() Effect {
+func NewGamma() gorpo.Effect {
 	return &gamma{
-		descriptor: Descriptor{
-			ID:          "gamma",
-			Description: "Gamma - Change the image gamma",
-			Parameters: Parameters{
-				"gamma": Parameter{
+		effect: effect{
+			id:          "gamma",
+			description: "Gamma - Change the image gamma",
+			parameters: gorpo.Parameters{
+				"gamma": gorpo.Parameter{
 					Description: "Percentage of the gamma correction.",
 					Required:    true,
 					Example:     0.75,
@@ -26,10 +27,6 @@ func NewGamma() Effect {
 			},
 		},
 	}
-}
-
-func (r *gamma) Descriptor() Descriptor {
-	return r.descriptor
 }
 
 func (r *gamma) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {

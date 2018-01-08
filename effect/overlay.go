@@ -4,35 +4,35 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/downloader"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type overlay struct {
-	downloader downloader.Downloader
-	descriptor Descriptor
+	imgRepository gorpo.ImageRepository
+	effect
 }
 
 // NewOverlay creates an Effect that overlay an image with other image
-func NewOverlay(downloader downloader.Downloader) Effect {
+func NewOverlay(imgRepository gorpo.ImageRepository) gorpo.Effect {
 	return &overlay{
-		downloader: downloader,
-		descriptor: Descriptor{
-			ID:          "overlay",
-			Description: "Overlay - Overlay image",
-			Parameters: Parameters{
-				"position": Parameter{
+		imgRepository: imgRepository,
+		effect: effect{
+			id:          "overlay",
+			description: "Overlay - Overlay image",
+			parameters: gorpo.Parameters{
+				"position": gorpo.Parameter{
 					Description: "Position for the overlay image",
 					Required:    true,
 					Example:     "[1,2]",
 					Type:        "array[int]",
 				},
-				"url": Parameter{
+				"url": gorpo.Parameter{
 					Description: "Url for overlay image",
 					Required:    true,
 					Example:     "http://image.png",
 					Type:        "string",
 				},
-				"opacity": Parameter{
+				"opacity": gorpo.Parameter{
 					Description: "Opacity for overlay image",
 					Required:    false,
 					Example:     90,
@@ -42,10 +42,6 @@ func NewOverlay(downloader downloader.Downloader) Effect {
 			},
 		},
 	}
-}
-
-func (o *overlay) Descriptor() Descriptor {
-	return o.descriptor
 }
 
 func (o *overlay) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
@@ -67,7 +63,7 @@ func (o *overlay) Transform(img image.Image, params map[string]interface{}) (ima
 		opacity = 100
 	}
 
-	overlayImg, _, err := o.downloader.DownloadImage(url.String())
+	overlayImg, _, err := o.imgRepository.Get(url.String())
 
 	if err != nil {
 		return nil, err

@@ -4,18 +4,16 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/downloader"
-	"github.com/talento90/gorpo/effect"
-	"github.com/talento90/gorpo/image"
+	"github.com/talento90/gorpo/gorpo"
 	"github.com/talento90/gorpo/log"
 )
 
 // ServerDependencies contains all dependencies
 type ServerDependencies struct {
 	Logger        log.Logger
-	Downloader    downloader.Downloader
-	EffectService effect.Service
-	ImgService    image.Service
+	ImgRepository gorpo.ImageRepository
+	EffectService gorpo.EffectService
+	ImgService    gorpo.ImageService
 }
 
 // NewServer creates an http server

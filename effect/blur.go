@@ -4,20 +4,21 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type blur struct {
-	descriptor Descriptor
+	effect
 }
 
 // NewBlur creates an Effect that blurrs an image
-func NewBlur() Effect {
+func NewBlur() gorpo.Effect {
 	return &blur{
-		descriptor: Descriptor{
-			ID:          "blur",
-			Description: "Blur - Gaussian Blur",
-			Parameters: Parameters{
-				"sigma": Parameter{
+		effect: effect{
+			id:          "blur",
+			description: "Blur - Gaussian Blur",
+			parameters: gorpo.Parameters{
+				"sigma": gorpo.Parameter{
 					Description: "How much the image will be blurred.",
 					Required:    true,
 					Example:     0.5,
@@ -26,10 +27,6 @@ func NewBlur() Effect {
 			},
 		},
 	}
-}
-
-func (r *blur) Descriptor() Descriptor {
-	return r.descriptor
 }
 
 func (r *blur) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {

@@ -15,7 +15,7 @@ type crop struct {
 func NewCrop() gorpo.Effect {
 	return &crop{
 		effect: effect{
-			iD:          "crop",
+			id:          "crop",
 			description: "Crop - Crops image",
 			parameters: gorpo.Parameters{
 				"rectangle": gorpo.Parameter{

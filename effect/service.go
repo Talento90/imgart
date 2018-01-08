@@ -10,7 +10,7 @@ func NewService(repository gorpo.EffectRepository) gorpo.EffectService {
 }
 
 type service struct {
-	repository Repository
+	repository gorpo.EffectRepository
 }
 
 func (es *service) GetEffects() ([]gorpo.Effect, error) {

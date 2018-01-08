@@ -2,7 +2,6 @@ package effect
 
 import "github.com/talento90/gorpo/gorpo"
 
-// Descriptor struct has a detailed description about the effect
 type effect struct {
 	id          string
 	description string

@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/effect"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type effectsController struct {
-	service effect.Service
+	service gorpo.EffectService
 }
 
-func newEffectsController(service effect.Service) *effectsController {
+func newEffectsController(service gorpo.EffectService) *effectsController {
 	return &effectsController{
 		service: service,
 	}
@@ -26,7 +26,7 @@ func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	return response(http.StatusOK, effect.Descriptor())
+	return response(http.StatusOK, newEffectModel(effect))
 }
 
 func (c *effectsController) getAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
@@ -36,10 +36,10 @@ func (c *effectsController) getAllEffects(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	var effectDesc = make([]effect.Descriptor, 0, len(effects))
+	var effectDesc = make([]effectModel, 0, len(effects))
 
 	for _, e := range effects {
-		effectDesc = append(effectDesc, e.Descriptor())
+		effectDesc = append(effectDesc, newEffectModel(e))
 	}
 
 	return response(http.StatusOK, effectDesc)

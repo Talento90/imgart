@@ -5,26 +5,27 @@ import (
 	"image/color"
 
 	"github.com/disintegration/imaging"
+	"github.com/talento90/gorpo/gorpo"
 )
 
 type rotate struct {
-	descriptor Descriptor
+	effect
 }
 
 // NewRotate creates an Effect that rotates an image
-func NewRotate() Effect {
+func NewRotate() gorpo.Effect {
 	return &rotate{
-		descriptor: Descriptor{
-			ID:          "rotate",
-			Description: "Rotate - rotates an image",
-			Parameters: Parameters{
-				"angle": Parameter{
+		effect: effect{
+			id:          "rotate",
+			description: "Rotate - rotates an image",
+			parameters: gorpo.Parameters{
+				"angle": gorpo.Parameter{
 					Description: "Rotation angle in degreesº",
 					Required:    true,
 					Example:     -90,
 					Type:        "integer",
 				},
-				"bgcolor": Parameter{
+				"bgcolor": gorpo.Parameter{
 					Description: "Color of uncovered zones",
 					Required:    false,
 					Example:     "black",
@@ -35,10 +36,6 @@ func NewRotate() Effect {
 			},
 		},
 	}
-}
-
-func (r *rotate) Descriptor() Descriptor {
-	return r.descriptor
 }
 
 func (r *rotate) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
