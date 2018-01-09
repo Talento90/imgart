@@ -19,10 +19,13 @@ type Parameters map[string]Parameter
 
 // Effect represents an image transformation (ex: rotate, resize, overlay...)
 type Effect interface {
+	// ID that identifies the effect
 	ID() string
 
+	// Description of the effect
 	Description() string
 
+	// Parameters required for the transform
 	Parameters() Parameters
 
 	// Transform applies the specific transformation to the given image
@@ -31,12 +34,6 @@ type Effect interface {
 
 // EffectRepository to store effects
 type EffectRepository interface {
-	GetEffects() ([]Effect, error)
-	GetEffect(id string) (Effect, error)
-}
-
-// EffectService interface with effect operations
-type EffectService interface {
 	// GetEffects return all available effects
 	GetEffects() ([]Effect, error)
 	// GetEffect returns an effect by the given id

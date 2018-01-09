@@ -19,15 +19,15 @@ type service struct {
 	effectRepo gorpo.EffectRepository
 }
 
-func (i *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
-	img, _, err := i.imageRepo.Get(imgSrc)
+func (s *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
+	img, _, err := s.imageRepo.Get(imgSrc)
 
 	if err != nil {
 		return nil, err
 	}
 
 	for _, filter := range filters {
-		effect, err := i.effectRepo.GetEffect(filter.ID)
+		effect, err := s.effectRepo.GetEffect(filter.ID)
 
 		if err != nil {
 			return nil, err
@@ -41,4 +41,12 @@ func (i *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, e
 	}
 
 	return img, nil
+}
+
+func (s *service) Effects() ([]gorpo.Effect, error) {
+	return s.effectRepo.GetEffects()
+}
+
+func (s *service) Effect(id string) (gorpo.Effect, error) {
+	return s.effectRepo.GetEffect(id)
 }

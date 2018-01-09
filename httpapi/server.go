@@ -10,10 +10,8 @@ import (
 
 // ServerDependencies contains all dependencies
 type ServerDependencies struct {
-	Logger        log.Logger
-	ImgRepository gorpo.ImageRepository
-	EffectService gorpo.EffectService
-	ImgService    gorpo.ImageService
+	Logger     log.Logger
+	ImgService gorpo.ImageService
 }
 
 // NewServer creates an http server
@@ -21,7 +19,7 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(dep.ImgService)
-	effectCtrl := newEffectsController(dep.EffectService)
+	effectCtrl := newEffectsController(dep.ImgService)
 
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 

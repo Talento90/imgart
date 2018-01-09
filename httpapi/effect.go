@@ -8,10 +8,10 @@ import (
 )
 
 type effectsController struct {
-	service gorpo.EffectService
+	service gorpo.ImageService
 }
 
-func newEffectsController(service gorpo.EffectService) *effectsController {
+func newEffectsController(service gorpo.ImageService) *effectsController {
 	return &effectsController{
 		service: service,
 	}
@@ -20,7 +20,7 @@ func newEffectsController(service gorpo.EffectService) *effectsController {
 func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
 	id := params.ByName("id")
 
-	effect, err := c.service.GetEffect(id)
+	effect, err := c.service.Effect(id)
 
 	if err != nil {
 		return errResponse(err)
@@ -30,7 +30,7 @@ func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request
 }
 
 func (c *effectsController) getAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
-	effects, err := c.service.GetEffects()
+	effects, err := c.service.Effects()
 
 	if err != nil {
 		return errResponse(err)

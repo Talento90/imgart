@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/talento90/gorpo/config"
-	"github.com/talento90/gorpo/effect"
 	"github.com/talento90/gorpo/gorpo"
 	"github.com/talento90/gorpo/httpapi"
 	"github.com/talento90/gorpo/image"
@@ -26,21 +25,17 @@ func main() {
 		panic(err)
 	}
 
-	imgRepository := httprepository.NewImageRepository()
-	effectRepo := memory.NewImageRepository(imgRepository)
-	effectService := effect.NewService(effectRepo)
-
 	var imgService gorpo.ImageService
 	{
+		imgRepository := httprepository.NewImageRepository()
+		effectRepo := memory.NewImageRepository(imgRepository)
 		imgService = image.NewService(imgRepository, effectRepo)
 		imgService = image.NewLogService(logger, imgService)
 	}
 
 	serverDeps := &httpapi.ServerDependencies{
-		Logger:        logger,
-		ImgRepository: imgRepository,
-		EffectService: effectService,
-		ImgService:    imgService,
+		Logger:     logger,
+		ImgService: imgService,
 	}
 
 	serverConfig, err := config.GetServerConfiguration()
