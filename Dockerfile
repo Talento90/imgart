@@ -19,7 +19,7 @@ LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 WORKDIR /app
 
 # Copy just the binary file from the build stage
-COPY --from=build go/src/github.com/talento90/gorpo/gorpoapi .
+COPY --from=build go/src/github.com/talento90/gorpo/cmd/gorpoapi .
 
 # Expose http port
 EXPOSE 4005
