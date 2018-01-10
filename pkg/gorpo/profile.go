@@ -8,7 +8,7 @@ type Profile struct {
 
 // ProfileRepository stores profiles
 type ProfileRepository interface {
-	GetAll() ([]Profile, string, error)
+	GetAll() ([]Profile, error)
 	Get(id string) (Profile, error)
 	Create(profile Profile) (Profile, error)
 	Update(profile Profile) error
