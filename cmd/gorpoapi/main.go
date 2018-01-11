@@ -5,8 +5,8 @@ import (
 
 	"github.com/talento90/gorpo/pkg/config"
 	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/gorpo/image"
 	"github.com/talento90/gorpo/pkg/httpapi"
+	"github.com/talento90/gorpo/pkg/image"
 	"github.com/talento90/gorpo/pkg/log"
 	httprepository "github.com/talento90/gorpo/pkg/repository/http"
 	"github.com/talento90/gorpo/pkg/repository/memory"

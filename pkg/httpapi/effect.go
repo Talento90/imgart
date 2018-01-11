@@ -17,7 +17,7 @@ func newEffectsController(service gorpo.ImageService) *effectsController {
 	}
 }
 
-func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
+func (c *effectsController) get(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
 	id := params.ByName("id")
 
 	effect, err := c.service.Effect(id)
@@ -29,7 +29,7 @@ func (c *effectsController) getEffectByID(w http.ResponseWriter, r *http.Request
 	return response(http.StatusOK, newEffectModel(effect))
 }
 
-func (c *effectsController) getAllEffects(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+func (c *effectsController) getAll(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	effects, err := c.service.Effects()
 
 	if err != nil {

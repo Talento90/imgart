@@ -1,6 +1,9 @@
 package mongodb
 
 import (
+	"time"
+
+	"github.com/talento90/gorpo/pkg/errors"
 	"github.com/talento90/gorpo/pkg/gorpo"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -8,6 +11,14 @@ import (
 
 type profileRepository struct {
 	collection *mgo.Collection
+}
+
+func handleError(err error) error {
+	if err == mgo.ErrNotFound {
+		return errors.ENotExists("Profile does not exists", err)
+	}
+
+	return errors.EInternal("Error occured", err)
 }
 
 // NewProfile returns a profile mongo repository
@@ -37,23 +48,23 @@ func (r *profileRepository) Get(id string) (*gorpo.Profile, error) {
 	return profile, nil
 }
 
-func (r *profileRepository) Create(profile gorpo.Profile) (*gorpo.Profile, error) {
+func (r *profileRepository) Create(profile *gorpo.Profile) error {
+	profile.Created = time.Now().UTC()
+	profile.Updated = time.Now().UTC()
+
 	err := r.collection.Insert(profile)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return &profile, nil
+	return handleError(err)
 }
 
-func (r *profileRepository) Update(profile Profile) error {
+func (r *profileRepository) Update(profile *gorpo.Profile) error {
+	err := r.collection.UpdateId(profile.ID, profile)
 
-	r.collection.Update(mgo.M)
+	return handleError(err)
 }
 
 func (r *profileRepository) Delete(id string) error {
 	err := r.collection.RemoveId(id)
 
-	return err
+	return handleError(err)
 }

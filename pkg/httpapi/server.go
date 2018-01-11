@@ -10,8 +10,9 @@ import (
 
 // ServerDependencies contains all dependencies
 type ServerDependencies struct {
-	Logger     log.Logger
-	ImgService gorpo.ImageService
+	Logger         log.Logger
+	ImgService     gorpo.ImageService
+	ProfileService gorpo.ProfileService
 }
 
 // NewServer creates an http server
@@ -20,11 +21,15 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 
 	imgCtrl := newImagesController(dep.ImgService)
 	effectCtrl := newEffectsController(dep.ImgService)
+	profileCtrl := newProfilesController(dep.ProfileService)
 
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
-	router.GET("/api/v1/effects/:id", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getEffectByID)))
-	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getAllEffects)))
+	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getAll)))
+	router.GET("/api/v1/effects/:id", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.get)))
+
+	router.GET("/api/v1/profiles", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.getAll)))
+	router.GET("/api/v1/profiles/:id", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.get)))
 
 	return http.Server{
 		Addr:         config.Address,
