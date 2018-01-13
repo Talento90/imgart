@@ -7,9 +7,9 @@ import (
 // Filter represents an effect with all parameters
 type Filter struct {
 	// ID of the effect
-	ID string `json:"id"`
+	ID string `json:"id" bson:"filters"`
 	// Parameters to apply
-	Parameters map[string]interface{} `json:"parameters"`
+	Parameters map[string]interface{} `json:"parameters" bson:"parameters"`
 }
 
 // ImageService interface has the logic for processing images by the given a list of filters

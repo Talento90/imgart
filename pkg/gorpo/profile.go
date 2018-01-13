@@ -6,10 +6,10 @@ import (
 
 // Profile that represents a set of effects
 type Profile struct {
-	ID      string
-	Created time.Time
-	Updated time.Time
-	Effects []Effect
+	ID      string    `json:"id" bson:"_id"`
+	Created time.Time `json:"created" bson:"created"`
+	Updated time.Time `json:"updated" bson:"updated"`
+	Filters []Filter  `json:"filters" bson:"filters"`
 }
 
 // ProfileRepository stores profiles
