@@ -31,3 +31,11 @@
 [[constraint]]
   name = "github.com/disintegration/imaging"
   version = "1.2.4"
+
+[[constraint]]
+  branch = "v2"
+  name = "gopkg.in/mgo.v2"
+
+[[constraint]]
+  name = "github.com/go-redis/redis"
+  version = "6.8.0"

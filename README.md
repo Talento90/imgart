@@ -17,19 +17,27 @@ Service to modify images.
 
 https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
-- gorpo
 - cmd
-- config
-- effects
-- repository
-- log
-- httpapi
-- downloader
-- errors
+- pkg
+    - gorpo
+        | image
+        | effect
+        | profile
+        - image
+            - service
+            - logging
+        - profile
+            - service
+            - logging
+    - config
+    - effect
+    - repository
+    - log
+    - httpapi
+    - errors
 
 ## Server
 
-- Docker
 - Redis
 - Effects Hash (effects order can have a different order but the result is the same...)
 - Tests
