@@ -8,6 +8,12 @@
   version = "v1.2.4"
 
 [[projects]]
+  name = "github.com/go-redis/redis"
+  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto"]
+  revision = "73b70592cdaa9e6abdfcfbf97b4a90d80728c836"
+  version = "v6.8.0"
+
+[[projects]]
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
   revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
@@ -46,6 +52,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f98391abd45171b02092dad9df43964a4beb78b9a7f30d804f955ebe7a041ac9"
+  inputs-digest = "b8ebabc06720e0364f285a840dfb2662d5c8d55ad0f1b7a53101fcb10836440d"
   solver-name = "gps-cdcl"
   solver-version = 1

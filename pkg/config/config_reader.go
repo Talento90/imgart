@@ -7,6 +7,7 @@ import (
 	"github.com/talento90/gorpo/pkg/httpapi"
 	"github.com/talento90/gorpo/pkg/log"
 	"github.com/talento90/gorpo/pkg/repository/mongodb"
+	"github.com/talento90/gorpo/pkg/repository/redis"
 )
 
 // GetLogConfiguration get logger configurations
@@ -34,8 +35,16 @@ func GetServerConfiguration() (httpapi.Configuration, error) {
 func GetMongoConfiguration() (mongodb.Configuration, error) {
 	config := mongodb.Configuration{
 		Database: "gorpo",
-		MongoURL: "localhost:27017",
-		//MongoURL: os.Getenv("MONGO_SERVICE_NAME"),
+		MongoURL: os.Getenv("MONGO_SERVICE_NAME"),
+	}
+
+	return config, config.Validate()
+}
+
+// GetRedisConfiguration returns the redis configuration
+func GetRedisConfiguration() (redis.Configuration, error) {
+	config := redis.Configuration{
+		Address: os.Getenv("REDIS_SERVICE_NAME"),
 	}
 
 	return config, config.Validate()

@@ -13,7 +13,8 @@ import (
 )
 
 type imagesController struct {
-	service gorpo.ImageService
+	service        gorpo.ImageService
+	profileService gorpo.ProfileService
 }
 
 func newImagesController(service gorpo.ImageService) *imagesController {
@@ -25,7 +26,8 @@ func newImagesController(service gorpo.ImageService) *imagesController {
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	var filters []gorpo.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
-	filtersJSON := r.URL.Query().Get("effects")
+	filtersJSON := r.URL.Query().Get("filters")
+	profileID := r.URL.Query().Get("profile")
 
 	if imgSrc == "" {
 		return errResponse(errors.EMalformed("Missing imgSrc query parameter", nil))
@@ -36,6 +38,14 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 
 		if err != nil {
 			return errResponse(errors.EMalformed("effects query parameter is malformed", err))
+		}
+	}
+
+	if profileID != "" {
+		profile, err := c.profileService.Get(profileID)
+
+		if err == nil {
+			filters = append(profile.Filters, filters...)
 		}
 	}
 
