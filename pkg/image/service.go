@@ -19,28 +19,28 @@ type service struct {
 	effectRepo gorpo.EffectRepository
 }
 
-func (s *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
-	img, _, err := s.imageRepo.Get(imgSrc)
+func (s *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, string, error) {
+	img, imgType, err := s.imageRepo.Get(imgSrc)
 
 	if err != nil {
-		return nil, err
+		return nil, imgType, err
 	}
 
 	for _, filter := range filters {
 		effect, err := s.effectRepo.GetEffect(filter.ID)
 
 		if err != nil {
-			return nil, err
+			return nil, imgType, err
 		}
 
 		img, err = effect.Transform(img, filter.Parameters)
 
 		if err != nil {
-			return nil, err
+			return nil, imgType, err
 		}
 	}
 
-	return img, nil
+	return img, imgType, nil
 }
 
 func (s *service) Effects() ([]gorpo.Effect, error) {

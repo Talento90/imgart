@@ -1,10 +1,8 @@
 package httpapi
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"image/png"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -57,10 +55,13 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 
 	w.Header().Set("Content-Type", fmt.Sprintf("image/jpg"))
 
-	buf := new(bytes.Buffer)
-	png.Encode(buf, img)
+	bytes, err := gorpo.Encode("", img)
 
-	w.Write(buf.Bytes())
+	if err == image.ErrFomat {
+
+	}
+
+	w.Write(bytes)
 
 	return response(http.StatusOK, nil)
 }

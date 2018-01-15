@@ -1,7 +1,12 @@
 package gorpo
 
 import (
+	"bytes"
 	"image"
+	"image/jpeg"
+	"image/png"
+
+	"golang.org/x/image/bmp"
 )
 
 // Filter represents an effect with all parameters
@@ -19,11 +24,29 @@ type ImageService interface {
 	// Effect returns a effect by the given ID
 	Effect(id string) (Effect, error)
 	// Process an image with a set of filters
-	Process(imgSrc string, filters []Filter) (image.Image, error)
+	Process(imgSrc string, filters []Filter) (image.Image, string, error)
 }
 
 // ImageRepository interface layer to get images
 type ImageRepository interface {
 	// Get an image by the given path
 	Get(path string) (image.Image, string, error)
+}
+
+func Encode(imgFormat string, img image.Image) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	var err error
+
+	switch imgFormat {
+	case "png":
+		err = png.Encode(buf, img)
+	case "jpeg":
+		err = jpeg.Encode(buf, img, &jpeg.Options{Quality: 100})
+	case "bmp":
+		err = bmp.Encode(buf, img)
+	default:
+		return nil, image.ErrFormat
+	}
+
+	return buf.Bytes(), err
 }

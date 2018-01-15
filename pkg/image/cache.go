@@ -13,7 +13,7 @@ type cacheService struct {
 	service gorpo.ImageService
 }
 
-// NewLogService creates a cache wrapper around ImageService
+// NewCacheService creates a cache wrapper around ImageService
 func NewCacheService(cache cache.ImageCache, service gorpo.ImageService) gorpo.ImageService {
 	return &cacheService{
 		cache:   cache,
@@ -22,6 +22,11 @@ func NewCacheService(cache cache.ImageCache, service gorpo.ImageService) gorpo.I
 }
 
 func (cs *cacheService) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
+	img, err := cs.cache.Get(imgSrc, filters)
+
+	if err != nil {
+		return img, nil
+	}
 
 	img, err := cs.service.Process(imgSrc, filters)
 
