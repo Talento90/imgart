@@ -1,7 +1,9 @@
 package cache
 
 import (
+	"bytes"
 	"crypto/md5"
+	"encoding/json"
 	"image"
 
 	"github.com/talento90/gorpo/pkg/gorpo"
@@ -24,45 +26,57 @@ type imageCache struct {
 }
 
 func generateHash(url string, filters []gorpo.Filter) (string, error) {
-	h := md5.New()
-	_, err := h.Write([]byte(url))
+	arrBytes := []byte{}
 
-	if err != nil {
-		return "", err
-	}
+	arrBytes = append(arrBytes, url...)
 
-	for _, v := range filters {
-		h.Write([]byte(v.ID))
+	for _, filter := range filters {
+		jsonBytes, err := json.Marshal(filter)
 
-		for _, p := range v.Parameters {
-			bytes, ok := p.([]byte)
-
-			if !ok {
-				return "", err
-			}
-
-			_, err := h.Write(bytes)
-
-			if err != nil {
-				return "", err
-			}
+		if err != nil {
+			return "", err
 		}
+
+		arrBytes = append(arrBytes, jsonBytes...)
 	}
 
-	//hex.EncodeToString(hasher.Sum(nil))
-	return string(h.Sum(nil)), nil
+	hash := md5.Sum(arrBytes)
+
+	return string(hash[:]), nil
 }
 
 func (c *imageCache) Get(url string, filters []gorpo.Filter) (image.Image, error) {
+	hash, err := generateHash(url, filters)
 
-	_, err := generateHash(url, filters)
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, err
+	imgBytes, err := c.cache.Get(hash)
+
+	if err != nil {
+		return nil, err
+	}
+
+	r := bytes.NewReader(imgBytes)
+
+	img, _, err := image.Decode(r)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return img, err
 }
 
 func (c *imageCache) Set(url string, filters []gorpo.Filter, value image.Image) error {
-
 	_, err := generateHash(url, filters)
+
+	if err != nil {
+		return err
+	}
+
+	//c.cache.Set(hash, value, time.Second)
 
 	return err
 }
