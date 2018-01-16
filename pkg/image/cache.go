@@ -21,24 +21,24 @@ func NewCacheService(cache cache.ImageCache, service gorpo.ImageService) gorpo.I
 	}
 }
 
-func (cs *cacheService) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
-	img, err := cs.cache.Get(imgSrc, filters)
+func (cs *cacheService) Process(imgSrc string, filters []gorpo.Filter) (image.Image, string, error) {
+	img, format, err := cs.cache.Get(imgSrc, filters)
 
-	if err != nil {
-		return img, nil
+	if err == nil {
+		return img, format, nil
 	}
 
-	img, err := cs.service.Process(imgSrc, filters)
+	img, format, err = cs.service.Process(imgSrc, filters)
 
 	if err != nil {
-		err := cs.cache.Set(imgSrc, filters, img)
+		err := cs.cache.Set(imgSrc, filters, format, img)
 
 		if err != nil {
-			return img, err
+			return img, format, err
 		}
 	}
 
-	return img, err
+	return img, format, err
 }
 
 func (cs *cacheService) Effects() ([]gorpo.Effect, error) {

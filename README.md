@@ -49,7 +49,10 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 - HealthCheck
 
 
+Errors:
 
+- duplicate profile ids
+- validate filter parameters
 
 ## Commands
 go list -f '{{ join .Imports "\n" }}' package_path

@@ -35,7 +35,7 @@ func GetServerConfiguration() (httpapi.Configuration, error) {
 func GetMongoConfiguration() (mongodb.Configuration, error) {
 	config := mongodb.Configuration{
 		Database: "gorpo",
-		MongoURL: os.Getenv("MONGO_SERVICE_NAME"),
+		MongoURL: getEnv("MONGO_SERVICE_NAME", "localhost:27017"),
 	}
 
 	return config, config.Validate()
@@ -44,8 +44,16 @@ func GetMongoConfiguration() (mongodb.Configuration, error) {
 // GetRedisConfiguration returns the redis configuration
 func GetRedisConfiguration() (redis.Configuration, error) {
 	config := redis.Configuration{
-		Address: os.Getenv("REDIS_SERVICE_NAME"),
+		Address: getEnv("REDIS_SERVICE_NAME", "localhost:6379"),
 	}
 
 	return config, config.Validate()
+}
+
+func getEnv(key string, defaultValue string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+
+	return defaultValue
 }

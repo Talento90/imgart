@@ -22,7 +22,7 @@ func NewLogService(logger log.Logger, service gorpo.ImageService) gorpo.ImageSer
 	}
 }
 
-func (ls *logService) Process(imgSrc string, filters []gorpo.Filter) (image.Image, error) {
+func (ls *logService) Process(imgSrc string, filters []gorpo.Filter) (image.Image, string, error) {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(log.Fields{"imgSrc": imgSrc, "time": time.Now().Sub(start)}, "ImageService:Process")
 	}(time.Now())

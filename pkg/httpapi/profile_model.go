@@ -20,7 +20,7 @@ func (m *createProfileModel) toProfile() (*gorpo.Profile, error) {
 	}
 
 	if len(m.Filters) == 0 {
-		return nil, errors.EValidation("effects are empty", nil)
+		return nil, errors.EValidation("filters are empty", nil)
 	}
 
 	return &gorpo.Profile{ID: m.ID, Filters: m.Filters}, nil
