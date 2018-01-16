@@ -47,6 +47,10 @@ func responseMiddleware(handler appHandler) appHandler {
 	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) appResponse {
 		response := handler(w, r, params)
 
+		if response.body == nil {
+			return response
+		}
+
 		contentType, bytes := serializeResponse(r, &response)
 
 		w.Header().Set("Content-Type", contentType)

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/json"
+	"fmt"
 	"image"
 	"time"
 
@@ -43,7 +44,7 @@ func generateHash(url string, filters []gorpo.Filter) (string, error) {
 
 	hash := md5.Sum(arrBytes)
 
-	return string(hash[:]), nil
+	return fmt.Sprintf("%x", hash), nil
 }
 
 func (c *imageCache) Get(url string, filters []gorpo.Filter) (image.Image, string, error) {
@@ -79,7 +80,7 @@ func (c *imageCache) Set(url string, filters []gorpo.Filter, format string, img 
 
 	bytes, err := gorpo.Encode(format, img)
 
-	c.cache.Set(hash, bytes, time.Second)
+	c.cache.Set(hash, bytes, time.Minute)
 
 	return err
 }

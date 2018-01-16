@@ -30,7 +30,7 @@ func (cs *cacheService) Process(imgSrc string, filters []gorpo.Filter) (image.Im
 
 	img, format, err = cs.service.Process(imgSrc, filters)
 
-	if err != nil {
+	if err == nil {
 		err := cs.cache.Set(imgSrc, filters, format, img)
 
 		if err != nil {

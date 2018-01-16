@@ -53,9 +53,9 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	bytes, err := gorpo.Encode(format, img)
-
 	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
+
+	bytes, err := gorpo.Encode(format, img)
 
 	w.Write(bytes)
 
