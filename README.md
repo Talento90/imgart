@@ -17,29 +17,8 @@ Service to modify images.
 
 https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
-- cmd
-- pkg
-    - gorpo
-        | image
-        | effect
-        | profile
-        - image
-            - service
-            - logging
-        - profile
-            - service
-            - logging
-    - config
-    - effect
-    - repository
-    - log
-    - httpapi
-    - errors
-
 ## Server
 
-- Redis
-- Effects Hash (effects order can have a different order but the result is the same...)
 - Tests
 - Panic Handler
 - Makefile
@@ -47,7 +26,8 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 - Graceful Shutdown
 - Metrics
 - HealthCheck
-
+- Swagger documentation
+- Documentation page
 
 Errors:
 

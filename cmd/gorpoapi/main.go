@@ -64,7 +64,7 @@ func main() {
 	{
 		imgRepository := httprepository.NewImageRepository()
 		effectRepo := memory.NewImageRepository(imgRepository)
-		imgCache := cache.NewImageCache(redisClient)
+		imgCache := cache.NewImage(redisClient)
 
 		imgService = image.NewService(imgRepository, effectRepo)
 		imgService = image.NewCacheService(imgCache, imgService)
