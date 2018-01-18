@@ -33,6 +33,7 @@ type ImageRepository interface {
 	Get(path string) (image.Image, string, error)
 }
 
+// Encode image by their format (png, jpeg, bmp)
 func Encode(imgFormat string, img image.Image) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	var err error

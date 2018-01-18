@@ -70,7 +70,7 @@ func EInternal(msg string, err error) error {
 	return New(Internal, msg, err)
 }
 
-// Is checks if an error is of a determined type
+// Is method checks if an error is of a specific type
 func Is(t Type, err error) bool {
 	e, ok := err.(*Error)
 

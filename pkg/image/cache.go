@@ -9,12 +9,12 @@ import (
 )
 
 type cacheService struct {
-	cache   cache.ImageCache
+	cache   cache.Image
 	service gorpo.ImageService
 }
 
 // NewCacheService creates a cache wrapper around ImageService
-func NewCacheService(cache cache.ImageCache, service gorpo.ImageService) gorpo.ImageService {
+func NewCacheService(cache cache.Image, service gorpo.ImageService) gorpo.ImageService {
 	return &cacheService{
 		cache:   cache,
 		service: service,

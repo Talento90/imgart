@@ -11,20 +11,21 @@ import (
 	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
-// ImageCache caches images by the given URL
-type ImageCache interface {
+// Image caches images by the given URL and filters
+type Image interface {
 	Get(url string, filters []gorpo.Filter) (image.Image, string, error)
 	Set(url string, filters []gorpo.Filter, format string, value image.Image) error
 }
 
-func NewImageCache(cache Cache) ImageCache {
+// NewImage creates a new image cache
+func NewImage(cache gorpo.Cache) Image {
 	return &imageCache{
 		cache: cache,
 	}
 }
 
 type imageCache struct {
-	cache Cache
+	cache gorpo.Cache
 }
 
 func generateHash(url string, filters []gorpo.Filter) (string, error) {
