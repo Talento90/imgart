@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-	"github.com/talento90/gorpo/pkg/cache"
 	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/gorpo/pkg/gorpo"
 )
 
 func handleError(err error) error {
@@ -24,7 +24,8 @@ type redisRepository struct {
 	client *redis.Client
 }
 
-func NewRedisRepository(client *redis.Client) cache.Cache {
+// NewRedisRepository creates a redis cache implamentation
+func NewRedisRepository(client *redis.Client) gorpo.Cache {
 	return &redisRepository{client: client}
 }
 

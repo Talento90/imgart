@@ -18,14 +18,14 @@ type Image interface {
 }
 
 // NewImage creates a new image cache
-func NewImage(cache Cache) Image {
+func NewImage(cache gorpo.Cache) Image {
 	return &imageCache{
 		cache: cache,
 	}
 }
 
 type imageCache struct {
-	cache Cache
+	cache gorpo.Cache
 }
 
 func generateHash(url string, filters []gorpo.Filter) (string, error) {

@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug in Docker",
+            "type": "go",
+            "request": "launch",
+            "mode": "remote",
+            "program": "${workspaceRoot}",
+            "env": {},
+            "args": [],
+            "remotePath": "/go/src/github.com/talento90/gorpo",
+            "port": 2345,
+            "host": "127.0.0.1",
+        },
+        {
             "name": "Launch",
             "type": "go",
             "request": "launch",

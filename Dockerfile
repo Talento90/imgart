@@ -1,6 +1,8 @@
-# Build Stage
-FROM golang:alpine AS build
+FROM golang
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
+
+# we need this to have access to bin (dlv)
+ENV PATH ${GOPATH}/bin:$PATH
 
 # Setting working directory
 WORKDIR ${GOPATH}/src/github.com/talento90/gorpo
@@ -8,21 +10,14 @@ WORKDIR ${GOPATH}/src/github.com/talento90/gorpo
 # Copy source code
 COPY . .
 
-# Build our source to generate an executable file
-RUN go build -o gorpoapi ./cmd/gorpoapi
+# Get delve debugger
+RUN go get github.com/derekparker/delve/cmd/dlv
 
-# Run Stage
-FROM alpine
-LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
+# Build our application
+RUN go build -o gorpoapi cmd/gorpoapi/main.go
 
-# Setting working directory for our applicationn
-WORKDIR /app
+# Expose server and debug port
+EXPOSE 4005 2345
 
-# Copy just the binary file from the build stage
-COPY --from=build go/src/github.com/talento90/gorpo/gorpoapi .
-
-# Expose http port
-EXPOSE 4005
-
-# Run our executable application
-CMD [ "./gorpoapi" ]
+# Execute our application
+CMD ["./gorpoapi"]
