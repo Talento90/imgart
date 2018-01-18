@@ -1,7 +1,7 @@
 FROM golang
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
-# we need this to have access to bin (dlv)
+# We need to add ${GOPATH}/bin to PATH to have access dlv
 ENV PATH ${GOPATH}/bin:$PATH
 
 # Setting working directory
