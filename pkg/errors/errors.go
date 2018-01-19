@@ -1,14 +1,25 @@
 package errors
 
-// Error is an application error
+// Error applicational
 type Error struct {
-	ErrorType     Type
-	OriginalError error
-	Message       string
+	ErrorType Type
+	Message   string
+	cause     error
 }
 
+// Error message
 func (e Error) Error() string {
 	return e.Message
+}
+
+// Cause returns the original error message
+func (e Error) Cause() string {
+
+	if e.cause != nil {
+		return e.cause.Error()
+	}
+
+	return ""
 }
 
 // Type defines the type of an error
@@ -42,11 +53,11 @@ func (t Type) String() string {
 }
 
 // New creates a new error
-func New(t Type, msg string, originalErr error) error {
+func New(t Type, msg string, err error) error {
 	return &Error{
-		ErrorType:     t,
-		Message:       msg,
-		OriginalError: originalErr,
+		ErrorType: t,
+		Message:   msg,
+		cause:     err,
 	}
 }
 

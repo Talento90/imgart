@@ -27,7 +27,7 @@ func TestResizeTransformMissingWidth(t *testing.T) {
 	_, err := resize.Transform(img, params)
 
 	if !errors.Is(errors.Validation, err) {
-		t.Error("Error should be a validation error", err)
+		t.Error("Should be a validation error", err)
 	}
 }
 
@@ -39,6 +39,6 @@ func TestResizeTransformMissingHeight(t *testing.T) {
 	_, err := resize.Transform(img, params)
 
 	if !errors.Is(errors.Validation, err) {
-		t.Error("Error should be a validation error", err)
+		t.Error("Should be a validation error", err)
 	}
 }

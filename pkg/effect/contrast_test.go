@@ -7,24 +7,24 @@ import (
 	"github.com/talento90/gorpo/pkg/errors"
 )
 
-func TestBrightnessTransform(t *testing.T) {
-	brightness := NewBrightness()
-	params := map[string]interface{}{"percentage": 0.5}
+func TestContrastTransform(t *testing.T) {
+	constrast := NewContrast()
+	params := map[string]interface{}{"percentage": 20}
 	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 
-	_, err := brightness.Transform(img, params)
+	_, err := constrast.Transform(img, params)
 
 	if err != nil {
 		t.Error("Should not return any error", err)
 	}
 }
 
-func TestBrightnessTransformMissingPercentage(t *testing.T) {
-	brightness := NewBrightness()
+func TestContrastTransformMissingPercentage(t *testing.T) {
+	constrast := NewContrast()
 	params := map[string]interface{}{}
 	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 
-	_, err := brightness.Transform(img, params)
+	_, err := constrast.Transform(img, params)
 
 	if !errors.Is(errors.Validation, err) {
 		t.Error("Should be a validation error", err)

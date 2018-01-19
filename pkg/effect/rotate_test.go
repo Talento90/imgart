@@ -27,6 +27,6 @@ func TestRotateTransformMissingParameters(t *testing.T) {
 	_, err := rotate.Transform(img, params)
 
 	if !errors.Is(errors.Validation, err) {
-		t.Error("Error should be a validation error", err)
+		t.Error("Should be a validation error", err)
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/talento90/gorpo/pkg/errors"
 	"github.com/talento90/gorpo/pkg/log"
 )
 
@@ -30,7 +31,12 @@ func loggerMiddleware(logger log.Logger, handler appHandler) httprouter.Handle {
 		response := handler(w, r, params)
 
 		if response.err != nil {
-			logger.Error(response.err)
+
+			if err, ok := response.err.(errors.Error); ok {
+				logger.Error(err, err.Cause())
+			} else {
+				logger.Error(response.err)
+			}
 		}
 
 		logger.InfoWithFields(
