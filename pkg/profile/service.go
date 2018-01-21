@@ -24,12 +24,10 @@ func (s *service) Get(id string) (*gorpo.Profile, error) {
 }
 
 func (s *service) Create(profile *gorpo.Profile) error {
-	// TODO: check if effects are valid
 	return s.repository.Create(profile)
 }
 
 func (s *service) Update(profile *gorpo.Profile) error {
-	// TODO: check if effects are valid
 	return s.repository.Update(profile)
 }
 

@@ -13,9 +13,8 @@ type appResponse struct {
 }
 
 type appError struct {
-	ErrorCode errors.Type `json:"error_code"`
-	ErrorType string      `json:"error_type"`
-	Message   string      `json:"message"`
+	ErrorType string `json:"error_type"`
+	Message   string `json:"message"`
 }
 
 func response(statusCode int, body interface{}) appResponse {
@@ -29,22 +28,22 @@ func response(statusCode int, body interface{}) appResponse {
 func errResponse(err error) appResponse {
 	statusCode := http.StatusInternalServerError
 	appError := appError{
-		ErrorCode: errors.Internal,
 		ErrorType: errors.Internal.String(),
 		Message:   err.Error(),
 	}
 
 	if e, ok := err.(*errors.Error); ok {
-		appError.ErrorCode = e.ErrorType
-		appError.ErrorType = e.ErrorType.String()
+		appError.ErrorType = e.Type.String()
 
-		switch e.ErrorType {
-		case errors.NotExist:
+		switch e.Type {
+		case errors.NotFound:
 			statusCode = http.StatusNotFound
 		case errors.Validation:
 			statusCode = http.StatusUnprocessableEntity
 		case errors.Malformed:
 			statusCode = http.StatusBadRequest
+		case errors.AlreadyExists:
+			statusCode = http.StatusConflict
 		}
 	}
 
