@@ -1,31 +1,17 @@
-# Go parameters
-GOCMD=go
-GOBUILD=$(GOCMD) build
-GOCLEAN=$(GOCMD) clean
-GOTEST=$(GOCMD) test
-GOGET=$(GOCMD) get
-SERVER_BINARY_NAME=gorpo-api
-CLI_BINARY_NAME=gorpo-cli
+BINARY_NAME=gorpoapi
 
-all: test build
-
-build-server: 
-	$(GOBUILD) -o $(SERVER_BINARY_NAME) -v ./cmd/gorpoapi
-
-build-cli: 
-	$(GOBUILD) -o $(CLI_BINARY_NAME) -v ./cmd/gorpocli
+default: test build
 
 test: 
-	$(GOTEST) -v ./...
+	go test -v ./...
 
-clean: 
-	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
-	rm -f $(BINARY_UNIX)
+lint:
 
-run:
-	$(GOBUILD) -o $(BINARY_NAME) -v ./...
-	./$(BINARY_NAME)
+build: 
+	go build -o $(BINARY_NAME) -v ./cmd/gorpoapi
 
-deps:
-	$(GOGET) github.com/talento90/gorpo
+docker:
+	docker-compose up
+
+docker-debug:
+	docker-compose -f docker-compose.debug.yml up
