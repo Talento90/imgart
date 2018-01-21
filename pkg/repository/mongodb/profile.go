@@ -23,6 +23,10 @@ func handleError(err error) error {
 		return errors.ENotExists("Profile does not exists", err)
 	}
 
+	if mgo.IsDup(err) {
+		return errors.EAlreadyExists("Profile already exists", err)
+	}
+
 	return errors.EInternal("Error occured", err)
 }
 

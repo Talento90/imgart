@@ -21,7 +21,7 @@ func TestImageGet(t *testing.T) {
 
 	img, _, err := c.Get(url, filters)
 
-	if !errors.Is(errors.NotExist, err) {
+	if !errors.Is(errors.NotFound, err) {
 		t.Error("Cache must return a NotExists error", err)
 	}
 

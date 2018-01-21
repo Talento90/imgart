@@ -21,7 +21,7 @@ func TestGammaTransform(t *testing.T) {
 
 func TestGammaTransformMissingGamma(t *testing.T) {
 	gamma := NewGamma()
-	params := map[string]interface{}{"gamma": 0.9}
+	params := map[string]interface{}{"gammax": 0}
 	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 
 	_, err := gamma.Transform(img, params)

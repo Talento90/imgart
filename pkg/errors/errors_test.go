@@ -25,7 +25,7 @@ func TestErrorCauseMessage(t *testing.T) {
 	errMsg := "Some error occured"
 	err := EValidation("Validation error", errors.New(errMsg))
 
-	e, ok := err.(Error)
+	e, ok := err.(*Error)
 
 	if !ok || e.Cause() != errMsg {
 		t.Error("Cause message is not correct", err)

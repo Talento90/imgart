@@ -7,7 +7,7 @@ import (
 )
 
 func TestIntegerBinder(t *testing.T) {
-	params := map[string]interface{}{"key": 1}
+	params := map[string]interface{}{"key": 1.0}
 	_, err := integerBinder("key", params)
 
 	if err != nil {
@@ -97,7 +97,7 @@ func TestUrlBinderWrongUrl(t *testing.T) {
 }
 
 func TestRectangleBinder(t *testing.T) {
-	params := map[string]interface{}{"key": "http://teste.com/image.jpeg"}
+	params := map[string]interface{}{"key": []interface{}{1.0, 2.0, 1.0, 2.0}}
 	_, err := rectangleBinder("key", params)
 
 	if err != nil {
@@ -106,8 +106,8 @@ func TestRectangleBinder(t *testing.T) {
 }
 
 func TestRectangleBinderWrongRectangle(t *testing.T) {
-	params := map[string]interface{}{"key": "fakeurl"}
-	_, err := filterBinder("key", params)
+	params := map[string]interface{}{"key": []interface{}{1.0, 2.0, 1.0}}
+	_, err := rectangleBinder("key", params)
 
 	if err == nil {
 		t.Error("Should return an error")
@@ -115,7 +115,7 @@ func TestRectangleBinderWrongRectangle(t *testing.T) {
 }
 
 func TestPointBinder(t *testing.T) {
-	params := map[string]interface{}{"key": ""}
+	params := map[string]interface{}{"key": []interface{}{1.0, 2.0}}
 	_, err := pointBinder("key", params)
 
 	if err != nil {
@@ -124,7 +124,7 @@ func TestPointBinder(t *testing.T) {
 }
 
 func TestPointBinderWrongPoint(t *testing.T) {
-	params := map[string]interface{}{"key": ""}
+	params := map[string]interface{}{"key": []interface{}{1.0, 2.0, 1.0}}
 	_, err := pointBinder("key", params)
 
 	if !errors.Is(errors.Validation, err) {

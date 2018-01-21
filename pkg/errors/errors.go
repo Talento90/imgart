@@ -2,19 +2,18 @@ package errors
 
 // Error applicational
 type Error struct {
-	ErrorType Type
-	Message   string
-	cause     error
+	Type    Type
+	Message string
+	cause   error
 }
 
 // Error message
-func (e Error) Error() string {
+func (e *Error) Error() string {
 	return e.Message
 }
 
-// Cause returns the original error message
-func (e Error) Cause() string {
-
+// Cause of the original error
+func (e *Error) Cause() string {
 	if e.cause != nil {
 		return e.cause.Error()
 	}
@@ -23,30 +22,33 @@ func (e Error) Cause() string {
 }
 
 // Type defines the type of an error
-type Type int
+type Type string
 
 const (
-	_ Type = (iota * 10000) << 1
 	// Internal error
-	Internal
-	// NotExist error means that a specific item does not exist
-	NotExist
+	Internal Type = "internal"
+	// NotFound error means that a specific item does not exist
+	NotFound Type = "not_found"
 	// Malformed error represents data that not respect the standard format
-	Malformed
+	Malformed Type = "malformed"
 	// Validation error
-	Validation
+	Validation Type = "validation"
+	// AlreadyExists error
+	AlreadyExists Type = "already_exists"
 )
 
 func (t Type) String() string {
 	switch t {
 	case Internal:
 		return "Internal Error"
-	case NotExist:
-		return "Item does not exist"
+	case NotFound:
+		return "Item not found"
 	case Malformed:
 		return "Malformed error"
 	case Validation:
 		return "Validation error"
+	case AlreadyExists:
+		return "Item already exists"
 	}
 
 	return "Unknown error"
@@ -55,9 +57,9 @@ func (t Type) String() string {
 // New creates a new error
 func New(t Type, msg string, err error) error {
 	return &Error{
-		ErrorType: t,
-		Message:   msg,
-		cause:     err,
+		Type:    t,
+		Message: msg,
+		cause:   err,
 	}
 }
 
@@ -68,12 +70,17 @@ func EValidation(msg string, err error) error {
 
 // ENotExists creates an error of type NotExist
 func ENotExists(msg string, err error) error {
-	return New(NotExist, msg, err)
+	return New(NotFound, msg, err)
 }
 
 // EMalformed creates an error of type Malformed
 func EMalformed(msg string, err error) error {
 	return New(Malformed, msg, err)
+}
+
+// EAlreadyExists creates an error of type EAlreadyExistsl
+func EAlreadyExists(msg string, err error) error {
+	return New(AlreadyExists, msg, err)
 }
 
 // EInternal creates an error of type Internal
@@ -85,5 +92,5 @@ func EInternal(msg string, err error) error {
 func Is(t Type, err error) bool {
 	e, ok := err.(*Error)
 
-	return ok && e.ErrorType == t
+	return ok && e.Type == t
 }

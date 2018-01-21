@@ -9,7 +9,7 @@ import (
 
 func TestResizeTransform(t *testing.T) {
 	resize := NewResize()
-	params := map[string]interface{}{"width": 200, "height": 300, "filter": "lanczos"}
+	params := map[string]interface{}{"width": 200.0, "height": 300.0, "filter": "lanczos"}
 	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 
 	_, err := resize.Transform(img, params)

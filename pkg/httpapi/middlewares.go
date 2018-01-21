@@ -32,7 +32,7 @@ func loggerMiddleware(logger log.Logger, handler appHandler) httprouter.Handle {
 
 		if response.err != nil {
 
-			if err, ok := response.err.(errors.Error); ok {
+			if err, ok := response.err.(*errors.Error); ok {
 				logger.Error(err, err.Cause())
 			} else {
 				logger.Error(response.err)

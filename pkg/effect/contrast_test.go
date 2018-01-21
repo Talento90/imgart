@@ -9,7 +9,7 @@ import (
 
 func TestContrastTransform(t *testing.T) {
 	constrast := NewContrast()
-	params := map[string]interface{}{"percentage": 20}
+	params := map[string]interface{}{"percentage": 20.0}
 	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 
 	_, err := constrast.Transform(img, params)

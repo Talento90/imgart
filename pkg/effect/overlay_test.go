@@ -11,7 +11,7 @@ import (
 func TestOverlayTransform(t *testing.T) {
 	overlay := NewOverlay(mock.NewImageRepository())
 	params := map[string]interface{}{
-		"position": []int{100, 50, 200, 300},
+		"position": []interface{}{100.0, 50.0},
 		"url":      "http://test.com/image.png",
 		"opacity":  70,
 	}
@@ -42,7 +42,7 @@ func TestOverlayMissingPosition(t *testing.T) {
 func TestOverlayMissingUrl(t *testing.T) {
 	overlay := NewOverlay(mock.NewImageRepository())
 	params := map[string]interface{}{
-		"position": []interface{}{100, 50, 200, 300},
+		"position": []interface{}{100.0, 50.0},
 		"opacity":  70,
 	}
 
