@@ -23,6 +23,10 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
 
+	//router.ServeFiles("/api/v1/docs", http.Dir("/docs"))
+
+	router.ServeFiles("/docs/*filepath", http.FileServer(http.Dir("public")))
+
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
 	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getAll)))
