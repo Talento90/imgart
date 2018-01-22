@@ -2,6 +2,10 @@ BINARY_NAME=gorpoapi
 
 default: test vet
 
+.PHONY: packages
+packages:
+	go list ./...
+
 .PHONY: test
 test: 
 	go test -v ./...
