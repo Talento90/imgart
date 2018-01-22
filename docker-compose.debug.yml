@@ -1,38 +1,10 @@
 version: '2.1'
 services:
-  gorpo-api-debug:
-    build:
-      context: .
-      dockerfile: Dockerfile.debug
+  gorpo-api:
+    build: .
     ports:
       - "4005:4005"
       - "2345:2345"
     security_opt:
       - seccomp:unconfined
-    entrypoint: dlv debug github.com/talento90/gorpo/cmd/gorpoapi -l 0.0.0.0:2345 --headless --log
-    volumes:
-      - .:/go/src/github.com/talento90/gorpo
-    environment:
-      - REDIS_SERVICE_NAME=redis-db
-      - MONGO_SERVICE_NAME=mongo-db
-    links:
-      - redis-db
-      - mongo-db
-    network_mode: bridge
-
-  redis-db:
-    image: redis:4-alpine
-    ports:
-      - '6379:6379'
-    volumes:
-      - ./redis.conf:/config/redis.conf
-    command: redis-server /config/redis.conf
-    restart: always
-    network_mode: bridge
-
-  mongo-db:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    restart: always
-    network_mode: bridge
+    command: dlv debug github.com/talento90/gorpo/cmd/gorpoapi -l 0.0.0.0:2345 --headless --log
