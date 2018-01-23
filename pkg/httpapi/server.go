@@ -5,6 +5,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/gorpo/pkg/httpapi/docs"
 	"github.com/talento90/gorpo/pkg/log"
 )
 
@@ -23,9 +24,14 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
 
-	//router.ServeFiles("/api/v1/docs", http.Dir("/docs"))
+	docs, err := docs.GenerateOpenApi()
 
-	//router.ServeFiles("/docs/*filepath", http.FileServer(http.Dir("public")))
+	if err != nil {
+		dep.Logger.Error("Error generating api documenation:", err)
+	}
+
+	router.ServeFiles("/static/*filepath", http.Dir("pkg/httpapi/docs"))
+	router.Handler("GET", "/docs", docs)
 
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
