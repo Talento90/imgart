@@ -25,7 +25,7 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 
 	//router.ServeFiles("/api/v1/docs", http.Dir("/docs"))
 
-	router.ServeFiles("/docs/*filepath", http.FileServer(http.Dir("public")))
+	//router.ServeFiles("/docs/*filepath", http.FileServer(http.Dir("public")))
 
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 

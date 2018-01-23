@@ -66,7 +66,6 @@ paths:
         '201':
           description: Created profile
           schema:
-            type: object
             $ref: '#/definitions/Profile'
   '/profiles/{id}':
     get:
@@ -85,9 +84,7 @@ paths:
         '200':
           description: A list of profiles.
           schema:
-            type: object
-            items:
-              $ref: '#/definitions/Profile'
+            $ref: '#/definitions/Profile'
         '404':
           description: Profile not found
     put:
@@ -165,9 +162,7 @@ paths:
         '200':
           description: Return the effect
           schema:
-            type: object
-            items:
-              $ref: '#/definitions/Effect'
+            $ref: '#/definitions/Effect'
         '404':
           description: Effect not found
   /images:
@@ -264,10 +259,3 @@ definitions:
             type: string
           values:
             type: string
-  Error:
-    type: object
-    properties:
-      error_type:
-        type: string
-      message:
-        type: string
