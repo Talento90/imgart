@@ -24,15 +24,6 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
 
-	docs, err := docs.GenerateOpenApi()
-
-	if err != nil {
-		dep.Logger.Error("Error generating api documenation:", err)
-	}
-
-	router.ServeFiles("/static/*filepath", http.Dir("pkg/httpapi/docs"))
-	router.Handler("GET", "/docs", docs)
-
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
 	router.GET("/api/v1/effects", loggerMiddleware(dep.Logger, responseMiddleware(effectCtrl.getAll)))
@@ -43,6 +34,10 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	router.DELETE("/api/v1/profiles/:id", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.delete)))
 	router.PUT("/api/v1/profiles/:id", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.update)))
 	router.POST("/api/v1/profiles", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.create)))
+
+	router.GET("/api/v1/docs/swagger.json", docs.Spec)
+	router.Handler("GET", "/api/v1/docs", docs.RedocSpec())
+	//router.ServeFiles("/static/*filepath", http.Dir("pkg/httpapi/docs"))
 
 	return http.Server{
 		Addr:         config.Address,
