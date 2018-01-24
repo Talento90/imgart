@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Swagger Gorpo",
-    "description": "Gorpo API documentation.",
+    "description": "Gorpo it is an HTTP service that processes images based on filters (overlay, rotate, blur, contrast, brightness, crop, gamma).",
     "contact": {
       "email": "marcotalento90@gmail.com"
     },
@@ -11,7 +11,7 @@
       "name": "MIT"
     }
   },
-  "basePath": "/v1/api",
+  "basePath": "/api/v1",
   "schemes": [
     "http"
   ],
@@ -23,29 +23,26 @@
   ],
   "tags": [
     {
-      "name": "profile",
-      "description": "Image profiles"
+      "name": "profiles"
     },
     {
-      "name": "effect",
-      "description": "Available effects"
+      "name": "effects"
     },
     {
-      "name": "image",
-      "description": "Image transform"
+      "name": "images"
     }
   ],
   "paths": {
     "/profiles": {
       "get": {
         "tags": [
-          "profile"
+          "profiles"
         ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "How many profiles to return",
+            "description": "Number of profiles to return (max 10, default 5)",
             "required": false,
             "type": "integer",
             "format": "int32"
@@ -53,19 +50,19 @@
           {
             "name": "skip",
             "in": "query",
-            "description": "How many profiles to skip",
+            "description": "Number of profiles to skip",
             "required": false,
             "type": "integer",
             "format": "int32"
           }
         ],
-        "description": "Returns all profiles",
+        "description": "Return a list of profiles",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "A list of profiles.",
+            "description": "List of profiles",
             "schema": {
               "type": "array",
               "items": {
@@ -77,9 +74,9 @@
       },
       "post": {
         "tags": [
-          "profile"
+          "profiles"
         ],
-        "description": "Create a new profile",
+        "description": "Creates a new profile",
         "produces": [
           "application/json"
         ],
@@ -87,7 +84,7 @@
           {
             "name": "profile",
             "in": "body",
-            "description": "Create Profile body",
+            "description": "Profile properties",
             "required": true,
             "schema": {
               "$ref": "#/definitions/CreateProfile"
@@ -96,9 +93,24 @@
         ],
         "responses": {
           "201": {
-            "description": "Created profile",
+            "description": "Returns the created profile",
             "schema": {
               "$ref": "#/definitions/Profile"
+            }
+          },
+          "400": {
+            "description": "Body is not a valid json",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "422": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -107,24 +119,24 @@
     "/profiles/{id}": {
       "get": {
         "tags": [
-          "profile"
+          "profiles"
         ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "The id of profile",
+            "description": "Profile ID",
             "type": "string"
           }
         ],
-        "description": "Returns a single profile",
+        "description": "Returns a profile with the given ID",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "A list of profiles.",
+            "description": "Return a profile",
             "schema": {
               "$ref": "#/definitions/Profile"
             }
@@ -136,65 +148,74 @@
       },
       "put": {
         "tags": [
-          "profile"
+          "profiles"
         ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "The id of profile",
+            "description": "Profile ID",
             "type": "string"
           },
           {
             "name": "profile",
             "in": "body",
-            "description": "Update Profile body",
+            "description": "Profile properties to update",
             "required": true,
             "schema": {
               "$ref": "#/definitions/UpdateProfile"
             }
           }
         ],
-        "description": "Returns the updated profile",
+        "description": "Update profile with the given ID",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "A list of profiles.",
+            "description": "Returns the updated profile",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Profile"
-              }
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "400": {
+            "description": "Body is not a valid json",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           },
           "404": {
             "description": "Profile not found"
+          },
+          "422": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
       "delete": {
         "tags": [
-          "profile"
+          "profiles"
         ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "The id of profile",
+            "description": "Profile ID",
             "type": "string"
           }
         ],
-        "description": "Deletes profile by the given ID",
+        "description": "Delete profile with the given ID",
         "produces": [
           "application/json"
         ],
         "responses": {
           "204": {
-            "description": "No content to show."
+            "description": "Deleted profile sucessfully"
           },
           "404": {
             "description": "Profile not found"
@@ -205,7 +226,7 @@
     "/effects": {
       "get": {
         "tags": [
-          "effect"
+          "effects"
         ],
         "description": "Returns all available effects",
         "produces": [
@@ -213,7 +234,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A list of effects.",
+            "description": "A list of effects",
             "schema": {
               "type": "array",
               "items": {
@@ -227,24 +248,24 @@
     "/effects/{id}": {
       "get": {
         "tags": [
-          "effect"
+          "effects"
         ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "The id of effect",
+            "description": "Effect ID",
             "type": "string"
           }
         ],
-        "description": "Returns a single effect",
+        "description": "Returns an effect with the given ID",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Return the effect",
+            "description": "Return an effect",
             "schema": {
               "$ref": "#/definitions/Effect"
             }
@@ -258,13 +279,13 @@
     "/images": {
       "get": {
         "tags": [
-          "image"
+          "images"
         ],
         "parameters": [
           {
             "name": "imgSrc",
             "in": "query",
-            "description": "Image Source",
+            "description": "Image source url",
             "required": true,
             "type": "string"
           },
@@ -283,18 +304,25 @@
             "type": "string"
           }
         ],
-        "description": "Returns all profiles",
+        "description": "Process image applying the given filters",
         "produces": [
-          "application/json"
+          "image/png",
+          "image/jpeg"
         ],
         "responses": {
-          "200": {
-            "description": "A list of profiles.",
+          "400": {
+            "description": "Filters are not a valid json",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Profile"
-              }
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "422": {
+            "description": "Filters are not valid",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -312,7 +340,9 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": {
+              "type": "object"
+            }
           }
         }
       }
@@ -395,6 +425,17 @@
               "type": "string"
             }
           }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error_type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }
