@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 
+	"github.com/talento90/gorpo/pkg/health"
+
 	"gopkg.in/mgo.v2"
 
 	"github.com/go-redis/redis"
@@ -59,6 +61,7 @@ func main() {
 	})
 
 	redisClient := redisrepository.NewRedisRepository(client)
+	profileRepository := mongodb.NewProfileRepository(mongoConfig, session)
 
 	var imgService gorpo.ImageService
 	{
@@ -73,15 +76,19 @@ func main() {
 
 	var profileService gorpo.ProfileService
 	{
-		profileRepository := mongodb.NewProfileRepository(mongoConfig, session)
 		profileService = profile.NewService(profileRepository)
 		profileService = profile.NewLogService(logger, profileService)
 	}
+
+	health := health.New()
+	//health.RegisterChecker("redis", redisClient)
+	//health.RegisterChecker("mongo", profileRepository)
 
 	serverDeps := &httpapi.ServerDependencies{
 		Logger:         logger,
 		ImgService:     imgService,
 		ProfileService: profileService,
+		Health:         health,
 	}
 
 	serverConfig, err := config.GetServerConfiguration()

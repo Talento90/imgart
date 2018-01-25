@@ -1,3 +1,32 @@
+package httpapi
+
+import (
+	"net/http"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/julienschmidt/httprouter"
+)
+
+var redoc = middleware.Redoc(middleware.RedocOpts{
+	BasePath: "/api/v1",
+	Path:     "/docs",
+	SpecURL:  "/api/v1/docs/swagger.json",
+	Title:    "Gorpo API",
+}, nil)
+
+// RedocSpec returns handler for API Redoc documentation
+func RedocSpec() http.Handler {
+	return redoc
+}
+
+// Spec returns the swagger 2.0 spec
+func Spec(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	w.Header().Set("Content-Type", "application/json")
+
+	w.Write([]byte(specJSON))
+}
+
+const specJSON = `
 {
   "swagger": "2.0",
   "info": {
@@ -441,3 +470,4 @@
     }
   }
 }
+`

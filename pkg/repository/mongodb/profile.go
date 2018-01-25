@@ -96,3 +96,10 @@ func (r *profileRepository) Delete(id string) error {
 
 	return handleError(err)
 }
+
+func (r *profileRepository) Check() error {
+	session := r.session.Copy()
+	defer session.Close()
+
+	return handleError(session.Ping())
+}

@@ -1,11 +1,13 @@
 package httpapi
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/talento90/gorpo/pkg/errors"
 	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/httpapi/docs"
+	"github.com/talento90/gorpo/pkg/health"
 	"github.com/talento90/gorpo/pkg/log"
 )
 
@@ -14,15 +16,18 @@ type ServerDependencies struct {
 	Logger         log.Logger
 	ImgService     gorpo.ImageService
 	ProfileService gorpo.ProfileService
+	Health         health.Health
 }
 
-// NewServer creates an http server
-func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
+func registerRoutes(dep *ServerDependencies) *httprouter.Router {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(dep.ImgService)
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
+
+	router.GET("/api/v1/docs/swagger.json", Spec)
+	router.Handler("GET", "/api/v1/docs", RedocSpec())
 
 	router.GET("/api/v1/images", loggerMiddleware(dep.Logger, responseMiddleware(imgCtrl.transformImage)))
 
@@ -35,9 +40,27 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	router.PUT("/api/v1/profiles/:id", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.update)))
 	router.POST("/api/v1/profiles", loggerMiddleware(dep.Logger, responseMiddleware(profileCtrl.create)))
 
-	router.GET("/api/v1/docs/swagger.json", docs.Spec)
-	router.Handler("GET", "/api/v1/docs", docs.RedocSpec())
-	//router.ServeFiles("/static/*filepath", http.Dir("pkg/httpapi/docs"))
+	return router
+}
+
+// NewServer creates an http server
+func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
+	router := registerRoutes(dep)
+
+	router.Handler("GET", "/health", dep.Health)
+	router.PanicHandler = func(w http.ResponseWriter, r *http.Request, panic interface{}) {
+		dep.Logger.Error("Panic error:", panic)
+
+		err := appError{
+			ErrorType: errors.Internal.String(),
+			Message:   "Server internal error",
+		}
+
+		json, _ := json.Marshal(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(json)
+	}
 
 	return http.Server{
 		Addr:         config.Address,
