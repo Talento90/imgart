@@ -48,6 +48,7 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 	router := registerRoutes(dep)
 
 	router.Handler("GET", "/health", dep.Health)
+
 	router.PanicHandler = func(w http.ResponseWriter, r *http.Request, panic interface{}) {
 		dep.Logger.Error("Panic error:", panic)
 

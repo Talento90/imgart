@@ -24,8 +24,11 @@ type Checker interface {
 
 // Health interface
 type Health interface {
+	// GetStatus return the current status of the application
 	GetStatus() *Status
+	// RegisterChecker register a service to check their health
 	RegisterChecker(name string, check Checker)
+	// ServeHTTP handler for http applications
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
 }
 

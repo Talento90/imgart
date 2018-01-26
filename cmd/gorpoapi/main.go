@@ -60,7 +60,7 @@ func main() {
 		DB:       redisConfig.Database,
 	})
 
-	redisClient := redisrepository.NewRedisRepository(client)
+	redisClient := redisrepository.New(client)
 	profileRepository := mongodb.NewProfileRepository(mongoConfig, session)
 
 	var imgService gorpo.ImageService

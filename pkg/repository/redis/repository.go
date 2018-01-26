@@ -24,8 +24,8 @@ type redisRepository struct {
 	client *redis.Client
 }
 
-// NewRedisRepository creates a redis cache implamentation
-func NewRedisRepository(client *redis.Client) gorpo.Cache {
+// New creates a redis cache implamentation
+func New(client *redis.Client) gorpo.Cache {
 	return &redisRepository{client: client}
 }
 
@@ -39,4 +39,8 @@ func (r *redisRepository) Set(key string, value []byte, expiration time.Duration
 	err := r.client.Set(key, value, expiration).Err()
 
 	return handleError(err)
+}
+
+func (r *redisRepository) Check() error {
+	return r.client.Ping().Err()
 }
