@@ -1,4 +1,4 @@
-package mongodb
+package mongo
 
 import "github.com/talento90/gorpo/pkg/errors"
 

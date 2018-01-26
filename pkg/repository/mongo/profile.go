@@ -1,4 +1,4 @@
-package mongodb
+package mongo
 
 import (
 	"time"
@@ -9,9 +9,8 @@ import (
 )
 
 type profileRepository struct {
-	database   string
 	collection string
-	session    *mgo.Session
+	session    *Session
 }
 
 func handleError(err error) error {
@@ -31,9 +30,8 @@ func handleError(err error) error {
 }
 
 // NewProfileRepository returns a profile mongo repository
-func NewProfileRepository(config Configuration, session *mgo.Session) gorpo.ProfileRepository {
+func NewProfileRepository(session *Session) gorpo.ProfileRepository {
 	return &profileRepository{
-		database:   config.Database,
 		collection: "profiles",
 		session:    session,
 	}
@@ -41,8 +39,9 @@ func NewProfileRepository(config Configuration, session *mgo.Session) gorpo.Prof
 
 func (r *profileRepository) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
 	session := r.session.Copy()
+
 	defer session.Close()
-	c := session.DB(r.database).C(r.collection)
+	c := session.DB(r.session.Database).C(r.collection)
 
 	profiles := make([]gorpo.Profile, 0, limit)
 	err := c.Find(nil).Skip(skip).Limit(limit).All(&profiles)
@@ -52,9 +51,10 @@ func (r *profileRepository) GetAll(limit int, skip int) (*[]gorpo.Profile, error
 
 func (r *profileRepository) Get(id string) (*gorpo.Profile, error) {
 	session := r.session.Copy()
+
 	defer session.Close()
 
-	c := session.DB(r.database).C(r.collection)
+	c := session.DB(r.session.Database).C(r.collection)
 
 	profile := &gorpo.Profile{}
 	err := c.FindId(id).One(profile)
@@ -65,7 +65,8 @@ func (r *profileRepository) Get(id string) (*gorpo.Profile, error) {
 func (r *profileRepository) Create(profile *gorpo.Profile) error {
 	session := r.session.Copy()
 	defer session.Close()
-	c := session.DB(r.database).C(r.collection)
+
+	c := session.DB(r.session.Database).C(r.collection)
 
 	profile.Created = time.Now().UTC()
 	profile.Updated = time.Now().UTC()
@@ -78,7 +79,8 @@ func (r *profileRepository) Create(profile *gorpo.Profile) error {
 func (r *profileRepository) Update(profile *gorpo.Profile) error {
 	session := r.session.Copy()
 	defer session.Close()
-	c := session.DB(r.database).C(r.collection)
+
+	c := session.DB(r.session.Database).C(r.collection)
 
 	profile.Updated = time.Now().UTC()
 
@@ -90,16 +92,10 @@ func (r *profileRepository) Update(profile *gorpo.Profile) error {
 func (r *profileRepository) Delete(id string) error {
 	session := r.session.Copy()
 	defer session.Close()
-	c := session.DB(r.database).C(r.collection)
+
+	c := session.DB(r.session.Database).C(r.collection)
 
 	err := c.RemoveId(id)
 
 	return handleError(err)
-}
-
-func (r *profileRepository) Check() error {
-	session := r.session.Copy()
-	defer session.Close()
-
-	return handleError(session.Ping())
 }

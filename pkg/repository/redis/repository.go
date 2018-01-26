@@ -21,11 +21,11 @@ func handleError(err error) error {
 }
 
 type redisRepository struct {
-	client *redis.Client
+	client *Client
 }
 
 // New creates a redis cache implamentation
-func New(client *redis.Client) gorpo.Cache {
+func New(client *Client) gorpo.Cache {
 	return &redisRepository{client: client}
 }
 
