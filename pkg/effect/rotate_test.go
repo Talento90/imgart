@@ -8,25 +8,39 @@ import (
 )
 
 func TestRotateTransform(t *testing.T) {
-	rotate := NewRotate()
-	params := map[string]interface{}{"angle": 0.9, "bgcolor": "black"}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-
-	_, err := rotate.Transform(img, params)
-
-	if err != nil {
-		t.Error("Should not return any error", err)
+	tt := []struct {
+		name   string
+		params map[string]interface{}
+		err    errors.Type
+	}{
+		{
+			name: "transform sucessfully",
+			params: map[string]interface{}{
+				"angle":   0.9,
+				"bgcolor": "black",
+			},
+		},
+		{
+			name: "missing angle",
+			params: map[string]interface{}{
+				"bgcolor": "black",
+			},
+			err: errors.Validation,
+		},
 	}
-}
 
-func TestRotateTransformMissingParameters(t *testing.T) {
-	rotate := NewRotate()
-	params := map[string]interface{}{"bgcolor": "black"}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+			rotate := NewRotate()
 
-	_, err := rotate.Transform(img, params)
+			_, err := rotate.Transform(img, tc.params)
 
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
+			if tc.err != "" {
+				if err == nil || !errors.Is(tc.err, err) {
+					t.Error("Expected validation error", err)
+				}
+			}
+		})
 	}
 }

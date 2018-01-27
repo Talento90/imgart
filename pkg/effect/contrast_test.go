@@ -8,25 +8,31 @@ import (
 )
 
 func TestContrastTransform(t *testing.T) {
-	constrast := NewContrast()
-	params := map[string]interface{}{"percentage": 20.0}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-
-	_, err := constrast.Transform(img, params)
-
-	if err != nil {
-		t.Error("Should not return any error", err)
+	tt := []struct {
+		name   string
+		params map[string]interface{}
+		err    errors.Type
+	}{
+		{
+			name:   "transform sucessfully",
+			params: map[string]interface{}{"percentage": 2.6}},
+		{
+			name:   "missing percentage",
+			params: map[string]interface{}{}, err: errors.Validation},
 	}
-}
 
-func TestContrastTransformMissingPercentage(t *testing.T) {
-	constrast := NewContrast()
-	params := map[string]interface{}{}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+			constrast := NewContrast()
 
-	_, err := constrast.Transform(img, params)
+			_, err := constrast.Transform(img, tc.params)
 
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
+			if tc.err != "" {
+				if err == nil || !errors.Is(tc.err, err) {
+					t.Error("Expected validation error", err)
+				}
+			}
+		})
 	}
 }

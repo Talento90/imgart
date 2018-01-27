@@ -8,25 +8,36 @@ import (
 )
 
 func TestBlurTransform(t *testing.T) {
-	blur := NewBlur()
-	params := map[string]interface{}{"sigma": 0.9}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-
-	_, err := blur.Transform(img, params)
-
-	if err != nil {
-		t.Error("Should not return any error", err)
+	tt := []struct {
+		name   string
+		params map[string]interface{}
+		err    errors.Type
+	}{
+		{
+			name: "transform sucessfully",
+			params: map[string]interface{}{
+				"sigma": 0.9,
+			},
+		},
+		{
+			name:   "missing sigma",
+			params: map[string]interface{}{},
+			err:    errors.Validation,
+		},
 	}
-}
 
-func TestBlurTransformMissingSigma(t *testing.T) {
-	blur := NewBlur()
-	params := map[string]interface{}{}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+			blur := NewBlur()
 
-	_, err := blur.Transform(img, params)
+			_, err := blur.Transform(img, tc.params)
 
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
+			if tc.err != "" {
+				if err == nil || !errors.Is(tc.err, err) {
+					t.Error("Expected validation error", err)
+				}
+			}
+		})
 	}
 }

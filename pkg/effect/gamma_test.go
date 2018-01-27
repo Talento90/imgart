@@ -8,25 +8,32 @@ import (
 )
 
 func TestGammaTransform(t *testing.T) {
-	gamma := NewGamma()
-	params := map[string]interface{}{"gamma": 0.9}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-
-	_, err := gamma.Transform(img, params)
-
-	if err != nil {
-		t.Error("Should not return any error", err)
+	tt := []struct {
+		name   string
+		params map[string]interface{}
+		err    errors.Type
+	}{
+		{
+			name:   "transform sucessfully",
+			params: map[string]interface{}{"gamma": 0.9}},
+		{
+			name:   "missing gamma",
+			params: map[string]interface{}{}, err: errors.Validation,
+		},
 	}
-}
 
-func TestGammaTransformMissingGamma(t *testing.T) {
-	gamma := NewGamma()
-	params := map[string]interface{}{"gammax": 0}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+			gamma := NewGamma()
 
-	_, err := gamma.Transform(img, params)
+			_, err := gamma.Transform(img, tc.params)
 
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
+			if tc.err != "" {
+				if err == nil || !errors.Is(tc.err, err) {
+					t.Error("Expected validation error", err)
+				}
+			}
+		})
 	}
 }

@@ -9,47 +9,44 @@ import (
 )
 
 func TestOverlayTransform(t *testing.T) {
-	overlay := NewOverlay(mock.NewImageRepository())
-	params := map[string]interface{}{
-		"position": []interface{}{100.0, 50.0},
-		"url":      "http://test.com/image.png",
-		"opacity":  70,
-	}
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-
-	_, err := overlay.Transform(img, params)
-
-	if err != nil {
-		t.Error("Should not return any error", err)
-	}
-}
-
-func TestOverlayMissingPosition(t *testing.T) {
-	overlay := NewOverlay(mock.NewImageRepository())
-	params := map[string]interface{}{
-		"url":     "http://test.com/image.png",
-		"opacity": 70,
-	}
-
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-	_, err := overlay.Transform(img, params)
-
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
-	}
-}
-
-func TestOverlayMissingUrl(t *testing.T) {
-	overlay := NewOverlay(mock.NewImageRepository())
-	params := map[string]interface{}{
-		"position": []interface{}{100.0, 50.0},
-		"opacity":  70,
+	tt := []struct {
+		name   string
+		params map[string]interface{}
+		err    errors.Type
+	}{
+		{
+			name: "transform sucessfully",
+			params: map[string]interface{}{
+				"position": []interface{}{100.0, 50.0},
+				"url":      "http://test.com/image.png",
+				"opacity":  70,
+			}},
+		{
+			name: "missing position",
+			params: map[string]interface{}{
+				"url":     "http://test.com/image.png",
+				"opacity": 70,
+			}},
+		{
+			name: "missing url",
+			params: map[string]interface{}{
+				"position": []interface{}{100.0, 50.0},
+				"opacity":  70,
+			}},
 	}
 
-	img := image.NewRGBA(image.Rect(0, 0, 100, 50))
-	_, err := overlay.Transform(img, params)
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
+			overlay := NewOverlay(mock.NewImageRepository())
 
-	if !errors.Is(errors.Validation, err) {
-		t.Error("Should be a validation error", err)
+			_, err := overlay.Transform(img, tc.params)
+
+			if tc.err != "" {
+				if err == nil || !errors.Is(tc.err, err) {
+					t.Error("Expected validation error", err)
+				}
+			}
+		})
 	}
 }
