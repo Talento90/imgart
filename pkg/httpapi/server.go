@@ -19,12 +19,14 @@ type ServerDependencies struct {
 	Health         health.Health
 }
 
-func registerRoutes(dep *ServerDependencies) *httprouter.Router {
+func createRouter(dep *ServerDependencies) *httprouter.Router {
 	router := httprouter.New()
 
 	imgCtrl := newImagesController(dep.ImgService)
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
+
+	router.Handler("GET", "/health", dep.Health)
 
 	router.GET("/api/v1/docs/swagger.json", Spec)
 	router.Handler("GET", "/api/v1/docs", RedocSpec())
@@ -45,9 +47,7 @@ func registerRoutes(dep *ServerDependencies) *httprouter.Router {
 
 // NewServer creates an http server
 func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
-	router := registerRoutes(dep)
-
-	router.Handler("GET", "/health", dep.Health)
+	router := createRouter(dep)
 
 	router.PanicHandler = func(w http.ResponseWriter, r *http.Request, panic interface{}) {
 		dep.Logger.Error("Panic error:", panic)
