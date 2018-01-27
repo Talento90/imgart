@@ -19,21 +19,11 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
 ## Server
 
+- HealthCheck
+- Graceful Shutdown
 - Tests
 - Travis
-- Panic Handler
-- Makefile
+
 - Context (implement context mechanism)
-- Graceful Shutdown
 - Metrics
-- HealthCheck
-- Swagger documentation
 - Documentation page
-
-Errors:
-
-- duplicate profile ids
-- validate filter parameters
-
-## Commands
-go list -f '{{ join .Imports "\n" }}' package_path

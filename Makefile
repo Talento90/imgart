@@ -1,31 +1,37 @@
-# Go parameters
-GOCMD=go
-GOBUILD=$(GOCMD) build
-GOCLEAN=$(GOCMD) clean
-GOTEST=$(GOCMD) test
-GOGET=$(GOCMD) get
-SERVER_BINARY_NAME=gorpo-api
-CLI_BINARY_NAME=gorpo-cli
+BINARY_NAME=gorpoapi
 
-all: test build
+default: test vet
 
-build-server: 
-	$(GOBUILD) -o $(SERVER_BINARY_NAME) -v ./cmd/gorpoapi
+.PHONY: packages
+packages:
+	go list ./...
 
-build-cli: 
-	$(GOBUILD) -o $(CLI_BINARY_NAME) -v ./cmd/gorpocli
-
+.PHONY: test
 test: 
-	$(GOTEST) -v ./...
+	go test -v ./...
 
-clean: 
-	$(GOCLEAN)
-	rm -f $(BINARY_NAME)
-	rm -f $(BINARY_UNIX)
+.PHONY: vet
+vet:
+	go vet ./...
 
-run:
-	$(GOBUILD) -o $(BINARY_NAME) -v ./...
-	./$(BINARY_NAME)
+.PHONY: clean
+clean:
+	go clean
+	rm $(BINARY_NAME)
 
+.PHONY: deps
 deps:
-	$(GOGET) github.com/talento90/gorpo
+	go get -u github.com/golang/dep/cmd/dep
+	dep ensure
+
+.PHONY: build
+build: deps
+	go build -o $(BINARY_NAME) -v ./cmd/gorpoapi
+
+.PHONY: docker
+docker:
+	docker-compose up
+
+.PHONY: docker-debug
+docker-debug:
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml up

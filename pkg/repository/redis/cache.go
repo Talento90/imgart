@@ -20,23 +20,27 @@ func handleError(err error) error {
 	return errors.EInternal("Error occured", err)
 }
 
-type redisRepository struct {
-	client *redis.Client
+type redisCache struct {
+	client *Client
 }
 
-// NewRedisRepository creates a redis cache implamentation
-func NewRedisRepository(client *redis.Client) gorpo.Cache {
-	return &redisRepository{client: client}
+// New creates a redis cache implamentation
+func New(client *Client) gorpo.Cache {
+	return &redisCache{client: client}
 }
 
-func (r *redisRepository) Get(key string) ([]byte, error) {
+func (r *redisCache) Get(key string) ([]byte, error) {
 	result, err := r.client.Get(key).Bytes()
 
 	return result, handleError(err)
 }
 
-func (r *redisRepository) Set(key string, value []byte, expiration time.Duration) error {
+func (r *redisCache) Set(key string, value []byte, expiration time.Duration) error {
 	err := r.client.Set(key, value, expiration).Err()
 
 	return handleError(err)
+}
+
+func (r *redisCache) Check() error {
+	return r.client.Ping().Err()
 }

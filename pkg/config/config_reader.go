@@ -6,7 +6,7 @@ import (
 
 	"github.com/talento90/gorpo/pkg/httpapi"
 	"github.com/talento90/gorpo/pkg/log"
-	"github.com/talento90/gorpo/pkg/repository/mongodb"
+	"github.com/talento90/gorpo/pkg/repository/mongo"
 	"github.com/talento90/gorpo/pkg/repository/redis"
 )
 
@@ -31,9 +31,9 @@ func GetServerConfiguration() (httpapi.Configuration, error) {
 	return config, config.Validate()
 }
 
-// GetMongoConfiguration returns the mongodb configuration
-func GetMongoConfiguration() (mongodb.Configuration, error) {
-	config := mongodb.Configuration{
+// GetMongoConfiguration returns the mongo configuration
+func GetMongoConfiguration() (mongo.Configuration, error) {
+	config := mongo.Configuration{
 		Database: "gorpo",
 		MongoURL: getEnv("MONGO_SERVICE_NAME", "localhost:27017"),
 	}

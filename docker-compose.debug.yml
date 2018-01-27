@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  gorpo-api:
+    build: .
+    ports:
+      - "4005:4005"
+      - "2345:2345"
+    security_opt:
+      - seccomp:unconfined
+    command: dlv debug github.com/talento90/gorpo/cmd/gorpoapi -l 0.0.0.0:2345 --headless --log
