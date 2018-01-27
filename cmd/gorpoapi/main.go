@@ -53,13 +53,13 @@ func main() {
 	redisClient, err := redisClient()
 
 	if err != nil {
-		logger.Panic(err)
+		logger.Panic("Error connecting to Redis", err)
 	}
 
 	mongoSession, err := mongoSession()
 
 	if err != nil {
-		logger.Panic(err)
+		logger.Panic("Error connecting to Mongo", err)
 	}
 
 	var imgService gorpo.ImageService

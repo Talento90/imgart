@@ -19,7 +19,7 @@ func NewSession(c Configuration) (*Session, error) {
 	return &Session{Session: session, Database: c.Database}, nil
 }
 
-// Check checks if session is healthy
+// Check mongo health
 func (c *Session) Check() error {
 	return c.Ping()
 }

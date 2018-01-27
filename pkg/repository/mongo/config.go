@@ -11,7 +11,7 @@ type Configuration struct {
 	MongoURL string
 }
 
-// Validate validates if the configuration is valid
+// Validate if configuration is valid
 func (c *Configuration) Validate() error {
 
 	if c.Database == "" {

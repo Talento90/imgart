@@ -10,11 +10,11 @@ import (
 
 // Status represents application health
 type Status struct {
-	Service         string          `json:"service"`
-	Uptime          string          `json:"up_time"`
-	StartTime       string          `json:"start_time"`
-	MemoryAllocated uint64          `json:"memory_allocated"`
-	Counters        map[string]bool `json:"counters"`
+	Service         string            `json:"service"`
+	Uptime          string            `json:"up_time"`
+	StartTime       string            `json:"start_time"`
+	MemoryAllocated uint64            `json:"memory_allocated"`
+	HealthCheckers  map[string]string `json:"health_checkers"`
 }
 
 // Checker checks if the health of a service (database, external service)
@@ -63,12 +63,16 @@ func (h *health) GetStatus() *Status {
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)
 
-	checkers := map[string]bool{}
+	checkers := map[string]string{}
 
 	for k, c := range h.checkers {
 		err := c.Check()
 
-		checkers[k] = err == nil
+		if err != nil {
+			checkers[k] = err.Error()
+		} else {
+			checkers[k] = "OK"
+		}
 	}
 
 	return &Status{
@@ -76,7 +80,7 @@ func (h *health) GetStatus() *Status {
 		Uptime:          time.Now().Sub(h.startTime).String(),
 		StartTime:       h.startTime.Format(time.RFC3339),
 		MemoryAllocated: mem.Alloc,
-		Counters:        checkers,
+		HealthCheckers:  checkers,
 	}
 }
 
