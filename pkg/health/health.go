@@ -33,8 +33,9 @@ type Health interface {
 }
 
 // New returns a new Health
-func New() Health {
+func New(name string) Health {
 	return &health{
+		name:      name,
 		mutex:     &sync.Mutex{},
 		startTime: time.Now(),
 		checkers:  map[string]Checker{},
@@ -43,6 +44,7 @@ func New() Health {
 
 type health struct {
 	mutex     *sync.Mutex
+	name      string
 	startTime time.Time
 	checkers  map[string]Checker
 }
@@ -76,7 +78,7 @@ func (h *health) GetStatus() *Status {
 	}
 
 	return &Status{
-		Service:         "gorpo",
+		Service:         h.name,
 		Uptime:          time.Now().Sub(h.startTime).String(),
 		StartTime:       h.startTime.Format(time.RFC3339),
 		MemoryAllocated: mem.Alloc,

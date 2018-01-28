@@ -21,9 +21,7 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
 - support jpeg quality
 - Graceful Shutdown
-- Tests
 - Documentation page
 - Travis
 
 - Context (implement context mechanism)
-

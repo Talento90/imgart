@@ -357,13 +357,13 @@ func TestGetProfiles(t *testing.T) {
 		statusCode int
 		expected   string
 	}{
-		// {
-		// 	name:       "Get profiles",
-		// 	limit:      5,
-		// 	skip:       0,
-		// 	statusCode: 200,
-		// 	expected:   "test-5",
-		// },
+		{
+			name:       "Get profiles",
+			limit:      5,
+			skip:       0,
+			statusCode: 200,
+			expected:   "test-5",
+		},
 		{
 			name:       "Get profiles skip 5",
 			limit:      5,

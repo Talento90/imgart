@@ -81,7 +81,7 @@ func main() {
 		profileService = profile.NewLogService(logger, profileService)
 	}
 
-	health := health.New()
+	health := health.New("gorpo")
 	health.RegisterChecker("redis", redisClient)
 	health.RegisterChecker("mongo", mongoSession)
 
