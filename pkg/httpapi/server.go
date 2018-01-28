@@ -22,7 +22,7 @@ type ServerDependencies struct {
 func createRouter(dep *ServerDependencies) *httprouter.Router {
 	router := httprouter.New()
 
-	imgCtrl := newImagesController(dep.ImgService)
+	imgCtrl := newImagesController(dep.ImgService, dep.ProfileService)
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
 

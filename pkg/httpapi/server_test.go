@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"io/ioutil"
 	"net/http/httptest"
 	"testing"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/talento90/gorpo/pkg/image"
 	"github.com/talento90/gorpo/pkg/log"
 	"github.com/talento90/gorpo/pkg/mock"
+	"github.com/talento90/gorpo/pkg/profile"
 	"github.com/talento90/gorpo/pkg/repository/memory"
 )
 
@@ -15,11 +17,12 @@ func mockDependencies() *ServerDependencies {
 	imgRepository := mock.NewImageRepository()
 	effectRepo := memory.NewImageRepository(imgRepository)
 	imgService := image.NewService(imgRepository, effectRepo)
-	logger, _ := log.NewLogger(log.Configuration{})
+	profileService := profile.NewService(mock.NewProfileRepository())
+	logger, _ := log.NewLogger(log.Configuration{Output: ioutil.Discard})
 
 	dep := &ServerDependencies{
 		ImgService:     imgService,
-		ProfileService: mock.NewProfileRepository(),
+		ProfileService: profileService,
 		Logger:         logger,
 		Health:         health.New(),
 	}
