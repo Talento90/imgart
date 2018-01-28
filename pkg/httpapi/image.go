@@ -15,9 +15,10 @@ type imagesController struct {
 	profileService gorpo.ProfileService
 }
 
-func newImagesController(service gorpo.ImageService) *imagesController {
+func newImagesController(service gorpo.ImageService, profile gorpo.ProfileService) *imagesController {
 	return &imagesController{
-		service: service,
+		service:        service,
+		profileService: profile,
 	}
 }
 
