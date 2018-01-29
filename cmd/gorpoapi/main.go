@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/talento90/gorpo/pkg/cache"
 	"github.com/talento90/gorpo/pkg/config"
@@ -103,6 +107,29 @@ func main() {
 	defer server.Close()
 
 	logger.Info("Starting gorpo API")
+
+	var gracefulStop = make(chan os.Signal)
+
+	signal.Notify(gracefulStop, syscall.SIGTERM)
+	signal.Notify(gracefulStop, syscall.SIGINT)
+
+	go func() {
+		sig := <-gracefulStop
+
+		logger.Info(sig)
+
+		context.WithTimeout()
+		err := server.Shutdown(context.Background())
+
+		mongoSession.Close()
+		err := redisClient.Close()
+
+		if err != nil {
+
+		}
+
+		os.Exit(0)
+	}()
 
 	http.ListenAndServe(server.Addr, server.Handler)
 }
