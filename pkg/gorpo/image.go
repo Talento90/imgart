@@ -34,7 +34,7 @@ type ImageRepository interface {
 }
 
 // Encode image by their format (png, jpeg, bmp)
-func Encode(imgFormat string, img image.Image) ([]byte, error) {
+func Encode(imgFormat string, img image.Image, quality int) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	var err error
 
@@ -42,7 +42,7 @@ func Encode(imgFormat string, img image.Image) ([]byte, error) {
 	case "png":
 		err = png.Encode(buf, img)
 	case "jpeg":
-		err = jpeg.Encode(buf, img, &jpeg.Options{Quality: 100})
+		err = jpeg.Encode(buf, img, &jpeg.Options{Quality: quality})
 	case "bmp":
 		err = bmp.Encode(buf, img)
 	default:

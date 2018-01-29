@@ -19,7 +19,6 @@ https://peter.bourgon.org/go-best-practices-2016/#repository-structure
 
 ## Server
 
-- support jpeg quality
 - Graceful Shutdown
 - Documentation page
 - Travis

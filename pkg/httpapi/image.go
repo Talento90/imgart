@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/gorpo/pkg/errors"
@@ -20,6 +22,27 @@ func newImagesController(service gorpo.ImageService, profile gorpo.ProfileServic
 		service:        service,
 		profileService: profile,
 	}
+}
+
+func getJpegQuality(r *http.Request) int {
+	const defaultJpegQuality = 100
+
+	h := r.Header.Get("accept")
+	values := strings.Split(h, ";")
+
+	for _, v := range values {
+		if i := strings.Index(v, "q="); i > -1 {
+			q, err := strconv.Atoi(v[i+2:])
+
+			if err != nil {
+				return defaultJpegQuality
+			}
+
+			return q
+		}
+	}
+
+	return defaultJpegQuality
 }
 
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
@@ -54,9 +77,11 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
+	q := getJpegQuality(r)
+
 	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
 
-	bytes, err := gorpo.Encode(format, img)
+	bytes, err := gorpo.Encode(format, img, q)
 
 	w.Write(bytes)
 

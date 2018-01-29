@@ -79,7 +79,7 @@ func (c *imageCache) Set(url string, filters []gorpo.Filter, format string, img 
 		return err
 	}
 
-	bytes, err := gorpo.Encode(format, img)
+	bytes, err := gorpo.Encode(format, img, 100)
 
 	c.cache.Set(hash, bytes, time.Minute)
 

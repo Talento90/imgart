@@ -24,7 +24,7 @@ func mockDependencies() *ServerDependencies {
 		ImgService:     imgService,
 		ProfileService: profileService,
 		Logger:         logger,
-		Health:         health.New(),
+		Health:         health.New("gorpo"),
 	}
 
 	return dep
