@@ -20,4 +20,4 @@ RUN go build -o gorpoapi cmd/gorpoapi/main.go
 EXPOSE 4005 2345
 
 # Execute our application
-CMD ["./gorpoapi"]
+CMD ["/gorpoapi"]
