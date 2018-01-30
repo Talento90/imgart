@@ -24,7 +24,7 @@ func newImagesController(service gorpo.ImageService, profile gorpo.ProfileServic
 	}
 }
 
-func getJpegQuality(r *http.Request) int {
+func getQuality(r *http.Request) int {
 	const defaultJpegQuality = 100
 
 	h := r.Header.Get("accept")
@@ -77,7 +77,7 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	q := getJpegQuality(r)
+	q := getQuality(r)
 
 	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
 

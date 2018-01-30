@@ -1,4 +1,4 @@
-FROM golang
+FROM golang:1.8
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
 # We need to add ${GOPATH}/bin to PATH to have access dlv

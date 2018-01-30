@@ -66,7 +66,7 @@ func TestJpegQualityHeader(t *testing.T) {
 	r, _ := http.NewRequest("GET", "localhost/api/v1/images", nil)
 	r.Header.Set("Accept", "image/jpeg;q=60")
 
-	q := getJpegQuality(r)
+	q := getQuality(r)
 
 	if q != 60 {
 		t.Errorf("Expect quality 60 and got %d", q)
