@@ -1,4 +1,4 @@
-FROM golang
+FROM golang:1.8
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
 # We need to add ${GOPATH}/bin to PATH to have access dlv
@@ -20,4 +20,4 @@ RUN go build -o gorpoapi cmd/gorpoapi/main.go
 EXPOSE 4005 2345
 
 # Execute our application
-CMD ["/gorpoapi"]
+CMD ["./gorpoapi"]

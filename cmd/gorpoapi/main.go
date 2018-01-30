@@ -116,25 +116,33 @@ func main() {
 	server := httpServer(logger, redisClient, mongoSession)
 
 	go func() {
-		logger.Info("Server listening on port: ", server.Addr)
-		http.ListenAndServe(server.Addr, server.Handler)
+		<-gracefulShutdown
+		exitCode := 0
+
+		logger.Info("Starting graceful shutdown")
+
+		err = server.Shutdown(context.Background())
+
+		if err != nil {
+			exitCode = 1
+			logger.Error("Error closing server:", err)
+		}
+
+		mongoSession.Close()
+
+		err = redisClient.Close()
+
+		if err != nil {
+			exitCode = 1
+			logger.Error("Error closing redis:", err)
+		}
+
+		logger.Info("Graceful shutdown completed")
+
+		os.Exit(exitCode)
 	}()
 
-	sig := <-gracefulShutdown
+	logger.Info("Server listening on port: ", server.Addr)
 
-	logger.Info("Shutting down server: ", sig)
-
-	err = server.Shutdown(context.Background())
-
-	if err != nil {
-		logger.Error("Error closing server:", err)
-	}
-
-	mongoSession.Close()
-
-	err = redisClient.Close()
-
-	if err != nil {
-		logger.Error("Error closing redis:", err)
-	}
+	http.ListenAndServe(server.Addr, server.Handler)
 }
