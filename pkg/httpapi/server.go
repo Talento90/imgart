@@ -5,17 +5,17 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/health"
-	"github.com/talento90/gorpo/pkg/log"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/health"
+	"github.com/talento90/imgart/pkg/imgart"
+	"github.com/talento90/imgart/pkg/log"
 )
 
 // ServerDependencies contains all dependencies
 type ServerDependencies struct {
 	Logger         log.Logger
-	ImgService     gorpo.ImageService
-	ProfileService gorpo.ProfileService
+	ImgService     imgart.ImageService
+	ProfileService imgart.ProfileService
 	Health         health.Health
 }
 

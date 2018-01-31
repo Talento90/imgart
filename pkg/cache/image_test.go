@@ -4,9 +4,9 @@ import (
 	"image"
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/mock"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
+	"github.com/talento90/imgart/pkg/mock"
 )
 
 func TestImageGet(t *testing.T) {
@@ -14,9 +14,9 @@ func TestImageGet(t *testing.T) {
 
 	url := "http://image2.com/test.png"
 
-	filters := []gorpo.Filter{
-		gorpo.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
-		gorpo.Filter{ID: "rotate", Parameters: map[string]interface{}{"bgcolor": "black", "angle": 90}},
+	filters := []imgart.Filter{
+		imgart.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
+		imgart.Filter{ID: "rotate", Parameters: map[string]interface{}{"bgcolor": "black", "angle": 90}},
 	}
 
 	img, _, err := c.Get(url, filters)
@@ -41,14 +41,14 @@ func TestImageGet(t *testing.T) {
 func TestGenerateHashImage(t *testing.T) {
 	url := "http://image2.com/test.png"
 
-	filters1 := []gorpo.Filter{
-		gorpo.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
-		gorpo.Filter{ID: "rotate", Parameters: map[string]interface{}{"bgcolor": "black", "angle": 90}},
+	filters1 := []imgart.Filter{
+		imgart.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
+		imgart.Filter{ID: "rotate", Parameters: map[string]interface{}{"bgcolor": "black", "angle": 90}},
 	}
 
-	filters2 := []gorpo.Filter{
-		gorpo.Filter{ID: "resize", Parameters: map[string]interface{}{"height": 500, "width": 390}},
-		gorpo.Filter{ID: "rotate", Parameters: map[string]interface{}{"angle": 90, "bgcolor": "black"}},
+	filters2 := []imgart.Filter{
+		imgart.Filter{ID: "resize", Parameters: map[string]interface{}{"height": 500, "width": 390}},
+		imgart.Filter{ID: "rotate", Parameters: map[string]interface{}{"angle": 90, "bgcolor": "black"}},
 	}
 
 	hash, err1 := generateHash(url, filters1)
@@ -65,9 +65,9 @@ func TestGenerateHashImageMustBeDifferent(t *testing.T) {
 	url1 := "http://image2.com/test.png"
 	url2 := "http://image.com/test1.png"
 
-	filters := []gorpo.Filter{
-		gorpo.Filter{ID: "rotate", Parameters: map[string]interface{}{"angle": 90, "bgcolor": "black"}},
-		gorpo.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
+	filters := []imgart.Filter{
+		imgart.Filter{ID: "rotate", Parameters: map[string]interface{}{"angle": 90, "bgcolor": "black"}},
+		imgart.Filter{ID: "resize", Parameters: map[string]interface{}{"width": 390, "height": 500}},
 	}
 
 	hash, _ := generateHash(url1, filters)

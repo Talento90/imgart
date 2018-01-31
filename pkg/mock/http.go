@@ -3,11 +3,11 @@ package mock
 import (
 	"image"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 // NewImageRepository returns a mock implementation of ImageRepository
-func NewImageRepository() gorpo.ImageRepository {
+func NewImageRepository() imgart.ImageRepository {
 	return &httpMock{}
 }
 

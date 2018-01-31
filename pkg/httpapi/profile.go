@@ -6,15 +6,15 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type profilesController struct {
-	service gorpo.ProfileService
+	service imgart.ProfileService
 }
 
-func newProfilesController(service gorpo.ProfileService) *profilesController {
+func newProfilesController(service imgart.ProfileService) *profilesController {
 	return &profilesController{
 		service: service,
 	}

@@ -12,7 +12,7 @@
             "program": "${workspaceRoot}",
             "env": {},
             "args": [],
-            "remotePath": "/go/src/github.com/talento90/gorpo",
+            "remotePath": "/go/src/github.com/talento90/imgart",
             "port": 2345,
             "host": "127.0.0.1",
         },
@@ -24,7 +24,7 @@
             "remotePath": "",
             "port": 2345,
             "host": "127.0.0.1",
-            "program": "${workspaceRoot}/cmd/gorpoapi/main.go",
+            "program": "${workspaceRoot}/cmd/imgartapi/main.go",
             "env": {},
             "args": [],
             "showLog": true

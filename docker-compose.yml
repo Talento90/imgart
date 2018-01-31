@@ -1,15 +1,15 @@
 version: '2.1'
 services:
-  gorpo-api:
+  imgart-api:
     build: .
     ports:
       - "4005:4005"
     environment:
       - REDIS_SERVICE_NAME=redis-db:6379
       - MONGO_SERVICE_NAME=mongo-db:27017
-    command: ["go", "run", "/go/src/github.com/talento90/gorpo/cmd/gorpoapi/main.go"]
-    volumes:
-      - .:/go/src/github.com/talento90/gorpo
+    # command: ["go", "run", "/go/src/github.com/talento90/imgart/cmd/imgartapi/main.go"]
+    # volumes:
+    #   - .:/go/src/github.com/talento90/imgart
     links:
       - redis-db
       - mongo-db

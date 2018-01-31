@@ -3,11 +3,11 @@ package image
 import (
 	"image"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 // NewService creates an ImageService
-func NewService(imageRepo gorpo.ImageRepository, effectRepo gorpo.EffectRepository) gorpo.ImageService {
+func NewService(imageRepo imgart.ImageRepository, effectRepo imgart.EffectRepository) imgart.ImageService {
 	return &service{
 		imageRepo:  imageRepo,
 		effectRepo: effectRepo,
@@ -15,11 +15,11 @@ func NewService(imageRepo gorpo.ImageRepository, effectRepo gorpo.EffectReposito
 }
 
 type service struct {
-	imageRepo  gorpo.ImageRepository
-	effectRepo gorpo.EffectRepository
+	imageRepo  imgart.ImageRepository
+	effectRepo imgart.EffectRepository
 }
 
-func (s *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, string, error) {
+func (s *service) Process(imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
 	img, imgType, err := s.imageRepo.Get(imgSrc)
 
 	if err != nil {
@@ -43,10 +43,10 @@ func (s *service) Process(imgSrc string, filters []gorpo.Filter) (image.Image, s
 	return img, imgType, nil
 }
 
-func (s *service) Effects() ([]gorpo.Effect, error) {
+func (s *service) Effects() ([]imgart.Effect, error) {
 	return s.effectRepo.GetEffects()
 }
 
-func (s *service) Effect(id string) (gorpo.Effect, error) {
+func (s *service) Effect(id string) (imgart.Effect, error) {
 	return s.effectRepo.GetEffect(id)
 }

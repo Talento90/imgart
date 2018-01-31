@@ -4,24 +4,24 @@ import (
 	"sync"
 	"time"
 
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type profileRepo struct {
 	mutex      *sync.Mutex
-	repository []gorpo.Profile
+	repository []imgart.Profile
 }
 
 // NewProfileRepository returns a mock implemation of ProfileRepository interface
-func NewProfileRepository() gorpo.ProfileRepository {
+func NewProfileRepository() imgart.ProfileRepository {
 	return &profileRepo{
 		mutex:      &sync.Mutex{},
-		repository: []gorpo.Profile{},
+		repository: []imgart.Profile{},
 	}
 }
 
-func (r *profileRepo) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
+func (r *profileRepo) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -30,7 +30,7 @@ func (r *profileRepo) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
 	return &p, nil
 }
 
-func (r *profileRepo) Get(id string) (*gorpo.Profile, error) {
+func (r *profileRepo) Get(id string) (*imgart.Profile, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -43,7 +43,7 @@ func (r *profileRepo) Get(id string) (*gorpo.Profile, error) {
 	return nil, errors.ENotExists("Profile does not exists", nil)
 }
 
-func (r *profileRepo) Create(profile *gorpo.Profile) error {
+func (r *profileRepo) Create(profile *imgart.Profile) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -55,7 +55,7 @@ func (r *profileRepo) Create(profile *gorpo.Profile) error {
 	return nil
 }
 
-func (r *profileRepo) Update(profile *gorpo.Profile) error {
+func (r *profileRepo) Update(profile *imgart.Profile) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 

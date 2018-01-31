@@ -1,6 +1,6 @@
 package redis
 
-import "github.com/talento90/gorpo/pkg/errors"
+import "github.com/talento90/imgart/pkg/errors"
 
 // Configuration for Redis Client
 type Configuration struct {

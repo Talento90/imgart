@@ -7,7 +7,7 @@ import (
 	"net/url"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/imgart/pkg/errors"
 )
 
 var colorsList = []string{"black", "opaque", "transparent", "white"}

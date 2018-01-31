@@ -1,4 +1,4 @@
-BINARY_NAME=gorpoapi
+BINARY_NAME=imgartapi
 
 default: test vet
 
@@ -26,7 +26,7 @@ deps:
 
 .PHONY: build
 build: deps
-	go build -o $(BINARY_NAME) -v ./cmd/gorpoapi
+	go build -o $(BINARY_NAME) -v ./cmd/imgartapi
 
 .PHONY: docker
 docker:

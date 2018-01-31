@@ -1,11 +1,11 @@
 package effect
 
-import "github.com/talento90/gorpo/pkg/gorpo"
+import "github.com/talento90/imgart/pkg/imgart"
 
 type effect struct {
 	id          string
 	description string
-	parameters  gorpo.Parameters
+	parameters  imgart.Parameters
 }
 
 func (e *effect) ID() string {
@@ -16,6 +16,6 @@ func (e *effect) Description() string {
 	return e.description
 }
 
-func (e *effect) Parameters() gorpo.Parameters {
+func (e *effect) Parameters() imgart.Parameters {
 	return e.parameters
 }

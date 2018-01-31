@@ -1,33 +1,33 @@
 package profile
 
 import (
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type service struct {
-	repository gorpo.ProfileRepository
+	repository imgart.ProfileRepository
 }
 
 // NewService returns a profile service
-func NewService(repository gorpo.ProfileRepository) gorpo.ProfileService {
+func NewService(repository imgart.ProfileRepository) imgart.ProfileService {
 	return &service{
 		repository: repository,
 	}
 }
 
-func (s *service) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
+func (s *service) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
 	return s.repository.GetAll(limit, skip)
 }
 
-func (s *service) Get(id string) (*gorpo.Profile, error) {
+func (s *service) Get(id string) (*imgart.Profile, error) {
 	return s.repository.Get(id)
 }
 
-func (s *service) Create(profile *gorpo.Profile) error {
+func (s *service) Create(profile *imgart.Profile) error {
 	return s.repository.Create(profile)
 }
 
-func (s *service) Update(profile *gorpo.Profile) error {
+func (s *service) Update(profile *imgart.Profile) error {
 	return s.repository.Update(profile)
 }
 

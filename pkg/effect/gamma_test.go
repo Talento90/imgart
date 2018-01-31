@@ -4,7 +4,7 @@ import (
 	"image"
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/imgart/pkg/errors"
 )
 
 func TestGammaTransform(t *testing.T) {

@@ -1,6 +1,6 @@
 package mongo
 
-import "github.com/talento90/gorpo/pkg/errors"
+import "github.com/talento90/imgart/pkg/errors"
 
 // Configuration for MongoDB
 type Configuration struct {

@@ -3,7 +3,7 @@ package effect
 import (
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/imgart/pkg/errors"
 )
 
 func TestIntegerBinder(t *testing.T) {

@@ -5,12 +5,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/health"
-	"github.com/talento90/gorpo/pkg/image"
-	"github.com/talento90/gorpo/pkg/log"
-	"github.com/talento90/gorpo/pkg/mock"
-	"github.com/talento90/gorpo/pkg/profile"
-	"github.com/talento90/gorpo/pkg/repository/memory"
+	"github.com/talento90/imgart/pkg/health"
+	"github.com/talento90/imgart/pkg/image"
+	"github.com/talento90/imgart/pkg/log"
+	"github.com/talento90/imgart/pkg/mock"
+	"github.com/talento90/imgart/pkg/profile"
+	"github.com/talento90/imgart/pkg/repository/memory"
 )
 
 func mockDependencies() *ServerDependencies {
@@ -24,7 +24,7 @@ func mockDependencies() *ServerDependencies {
 		ImgService:     imgService,
 		ProfileService: profileService,
 		Logger:         logger,
-		Health:         health.New("gorpo"),
+		Health:         health.New("imgart"),
 	}
 
 	return dep

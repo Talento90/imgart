@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type brightness struct {
@@ -12,13 +12,13 @@ type brightness struct {
 }
 
 // NewBrightness creates an Effect changes the image brightnness
-func NewBrightness() gorpo.Effect {
+func NewBrightness() imgart.Effect {
 	return &brightness{
 		effect: effect{
 			id:          "brightness",
 			description: "Brightness - Change the image brightness",
-			parameters: gorpo.Parameters{
-				"percentage": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"percentage": imgart.Parameter{
 					Description: "Percentage of the brightness.",
 					Required:    true,
 					Example:     0.5,
