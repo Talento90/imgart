@@ -8,16 +8,16 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type imagesController struct {
-	service        gorpo.ImageService
-	profileService gorpo.ProfileService
+	service        imgart.ImageService
+	profileService imgart.ProfileService
 }
 
-func newImagesController(service gorpo.ImageService, profile gorpo.ProfileService) *imagesController {
+func newImagesController(service imgart.ImageService, profile imgart.ProfileService) *imagesController {
 	return &imagesController{
 		service:        service,
 		profileService: profile,
@@ -46,7 +46,7 @@ func getQuality(r *http.Request) int {
 }
 
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
-	var filters []gorpo.Filter
+	var filters []imgart.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("filters")
 	profileID := r.URL.Query().Get("profile")
@@ -81,7 +81,7 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 
 	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
 
-	bytes, err := gorpo.Encode(format, img, q)
+	bytes, err := imgart.Encode(format, img, q)
 
 	w.Write(bytes)
 

@@ -5,9 +5,9 @@ import (
 	"image"
 	"net/http"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 
-	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/imgart/pkg/errors"
 )
 
 type httpdownloader struct {
@@ -15,7 +15,7 @@ type httpdownloader struct {
 }
 
 // NewImageRepository creates a Downloader that get an image over the HTTP protocol.
-func NewImageRepository() gorpo.ImageRepository {
+func NewImageRepository() imgart.ImageRepository {
 	return &httpdownloader{
 		client: http.DefaultClient,
 	}

@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type mockCache struct {
@@ -34,7 +34,7 @@ func (c *mockCache) Set(key string, value []byte, expiration time.Duration) erro
 }
 
 // NewCache returns a new mock of Cache interface
-func NewCache() gorpo.Cache {
+func NewCache() imgart.Cache {
 	return &mockCache{
 		mutex:      &sync.Mutex{},
 		repository: map[string][]byte{},

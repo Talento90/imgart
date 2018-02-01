@@ -1,20 +1,20 @@
 package httpapi
 
 import (
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type createProfileModel struct {
-	ID      string         `json:"id"`
-	Filters []gorpo.Filter `json:"filters"`
+	ID      string          `json:"id"`
+	Filters []imgart.Filter `json:"filters"`
 }
 
 type updateProfileModel struct {
-	Filters []gorpo.Filter `json:"filters"`
+	Filters []imgart.Filter `json:"filters"`
 }
 
-func (m *createProfileModel) toProfile() (*gorpo.Profile, error) {
+func (m *createProfileModel) toProfile() (*imgart.Profile, error) {
 	if m.ID == "" {
 		return nil, errors.EValidation("id is missing", nil)
 	}
@@ -23,10 +23,10 @@ func (m *createProfileModel) toProfile() (*gorpo.Profile, error) {
 		return nil, errors.EValidation("filters are empty", nil)
 	}
 
-	return &gorpo.Profile{ID: m.ID, Filters: m.Filters}, nil
+	return &imgart.Profile{ID: m.ID, Filters: m.Filters}, nil
 }
 
-func (m *updateProfileModel) toProfile(profile *gorpo.Profile) (*gorpo.Profile, error) {
+func (m *updateProfileModel) toProfile(profile *imgart.Profile) (*imgart.Profile, error) {
 	if len(m.Filters) == 0 {
 		return nil, errors.EValidation("effects are empty", nil)
 	}

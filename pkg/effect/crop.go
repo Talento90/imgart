@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type crop struct {
@@ -12,13 +12,13 @@ type crop struct {
 }
 
 // NewCrop creates an Effect that crops the image
-func NewCrop() gorpo.Effect {
+func NewCrop() imgart.Effect {
 	return &crop{
 		effect: effect{
 			id:          "crop",
 			description: "Crop - Crops image",
-			parameters: gorpo.Parameters{
-				"rectangle": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"rectangle": imgart.Parameter{
 					Description: "Region to crop (x0,y0,x1,y1)",
 					Required:    true,
 					Example:     "[0,0,100,200]",

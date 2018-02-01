@@ -4,8 +4,8 @@ import (
 	"image"
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/mock"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/mock"
 )
 
 func TestOverlayTransform(t *testing.T) {

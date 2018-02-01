@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type blur struct {
@@ -12,13 +12,13 @@ type blur struct {
 }
 
 // NewBlur creates an Effect that blurrs an image
-func NewBlur() gorpo.Effect {
+func NewBlur() imgart.Effect {
 	return &blur{
 		effect: effect{
 			id:          "blur",
 			description: "Blur - Gaussian Blur",
-			parameters: gorpo.Parameters{
-				"sigma": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"sigma": imgart.Parameter{
 					Description: "How much the image will be blurred.",
 					Required:    true,
 					Example:     0.5,

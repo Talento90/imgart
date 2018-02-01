@@ -3,7 +3,7 @@ package httpapi
 import (
 	"time"
 
-	"github.com/talento90/gorpo/pkg/errors"
+	"github.com/talento90/imgart/pkg/errors"
 )
 
 // Configuration for running the server

@@ -7,18 +7,18 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/talento90/gorpo/pkg/cache"
-	"github.com/talento90/gorpo/pkg/config"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/health"
-	"github.com/talento90/gorpo/pkg/httpapi"
-	"github.com/talento90/gorpo/pkg/image"
-	"github.com/talento90/gorpo/pkg/log"
-	"github.com/talento90/gorpo/pkg/profile"
-	httprepository "github.com/talento90/gorpo/pkg/repository/http"
-	"github.com/talento90/gorpo/pkg/repository/memory"
-	"github.com/talento90/gorpo/pkg/repository/mongo"
-	"github.com/talento90/gorpo/pkg/repository/redis"
+	"github.com/talento90/imgart/pkg/cache"
+	"github.com/talento90/imgart/pkg/config"
+	"github.com/talento90/imgart/pkg/health"
+	"github.com/talento90/imgart/pkg/httpapi"
+	"github.com/talento90/imgart/pkg/image"
+	"github.com/talento90/imgart/pkg/imgart"
+	"github.com/talento90/imgart/pkg/log"
+	"github.com/talento90/imgart/pkg/profile"
+	httprepository "github.com/talento90/imgart/pkg/repository/http"
+	"github.com/talento90/imgart/pkg/repository/memory"
+	"github.com/talento90/imgart/pkg/repository/mongo"
+	"github.com/talento90/imgart/pkg/repository/redis"
 )
 
 func mongoSession() (*mongo.Session, error) {
@@ -42,7 +42,7 @@ func redisClient() (*redis.Client, error) {
 }
 
 func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session) *http.Server {
-	var imgService gorpo.ImageService
+	var imgService imgart.ImageService
 	{
 		redisCache := redis.New(rc)
 		imgRepository := httprepository.NewImageRepository()
@@ -54,14 +54,14 @@ func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session) *http.Server 
 		imgService = image.NewLogService(l, imgService)
 	}
 
-	var profileService gorpo.ProfileService
+	var profileService imgart.ProfileService
 	{
 		profileRepository := mongo.NewProfileRepository(ms)
 		profileService = profile.NewService(profileRepository)
 		profileService = profile.NewLogService(l, profileService)
 	}
 
-	health := health.New("gorpo")
+	health := health.New("imgart")
 	health.RegisterChecker("redis", rc)
 	health.RegisterChecker("mongo", ms)
 

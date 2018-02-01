@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type resize struct {
@@ -12,25 +12,25 @@ type resize struct {
 }
 
 // NewResize creates an Effect that resizes an image
-func NewResize() gorpo.Effect {
+func NewResize() imgart.Effect {
 	return &resize{
 		effect: effect{
 			id:          "resize",
 			description: "Resize - resizes an image",
-			parameters: gorpo.Parameters{
-				"width": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"width": imgart.Parameter{
 					Description: "Width in px",
 					Required:    true,
 					Example:     500,
 					Type:        "integer",
 				},
-				"height": gorpo.Parameter{
+				"height": imgart.Parameter{
 					Description: "Height in px",
 					Required:    true,
 					Example:     350,
 					Type:        "integer",
 				},
-				"filter": gorpo.Parameter{
+				"filter": imgart.Parameter{
 					Description: "Resample filter",
 					Required:    false,
 					Example:     "linear",

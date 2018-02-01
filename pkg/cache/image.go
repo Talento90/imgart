@@ -8,27 +8,27 @@ import (
 	"image"
 	"time"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 // Image caches images by the given URL and filters
 type Image interface {
-	Get(url string, filters []gorpo.Filter) (image.Image, string, error)
-	Set(url string, filters []gorpo.Filter, format string, value image.Image) error
+	Get(url string, filters []imgart.Filter) (image.Image, string, error)
+	Set(url string, filters []imgart.Filter, format string, value image.Image) error
 }
 
 // NewImage creates a new image cache
-func NewImage(cache gorpo.Cache) Image {
+func NewImage(cache imgart.Cache) Image {
 	return &imageCache{
 		cache: cache,
 	}
 }
 
 type imageCache struct {
-	cache gorpo.Cache
+	cache imgart.Cache
 }
 
-func generateHash(url string, filters []gorpo.Filter) (string, error) {
+func generateHash(url string, filters []imgart.Filter) (string, error) {
 	arrBytes := []byte{}
 
 	arrBytes = append(arrBytes, url...)
@@ -48,7 +48,7 @@ func generateHash(url string, filters []gorpo.Filter) (string, error) {
 	return fmt.Sprintf("%x", hash), nil
 }
 
-func (c *imageCache) Get(url string, filters []gorpo.Filter) (image.Image, string, error) {
+func (c *imageCache) Get(url string, filters []imgart.Filter) (image.Image, string, error) {
 	hash, err := generateHash(url, filters)
 
 	if err != nil {
@@ -72,14 +72,14 @@ func (c *imageCache) Get(url string, filters []gorpo.Filter) (image.Image, strin
 	return img, format, err
 }
 
-func (c *imageCache) Set(url string, filters []gorpo.Filter, format string, img image.Image) error {
+func (c *imageCache) Set(url string, filters []imgart.Filter, format string, img image.Image) error {
 	hash, err := generateHash(url, filters)
 
 	if err != nil {
 		return err
 	}
 
-	bytes, err := gorpo.Encode(format, img, 100)
+	bytes, err := imgart.Encode(format, img, 100)
 
 	c.cache.Set(hash, bytes, time.Minute)
 

@@ -3,8 +3,8 @@ package mongo
 import (
 	"time"
 
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 	"gopkg.in/mgo.v2"
 )
 
@@ -30,39 +30,39 @@ func handleError(err error) error {
 }
 
 // NewProfileRepository returns a profile mongo repository
-func NewProfileRepository(session *Session) gorpo.ProfileRepository {
+func NewProfileRepository(session *Session) imgart.ProfileRepository {
 	return &profileRepository{
 		collection: "profiles",
 		session:    session,
 	}
 }
 
-func (r *profileRepository) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
+func (r *profileRepository) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
 	session := r.session.Copy()
 
 	defer session.Close()
 	c := session.DB(r.session.Database).C(r.collection)
 
-	profiles := make([]gorpo.Profile, 0, limit)
+	profiles := make([]imgart.Profile, 0, limit)
 	err := c.Find(nil).Skip(skip).Limit(limit).All(&profiles)
 
 	return &profiles, handleError(err)
 }
 
-func (r *profileRepository) Get(id string) (*gorpo.Profile, error) {
+func (r *profileRepository) Get(id string) (*imgart.Profile, error) {
 	session := r.session.Copy()
 
 	defer session.Close()
 
 	c := session.DB(r.session.Database).C(r.collection)
 
-	profile := &gorpo.Profile{}
+	profile := &imgart.Profile{}
 	err := c.FindId(id).One(profile)
 
 	return profile, handleError(err)
 }
 
-func (r *profileRepository) Create(profile *gorpo.Profile) error {
+func (r *profileRepository) Create(profile *imgart.Profile) error {
 	session := r.session.Copy()
 	defer session.Close()
 
@@ -76,7 +76,7 @@ func (r *profileRepository) Create(profile *gorpo.Profile) error {
 	return handleError(err)
 }
 
-func (r *profileRepository) Update(profile *gorpo.Profile) error {
+func (r *profileRepository) Update(profile *imgart.Profile) error {
 	session := r.session.Copy()
 	defer session.Close()
 

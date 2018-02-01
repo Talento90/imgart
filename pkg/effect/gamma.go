@@ -4,7 +4,7 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type gamma struct {
@@ -12,13 +12,13 @@ type gamma struct {
 }
 
 // NewGamma creates an Effect changes the image gamma
-func NewGamma() gorpo.Effect {
+func NewGamma() imgart.Effect {
 	return &gamma{
 		effect: effect{
 			id:          "gamma",
 			description: "Gamma - Change the image gamma",
-			parameters: gorpo.Parameters{
-				"gamma": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"gamma": imgart.Parameter{
 					Description: "Percentage of the gamma correction.",
 					Required:    true,
 					Example:     0.75,

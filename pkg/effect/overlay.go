@@ -4,35 +4,35 @@ import (
 	"image"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type overlay struct {
-	imgRepository gorpo.ImageRepository
+	imgRepository imgart.ImageRepository
 	effect
 }
 
 // NewOverlay creates an Effect that overlay an image with other image
-func NewOverlay(imgRepository gorpo.ImageRepository) gorpo.Effect {
+func NewOverlay(imgRepository imgart.ImageRepository) imgart.Effect {
 	return &overlay{
 		imgRepository: imgRepository,
 		effect: effect{
 			id:          "overlay",
 			description: "Overlay - Overlay image",
-			parameters: gorpo.Parameters{
-				"position": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"position": imgart.Parameter{
 					Description: "Position for the overlay image",
 					Required:    true,
 					Example:     "[1,2]",
 					Type:        "array[int]",
 				},
-				"url": gorpo.Parameter{
+				"url": imgart.Parameter{
 					Description: "Url for overlay image",
 					Required:    true,
 					Example:     "http://image.png",
 					Type:        "string",
 				},
-				"opacity": gorpo.Parameter{
+				"opacity": imgart.Parameter{
 					Description: "Opacity for overlay image",
 					Required:    false,
 					Example:     90,

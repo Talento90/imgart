@@ -3,19 +3,19 @@ package memory
 import (
 	"fmt"
 
-	"github.com/talento90/gorpo/pkg/effect"
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/effect"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type effectRepository struct {
-	effects []gorpo.Effect
+	effects []imgart.Effect
 }
 
 // NewImageRepository creates a memory repository for Effect entity
-func NewImageRepository(imgRepo gorpo.ImageRepository) gorpo.EffectRepository {
+func NewImageRepository(imgRepo imgart.ImageRepository) imgart.EffectRepository {
 	return &effectRepository{
-		effects: []gorpo.Effect{
+		effects: []imgart.Effect{
 			effect.NewRotate(),
 			effect.NewResize(),
 			effect.NewOverlay(imgRepo),
@@ -28,11 +28,11 @@ func NewImageRepository(imgRepo gorpo.ImageRepository) gorpo.EffectRepository {
 	}
 }
 
-func (r *effectRepository) GetEffects() ([]gorpo.Effect, error) {
+func (r *effectRepository) GetEffects() ([]imgart.Effect, error) {
 	return r.effects, nil
 }
 
-func (r *effectRepository) GetEffect(id string) (gorpo.Effect, error) {
+func (r *effectRepository) GetEffect(id string) (imgart.Effect, error) {
 	for _, effect := range r.effects {
 		if effect.ID() == id {
 			return effect, nil

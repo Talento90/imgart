@@ -5,7 +5,7 @@ LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 ENV PATH ${GOPATH}/bin:$PATH
 
 # Setting working directory
-WORKDIR ${GOPATH}/src/github.com/talento90/gorpo
+WORKDIR ${GOPATH}/src/github.com/talento90/imgart
 
 # Copy source code
 COPY . .
@@ -14,10 +14,10 @@ COPY . .
 RUN go get github.com/derekparker/delve/cmd/dlv
 
 # Build our application
-RUN go build -o gorpoapi cmd/gorpoapi/main.go
+RUN go build -o imgartapi cmd/imgartapi/main.go
 
 # Expose server and debug port
 EXPOSE 4005 2345
 
 # Execute our application
-CMD ["./gorpoapi"]
+CMD ["./imgartapi"]

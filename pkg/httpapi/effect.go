@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type effectsController struct {
-	service gorpo.ImageService
+	service imgart.ImageService
 }
 
-func newEffectsController(service gorpo.ImageService) *effectsController {
+func newEffectsController(service imgart.ImageService) *effectsController {
 	return &effectsController{
 		service: service,
 	}

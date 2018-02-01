@@ -5,7 +5,7 @@ import (
 	"image/color"
 
 	"github.com/disintegration/imaging"
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type rotate struct {
@@ -13,19 +13,19 @@ type rotate struct {
 }
 
 // NewRotate creates an Effect that rotates an image
-func NewRotate() gorpo.Effect {
+func NewRotate() imgart.Effect {
 	return &rotate{
 		effect: effect{
 			id:          "rotate",
 			description: "Rotate - rotates an image",
-			parameters: gorpo.Parameters{
-				"angle": gorpo.Parameter{
+			parameters: imgart.Parameters{
+				"angle": imgart.Parameter{
 					Description: "Rotation angle in degreesº",
 					Required:    true,
 					Example:     -90,
 					Type:        "integer",
 				},
-				"bgcolor": gorpo.Parameter{
+				"bgcolor": imgart.Parameter{
 					Description: "Color of uncovered zones",
 					Required:    false,
 					Example:     "black",

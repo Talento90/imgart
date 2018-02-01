@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 func TestCreateProfile(t *testing.T) {
@@ -23,8 +23,8 @@ func TestCreateProfile(t *testing.T) {
 	}{
 		{
 			name: "Create profile",
-			body: createProfileModel{ID: "test", Filters: []gorpo.Filter{
-				gorpo.Filter{
+			body: createProfileModel{ID: "test", Filters: []imgart.Filter{
+				imgart.Filter{
 					ID:         "rotate",
 					Parameters: map[string]interface{}{"angle": 90.0},
 				},
@@ -33,7 +33,7 @@ func TestCreateProfile(t *testing.T) {
 		},
 		{
 			name:       "Create invalid profile",
-			body:       createProfileModel{ID: "test", Filters: []gorpo.Filter{}},
+			body:       createProfileModel{ID: "test", Filters: []imgart.Filter{}},
 			statusCode: 422,
 		},
 	}
@@ -63,7 +63,7 @@ func TestCreateProfile(t *testing.T) {
 					t.Error(err)
 				}
 
-				p := gorpo.Profile{}
+				p := imgart.Profile{}
 
 				bytes, err := ioutil.ReadAll(res.Body)
 
@@ -88,10 +88,10 @@ func TestCreateProfile(t *testing.T) {
 func TestUpdateProfile(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&gorpo.Profile{
+	dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
-		Filters: []gorpo.Filter{
-			gorpo.Filter{
+		Filters: []imgart.Filter{
+			imgart.Filter{
 				ID:         "rotate",
 				Parameters: map[string]interface{}{"angle": 90.0},
 			},
@@ -113,8 +113,8 @@ func TestUpdateProfile(t *testing.T) {
 			name:    "Update profile",
 			profile: "test",
 			body: updateProfileModel{
-				Filters: []gorpo.Filter{
-					gorpo.Filter{
+				Filters: []imgart.Filter{
+					imgart.Filter{
 						ID:         "gamma",
 						Parameters: map[string]interface{}{"sigma": 90.0},
 					},
@@ -125,7 +125,7 @@ func TestUpdateProfile(t *testing.T) {
 			name:    "Update invalid profile",
 			profile: "test",
 			body: updateProfileModel{
-				Filters: []gorpo.Filter{}},
+				Filters: []imgart.Filter{}},
 			statusCode: 422,
 		},
 		{
@@ -166,7 +166,7 @@ func TestUpdateProfile(t *testing.T) {
 					t.Error(err)
 				}
 
-				p := gorpo.Profile{}
+				p := imgart.Profile{}
 
 				bytes, err := ioutil.ReadAll(res.Body)
 
@@ -191,10 +191,10 @@ func TestUpdateProfile(t *testing.T) {
 func TestDeleteProfile(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&gorpo.Profile{
+	dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
-		Filters: []gorpo.Filter{
-			gorpo.Filter{
+		Filters: []imgart.Filter{
+			imgart.Filter{
 				ID:         "rotate",
 				Parameters: map[string]interface{}{"angle": 90.0},
 			},
@@ -259,10 +259,10 @@ func TestDeleteProfile(t *testing.T) {
 func TestGetProfileById(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&gorpo.Profile{
+	dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
-		Filters: []gorpo.Filter{
-			gorpo.Filter{
+		Filters: []imgart.Filter{
+			imgart.Filter{
 				ID:         "rotate",
 				Parameters: map[string]interface{}{"angle": 90.0},
 			},
@@ -308,7 +308,7 @@ func TestGetProfileById(t *testing.T) {
 					t.Error(err)
 				}
 
-				p := gorpo.Profile{}
+				p := imgart.Profile{}
 
 				bytes, err := ioutil.ReadAll(res.Body)
 
@@ -334,10 +334,10 @@ func TestGetProfiles(t *testing.T) {
 	dep := mockDependencies()
 
 	for i := 1; i <= 10; i++ {
-		dep.ProfileService.Create(&gorpo.Profile{
+		dep.ProfileService.Create(&imgart.Profile{
 			ID: fmt.Sprintf("test-%d", i),
-			Filters: []gorpo.Filter{
-				gorpo.Filter{
+			Filters: []imgart.Filter{
+				imgart.Filter{
 					ID:         "rotate",
 					Parameters: map[string]interface{}{"angle": 90.0},
 				},
@@ -385,7 +385,7 @@ func TestGetProfiles(t *testing.T) {
 				t.Errorf("Expect status code %d and got: %d", tc.statusCode, res.StatusCode)
 			}
 
-			p := []gorpo.Profile{}
+			p := []imgart.Profile{}
 
 			bytes, err := ioutil.ReadAll(res.Body)
 

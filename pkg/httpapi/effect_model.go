@@ -1,14 +1,14 @@
 package httpapi
 
-import "github.com/talento90/gorpo/pkg/gorpo"
+import "github.com/talento90/imgart/pkg/imgart"
 
 type effectModel struct {
-	ID          string           `json:"id"`
-	Description string           `json:"description"`
-	Parameters  gorpo.Parameters `json:"parameters"`
+	ID          string            `json:"id"`
+	Description string            `json:"description"`
+	Parameters  imgart.Parameters `json:"parameters"`
 }
 
-func newEffectModel(e gorpo.Effect) effectModel {
+func newEffectModel(e imgart.Effect) effectModel {
 	return effectModel{
 		ID:          e.ID(),
 		Description: e.Description(),

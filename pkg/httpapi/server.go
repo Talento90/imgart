@@ -5,17 +5,17 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/gorpo/pkg/errors"
-	"github.com/talento90/gorpo/pkg/gorpo"
-	"github.com/talento90/gorpo/pkg/health"
-	"github.com/talento90/gorpo/pkg/log"
+	"github.com/talento90/imgart/pkg/errors"
+	"github.com/talento90/imgart/pkg/health"
+	"github.com/talento90/imgart/pkg/imgart"
+	"github.com/talento90/imgart/pkg/log"
 )
 
 // ServerDependencies contains all dependencies
 type ServerDependencies struct {
 	Logger         log.Logger
-	ImgService     gorpo.ImageService
-	ProfileService gorpo.ProfileService
+	ImgService     imgart.ImageService
+	ProfileService imgart.ProfileService
 	Health         health.Health
 }
 
@@ -25,6 +25,10 @@ func createRouter(dep *ServerDependencies) *httprouter.Router {
 	imgCtrl := newImagesController(dep.ImgService, dep.ProfileService)
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
+
+	router.HandlerFunc("GET", "/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/api/v1/docs", http.StatusFound)
+	})
 
 	router.Handler("GET", "/health", dep.Health)
 

@@ -3,25 +3,25 @@ package profile
 import (
 	"time"
 
-	"github.com/talento90/gorpo/pkg/log"
+	"github.com/talento90/imgart/pkg/log"
 
-	"github.com/talento90/gorpo/pkg/gorpo"
+	"github.com/talento90/imgart/pkg/imgart"
 )
 
 type logService struct {
 	logger  log.Logger
-	service gorpo.ProfileService
+	service imgart.ProfileService
 }
 
 // NewLogService creates a log wrapper around ProfileService
-func NewLogService(logger log.Logger, service gorpo.ProfileService) gorpo.ProfileService {
+func NewLogService(logger log.Logger, service imgart.ProfileService) imgart.ProfileService {
 	return &logService{
 		logger:  logger,
 		service: service,
 	}
 }
 
-func (ls *logService) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
+func (ls *logService) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(
 			log.Fields{
@@ -34,7 +34,7 @@ func (ls *logService) GetAll(limit int, skip int) (*[]gorpo.Profile, error) {
 	return ls.service.GetAll(limit, skip)
 }
 
-func (ls *logService) Get(id string) (*gorpo.Profile, error) {
+func (ls *logService) Get(id string) (*imgart.Profile, error) {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(
 			log.Fields{
@@ -46,7 +46,7 @@ func (ls *logService) Get(id string) (*gorpo.Profile, error) {
 	return ls.service.Get(id)
 }
 
-func (ls *logService) Create(profile *gorpo.Profile) error {
+func (ls *logService) Create(profile *imgart.Profile) error {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(
 			log.Fields{
@@ -58,7 +58,7 @@ func (ls *logService) Create(profile *gorpo.Profile) error {
 	return ls.service.Create(profile)
 }
 
-func (ls *logService) Update(profile *gorpo.Profile) error {
+func (ls *logService) Update(profile *imgart.Profile) error {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(
 			log.Fields{

@@ -1,4 +1,4 @@
-# gorpo
+# imgart
 Service to modify images.
 
 ## Third Party Dependencies
