@@ -14,7 +14,7 @@ func TestBlurTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"sigma": 0.9,
 			},

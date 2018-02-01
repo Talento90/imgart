@@ -44,6 +44,6 @@
   name = "github.com/go-openapi/runtime"
 
 [[metadata.heroku]]
-  root-package = "github.com/talento90/imgart/cmd/imgartapi"
+  root-package = "github.com/talento90/imgart"
   go-version = "go1.8"
   ensure = "true"

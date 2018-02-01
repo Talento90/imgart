@@ -14,7 +14,7 @@ func TestCropTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"rectangle": []interface{}{100.0, 50.0, 200.0, 300.0},
 			}},

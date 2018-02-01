@@ -22,7 +22,7 @@ func TestErrorMessage(t *testing.T) {
 }
 
 func TestErrorCauseMessage(t *testing.T) {
-	errMsg := "Some error occured"
+	errMsg := "Some error occurred"
 	err := EValidation("Validation error", errors.New(errMsg))
 
 	e, ok := err.(*Error)

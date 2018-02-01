@@ -6,7 +6,7 @@ import "io"
 type Configuration struct {
 	// Level of logging (panic, fatal, error, warn, info, default: debug)
 	Level string
-	// Ouput (default: os.Stdout)
+	// Output (default: os.Stdout)
 	Output io.Writer
 }
 

@@ -14,7 +14,7 @@ func TestRotateTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"angle":   0.9,
 				"bgcolor": "black",

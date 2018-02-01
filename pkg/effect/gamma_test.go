@@ -14,7 +14,7 @@ func TestGammaTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name:   "transform sucessfully",
+			name:   "transform successfully",
 			params: map[string]interface{}{"gamma": 0.9}},
 		{
 			name:   "missing gamma",

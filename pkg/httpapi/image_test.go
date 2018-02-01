@@ -15,7 +15,7 @@ func TestImageEffect(t *testing.T) {
 		statusCode int
 	}{
 		{
-			name:       "Transform sucessfully",
+			name:       "Transform successfully",
 			imgSrc:     "http://fake-image.png",
 			statusCode: 200,
 		},

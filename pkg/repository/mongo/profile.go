@@ -5,7 +5,6 @@ import (
 
 	"github.com/talento90/imgart/pkg/errors"
 	"github.com/talento90/imgart/pkg/imgart"
-	"gopkg.in/mgo.v2"
 )
 
 type profileRepository struct {
@@ -26,7 +25,7 @@ func handleError(err error) error {
 		return errors.EAlreadyExists("Profile already exists", err)
 	}
 
-	return errors.EInternal("Error occured", err)
+	return errors.EInternal("Error occurred", err)
 }
 
 // NewProfileRepository returns a profile mongo repository

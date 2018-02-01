@@ -15,7 +15,7 @@ func TestOverlayTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"position": []interface{}{100.0, 50.0},
 				"url":      "http://test.com/image.png",

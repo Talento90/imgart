@@ -17,7 +17,7 @@ func handleError(err error) error {
 		return errors.ENotExists("Item does not exists", err)
 	}
 
-	return errors.EInternal("Error occured", err)
+	return errors.EInternal("Error occurred", err)
 }
 
 type redisCache struct {

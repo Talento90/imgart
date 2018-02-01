@@ -14,7 +14,7 @@ func TestResizeTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"width":  200.0,
 				"height": 300.0,

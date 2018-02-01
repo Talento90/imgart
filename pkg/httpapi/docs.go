@@ -244,7 +244,7 @@ const specJSON = `
         ],
         "responses": {
           "204": {
-            "description": "Deleted profile sucessfully"
+            "description": "Deleted profile successfully"
           },
           "404": {
             "description": "Profile not found"

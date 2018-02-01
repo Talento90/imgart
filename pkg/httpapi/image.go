@@ -83,6 +83,10 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 
 	bytes, err := imgart.Encode(format, img, q)
 
+	if err != nil {
+		return errResponse(err)
+	}
+
 	w.Write(bytes)
 
 	return response(http.StatusOK, nil)

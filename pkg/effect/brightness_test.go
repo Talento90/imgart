@@ -14,7 +14,7 @@ func TestBrightnessTransform(t *testing.T) {
 		err    errors.Type
 	}{
 		{
-			name: "transform sucessfully",
+			name: "transform successfully",
 			params: map[string]interface{}{
 				"percentage": 0.5,
 			},
