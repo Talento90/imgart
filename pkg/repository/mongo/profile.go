@@ -5,6 +5,7 @@ import (
 
 	"github.com/talento90/imgart/pkg/errors"
 	"github.com/talento90/imgart/pkg/imgart"
+	mgo "gopkg.in/mgo.v2"
 )
 
 type profileRepository struct {
