@@ -31,8 +31,8 @@ const specJSON = `
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Swagger imgart",
-    "description": "imgart it is an HTTP service that processes images based on filters (overlay, rotate, blur, contrast, brightness, crop, gamma).",
+    "title": "IMGART",
+    "description": "IMGART it is an HTTP service that processes images based on filters (overlay, rotate, blur, contrast, brightness, crop, gamma).",
     "contact": {
       "email": "marcotalento90@gmail.com"
     },

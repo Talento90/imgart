@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/talento90/imgart/pkg/httpapi"
@@ -43,8 +44,16 @@ func GetMongoConfiguration() (mongo.Configuration, error) {
 
 // GetRedisConfiguration returns the redis configuration
 func GetRedisConfiguration() (redis.Configuration, error) {
+	db, err := strconv.Atoi(getEnv("REDIS_SERVICE_DB", "0"))
+
+	if err != nil {
+		db = 0
+	}
+
 	config := redis.Configuration{
-		Address: getEnv("REDIS_SERVICE_NAME", "localhost:6379"),
+		Address:  getEnv("REDIS_SERVICE_NAME", "localhost:6379"),
+		Password: getEnv("REDIS_SERVICE_PASSWORD", ""),
+		Database: db,
 	}
 
 	return config, config.Validate()

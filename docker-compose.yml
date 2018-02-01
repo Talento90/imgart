@@ -7,9 +7,9 @@ services:
     environment:
       - REDIS_SERVICE_NAME=redis-db:6379
       - MONGO_SERVICE_NAME=mongo-db:27017
-    # command: ["go", "run", "/go/src/github.com/talento90/imgart/cmd/imgartapi/main.go"]
-    # volumes:
-    #   - .:/go/src/github.com/talento90/imgart
+    command: ["go", "run", "/go/src/github.com/talento90/imgart/cmd/imgartapi/main.go"]
+    volumes:
+      - .:/go/src/github.com/talento90/imgart
     links:
       - redis-db
       - mongo-db

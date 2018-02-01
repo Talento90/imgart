@@ -26,6 +26,10 @@ func createRouter(dep *ServerDependencies) *httprouter.Router {
 	effectCtrl := newEffectsController(dep.ImgService)
 	profileCtrl := newProfilesController(dep.ProfileService)
 
+	router.HandlerFunc("GET", "/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/api/v1/docs", http.StatusFound)
+	})
+
 	router.Handler("GET", "/health", dep.Health)
 
 	router.GET("/api/v1/docs/swagger.json", Spec)
