@@ -14,7 +14,7 @@ import (
 // GetLogConfiguration get logger configurations
 func GetLogConfiguration() (log.Configuration, error) {
 	config := log.Configuration{
-		Level:  "debug",
+		Level:  getEnv("LOG_LEVEL", "debug"),
 		Output: os.Stdout,
 	}
 
@@ -35,8 +35,8 @@ func GetServerConfiguration() (httpapi.Configuration, error) {
 // GetMongoConfiguration returns the mongo configuration
 func GetMongoConfiguration() (mongo.Configuration, error) {
 	config := mongo.Configuration{
-		Database: "imgart",
-		MongoURL: getEnv("MONGO_SERVICE_NAME", "localhost:27017"),
+		Database: getEnv("MONGO_DATABASE", "imgart"),
+		MongoURL: getEnv("MONGO_URL", "localhost:27017"),
 	}
 
 	return config, config.Validate()
@@ -51,8 +51,8 @@ func GetRedisConfiguration() (redis.Configuration, error) {
 	}
 
 	config := redis.Configuration{
-		Address:  getEnv("REDIS_SERVICE_NAME", "localhost:6379"),
-		Password: getEnv("REDIS_SERVICE_PASSWORD", ""),
+		Address:  getEnv("REDIS_URL", "localhost:6379"),
+		Password: getEnv("REDIS_PASSWORD", ""),
 		Database: db,
 	}
 
