@@ -47,3 +47,4 @@
   root-package = "github.com/talento90/imgart/cmd/imgartapi"
   go-version = "go1.8"
   ensure = "true"
+  install = [ "./..." ]
