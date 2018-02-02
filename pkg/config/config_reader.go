@@ -24,7 +24,7 @@ func GetLogConfiguration() (log.Configuration, error) {
 // GetServerConfiguration get server configurations
 func GetServerConfiguration() (httpapi.Configuration, error) {
 	config := httpapi.Configuration{
-		Address:      ":4005",
+		Address:      getEnv("PORT", ":4005"),
 		ReadTimeout:  time.Second * 2,
 		WriteTimeout: time.Second * 4,
 	}
