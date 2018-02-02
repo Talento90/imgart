@@ -144,5 +144,5 @@ func main() {
 
 	logger.Info("Server listening on port: ", server.Addr)
 
-	http.ListenAndServe(server.Addr, server.Handler)
+	http.ListenAndServe(":"+server.Addr, server.Handler)
 }
