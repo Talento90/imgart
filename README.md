@@ -6,6 +6,8 @@
 
 IMGART it's an HTTP service for image processing based on filters and profiles.
 
+Documentation: https://imgart.herokuapp.com/api/v1/docs
+
 ### Features
 - Image manipulation
 - Image caching (Redis)
