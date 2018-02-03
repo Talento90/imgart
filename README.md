@@ -34,8 +34,11 @@ IMGART it's an HTTP service for image processing based on filters and profiles.
 
 ## Effects
 
-The engine behind image manipulation is this fabulous library: github.com/disintegration/imaging
+The engine behind image manipulation is the fabulous library: github.com/disintegration/
 
+![result](/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}])
+
+**Available Effects**
 
 |Effect     |JSON                     													  	|Result  	|
 |-----------|-------------------------------------------------------------------------------|-----------|
@@ -48,10 +51,15 @@ The engine behind image manipulation is this fabulous library: github.com/disint
 |contrast   |`{"id":"contrast","parameters":{"percentage":100}}`         					|![contrast](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{%22id%22:%22contrast%22,%22parameters%22:{%22percentage%22:100}}])|
 |gamma    	|`{"id":"gamma","parameters":{"gamma":0.2}}`         							|![gamma](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{%22id%22:%22gamma%22,%22parameters%22:{%22gamma%22:0.2}}])|
 		
+It's possible to combine multiple effects:
+
+```json
+/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}]
+```
 
 ## Profiles
 
-If you don't want to pass filters in URL you can simple create a profile with all pre configure filters and then use it in query parameters `&profile={profile-id}`.
+If you don't want to specify filters in URL, you can create a profile with all pre configured filters and then use it in query parameters `&profile={profile-id}`.
 
 
 **Create Profile**
