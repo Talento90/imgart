@@ -34,11 +34,28 @@ Documentation: https://imgart.herokuapp.com/api/v1/docs
 - Run using docker: `docker-compose up` or `make docker`
 - Open application: `open http:localhost:4005`
 
+## Usage
+
+`{host}/api/v1/images?imgSrc={0}&profile={1}&filters={2}`
+
+* *host*: Server address
+* *imgSrc*: Image URL
+* *profile*: Profile we want to apply
+* *filters*: List of filters to process
+
+**Example**
+
+```https://imgart.herokuapp.com/api/v1/images?imgSrc=https://goo.gl/mq7yPD&profile=example&filters=[{"id":"rotate","parameters":{"angle":-90}}]```
+
+**Result**
+
+![result](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://goo.gl/mq7yPD&profile=example&filters=[{"id":"rotate","parameters":{"angle":-90}}])
+
+
 ## Effects
 
 The engine behind image manipulation is the fabulous library: github.com/disintegration/
 
-![result](/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}])
 
 **Available Effects**
 
@@ -56,7 +73,7 @@ The engine behind image manipulation is the fabulous library: github.com/disinte
 It's possible to combine multiple effects:
 
 ```json
-/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}]
+{host}/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}]
 ```
 ![result](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{%22id%22:%22overlay%22,%22parameters%22:{%22position%22:[25,75],%22url%22:%22https://goo.gl/UBrXeo%22}},{%22id%22:%22overlay%22,%22parameters%22:{%22position%22:[22,-35],%22url%22:%22https://goo.gl/aEkkDh%22}},%20{%22id%22:%22crop%22,%22parameters%22:{%22rectangle%22:[0,0,202,150]}}])
 
@@ -68,7 +85,7 @@ If you don't want to specify filters in URL, you can create a profile with all p
 
 **Create Profile**
 ```json
-POST /api/v1/profiles
+POST {host}/api/v1/profiles
 
 {
     "id": "my-profile",
