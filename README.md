@@ -36,7 +36,7 @@ The engine behind image manipulation is this fabulous library: github.com/disint
 
 |Effect     |JSON                     													  	|Result  	|
 |-----------|-------------------------------------------------------------------------------|-----------|
-|overlay    |`{"id":"overlay","parameters":{"position":[25,75],"url":"https://raw.githubusercontent.com/Talento90/imgart/master/assets/mustache.png","opacity":100}}`|![overlay](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=%5B%7B%22id%22:%22overlay%22,%22parameters%22:%7B%22position%22:%5B25,75%5D,%22url%22:%22https://raw.githubusercontent.com/Talento90/imgart/master/assets/mustache.png%22,%22opacity%22:100%7D%7D%5D)|
+|overlay    |`{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo","opacity":100}}`|![overlay](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=%5B%7B%22id%22:%22overlay%22,%22parameters%22:%7B%22position%22:%5B25,75%5D,%22url%22:%22https://raw.githubusercontent.com/Talento90/imgart/master/assets/mustache.png%22,%22opacity%22:100%7D%7D%5D)|
 |resize     |`{"id":"resize","parameters":{"width":25,"height":50,"filter":"linear"}}`  	|![resize](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"resize","parameters":{"width":25,"height":50,"filter":"linear"}}])|
 |crop    	|`{"id":"crop","parameters":{"rectangle":[0,0,202,150]}}`                     	|![crop](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{%22id%22:%22crop%22,%22parameters%22:{%22rectangle%22:[0,0,202,150]}}])|
 |rotate    	|`{"id":"rotate","parameters":{"angle":-90,"bgcolor":"transparent"}}`         	|![rotate](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"rotate","parameters":{"angle":-90,"bgcolor":"transparent"}}])|
@@ -48,7 +48,6 @@ The engine behind image manipulation is this fabulous library: github.com/disint
 
 ## Profiles
 
-
 If you don't want to pass filters in URL you can simple create a profile with all pre configure filters and then use it in query parameters `&profile={profile-id}`.
 
 
@@ -58,9 +57,9 @@ POST /api/v1/profiles
 
 {
     "id": "my-profile",
-    "filters: [
-        {"id":"brightness","parameters":{"percentage":0.3}},
-        {"id":"crop","parameters":{"rectangle":[0,0,100,200]}}
+    "filters": [
+        { "id": "brightness", "parameters":{ "percentage":0.3}},
+        { "id": "crop", "parameters":{"rectangle":[0,0,100,200]}}
     ]
 }
 ```
