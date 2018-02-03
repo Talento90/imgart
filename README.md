@@ -58,6 +58,8 @@ It's possible to combine multiple effects:
 ```json
 /api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}, {"id":"crop","parameters":{"rectangle":[0,0,202,150]}}]
 ```
+![result](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{%22id%22:%22overlay%22,%22parameters%22:{%22position%22:[25,75],%22url%22:%22https://goo.gl/UBrXeo%22}},{%22id%22:%22overlay%22,%22parameters%22:{%22position%22:[22,-35],%22url%22:%22https://goo.gl/aEkkDh%22}},%20{%22id%22:%22crop%22,%22parameters%22:{%22rectangle%22:[0,0,202,150]}}])
+
 
 ## Profiles
 
