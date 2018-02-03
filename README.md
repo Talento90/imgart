@@ -1,6 +1,9 @@
 # IMGART [![Build Status](https://travis-ci.org/Talento90/imgart.svg?branch=master)](https://travis-ci.org/Talento90/imgart) [![Go Report Card](https://goreportcard.com/badge/github.com/Talento90/imgart)](https://goreportcard.com/report/github.com/Talento90/imgart)
 
 
+![logo](https://imgart.herokuapp.com/api/v1/images?imgSrc=https://raw.githubusercontent.com/Talento90/imgart/master/assets/gopher.png&filters=[{"id":"overlay","parameters":{"position":[25,75],"url":"https://goo.gl/UBrXeo"}},{"id":"overlay","parameters":{"position":[22,-35],"url":"https://goo.gl/aEkkDh"}}])
+
+
 IMGART it's an HTTP service for image processing based on filters and profiles.
 
 ### Features
@@ -67,3 +70,4 @@ POST /api/v1/profiles
 **Using profile in query parameters**
 
 `GET /api/v1/images?imgSrc={image url}&profile=my-profile`
+
