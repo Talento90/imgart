@@ -32,7 +32,7 @@ const specJSON = `
   "info": {
     "version": "1.0.0",
     "title": "IMGART",
-    "description": "IMGART it is an HTTP service that processes images based on filters (overlay, rotate, blur, contrast, brightness, crop, gamma).",
+    "description": "IMGART it is an HTTP service for image processing based on filters and profiles. Supported filters: overlay, rotate, blur, contrast, brightness, crop, gamma.",
     "contact": {
       "email": "marcotalento90@gmail.com"
     },
@@ -52,13 +52,16 @@ const specJSON = `
   ],
   "tags": [
     {
-      "name": "profiles"
+      "name": "profiles",
+      "description": "Profile is a configured set of filters that can be applied when processing images."
     },
     {
-      "name": "effects"
+      "name": "effects",
+      "description": "Effects are used to transform images."
     },
     {
-      "name": "images"
+      "name": "images",
+      "description": "Processes images based on filters and profiles."
     }
   ],
   "paths": {
