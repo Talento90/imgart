@@ -30,31 +30,42 @@ type Health interface {
 	RegisterChecker(name string, check Checker)
 	// ServeHTTP handler for http applications
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
+	// Shutdown
+	Shutdown()
 }
 
 // New returns a new Health
 func New(name string) Health {
 	return &health{
-		name:      name,
-		mutex:     &sync.Mutex{},
-		startTime: time.Now(),
-		checkers:  map[string]Checker{},
+		name:       name,
+		mutex:      &sync.Mutex{},
+		startTime:  time.Now(),
+		checkers:   map[string]Checker{},
+		isShutdown: false,
 	}
 }
 
 type health struct {
-	mutex     *sync.Mutex
-	name      string
-	startTime time.Time
-	checkers  map[string]Checker
+	mutex      *sync.Mutex
+	name       string
+	isShutdown bool
+	startTime  time.Time
+	checkers   map[string]Checker
 }
 
-// RegisterChecker regist external dependencies health
+// RegisterChecker register an external dependencies health
 func (h *health) RegisterChecker(name string, check Checker) {
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
 
 	h.checkers[name] = check
+}
+
+func (h *health) Shutdown() {
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	h.isShutdown = true
 }
 
 // GetStatus method returns the current application health status
@@ -88,10 +99,17 @@ func (h *health) GetStatus() *Status {
 
 // ServeHTTP that returns the health status
 func (h *health) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	status := h.GetStatus()
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
 
+	code := http.StatusOK
+	status := h.GetStatus()
 	bytes, _ := json.Marshal(status)
 
-	w.WriteHeader(http.StatusOK)
+	if h.isShutdown {
+		code = http.StatusServiceUnavailable
+	}
+
+	w.WriteHeader(code)
 	w.Write(bytes)
 }

@@ -10,8 +10,9 @@ WORKDIR ${GOPATH}/src/github.com/talento90/imgart
 # Copy source code
 COPY . .
 
-# Get delve debugger
+# Get delve debugger and fresh code reloader
 RUN go get github.com/derekparker/delve/cmd/dlv
+RUN go get github.com/pilu/fresh
 
 # Build our application
 RUN go build -o imgartapi cmd/imgartapi/main.go
