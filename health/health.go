@@ -91,7 +91,7 @@ func (h *health) GetStatus() *Status {
 
 	return &Status{
 		Service:         h.name,
-		Uptime:          time.Now().Sub(h.startTime).String(),
+		Uptime:          time.Since(h.startTime).String(),
 		StartTime:       h.startTime.Format(time.RFC3339),
 		MemoryAllocated: mem.Alloc,
 		IsShuttingDown:  h.isShutdown,

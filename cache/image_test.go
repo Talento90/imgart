@@ -19,7 +19,7 @@ func TestImageGet(t *testing.T) {
 		imgart.Filter{ID: "rotate", Parameters: map[string]interface{}{"bgcolor": "black", "angle": 90}},
 	}
 
-	img, _, err := c.Get(url, filters)
+	_, _, err := c.Get(url, filters)
 
 	if !errors.Is(errors.NotFound, err) {
 		t.Error("Cache must return a NotExists error", err)
@@ -31,7 +31,7 @@ func TestImageGet(t *testing.T) {
 		t.Error("Cache must set our value without error", err)
 	}
 
-	img, _, err = c.Get(url, filters)
+	img, _, err := c.Get(url, filters)
 
 	if err != nil || img == nil {
 		t.Error("Should return a valid image", err)

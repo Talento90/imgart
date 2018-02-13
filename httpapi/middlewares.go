@@ -44,7 +44,7 @@ func loggerMiddleware(logger log.Logger, handler appHandler) httprouter.Handle {
 				"method":      r.Method,
 				"url":         r.URL,
 				"status_code": response.statusCode,
-				"time":        time.Now().Sub(start),
+				"time":        time.Since(start),
 			}, "api request")
 	})
 }
