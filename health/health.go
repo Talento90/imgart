@@ -31,7 +31,7 @@ type Health interface {
 	RegisterChecker(name string, check Checker)
 	// ServeHTTP handler for http applications
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
-	// Shutdown
+	// Shutdown set isShutdown flag meaning the service is shutting down
 	Shutdown()
 }
 
