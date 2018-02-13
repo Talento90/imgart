@@ -24,7 +24,7 @@ func NewLogService(logger log.Logger, service imgart.ImageService) imgart.ImageS
 
 func (ls *logService) Process(imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
 	defer func(start time.Time) {
-		ls.logger.DebugWithFields(log.Fields{"imgSrc": imgSrc, "time": time.Now().Sub(start)}, "ImageService:Process")
+		ls.logger.DebugWithFields(log.Fields{"imgSrc": imgSrc, "time": time.Since(start)}, "ImageService:Process")
 	}(time.Now())
 
 	return ls.service.Process(imgSrc, filters)
@@ -32,7 +32,7 @@ func (ls *logService) Process(imgSrc string, filters []imgart.Filter) (image.Ima
 
 func (ls *logService) Effects() ([]imgart.Effect, error) {
 	defer func(start time.Time) {
-		ls.logger.DebugWithFields(log.Fields{"time": time.Now().Sub(start)}, "ImageService:Effects")
+		ls.logger.DebugWithFields(log.Fields{"time": time.Since(start)}, "ImageService:Effects")
 	}(time.Now())
 
 	return ls.service.Effects()
@@ -40,7 +40,7 @@ func (ls *logService) Effects() ([]imgart.Effect, error) {
 
 func (ls *logService) Effect(id string) (imgart.Effect, error) {
 	defer func(start time.Time) {
-		ls.logger.DebugWithFields(log.Fields{"id": id, "time": time.Now().Sub(start)}, "ImageService:Effect")
+		ls.logger.DebugWithFields(log.Fields{"id": id, "time": time.Since(start)}, "ImageService:Effect")
 	}(time.Now())
 
 	return ls.service.Effect(id)

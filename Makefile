@@ -1,19 +1,16 @@
 BINARY_NAME=imgartapi
+GO_PACKAGES=$(shell ls -d */ | grep -v vendor)
 
-default: test vet
+default: quality
 
-.PHONY: packages
-packages:
-	go list ./...
-
-.PHONY: test
-test: 
-	go test -v ./...
-
-.PHONY: vet
-vet:
+.PHONY: quality
+quality:
+	go test -v -race ./...
 	go vet ./...
-
+	golint -set_exit_status $(go list ./...)
+	megacheck ./...
+	gocyclo -over 12 $(GO_PACKAGES)
+	
 .PHONY: clean
 clean:
 	go clean

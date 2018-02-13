@@ -27,7 +27,7 @@ func (ls *logService) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
 			log.Fields{
 				"limit": limit,
 				"skip":  skip,
-				"time":  time.Now().Sub(start)},
+				"time":  time.Since(start)},
 			"ProfileService:GetAll")
 	}(time.Now())
 
@@ -39,7 +39,7 @@ func (ls *logService) Get(id string) (*imgart.Profile, error) {
 		ls.logger.DebugWithFields(
 			log.Fields{
 				"id":   id,
-				"time": time.Now().Sub(start)},
+				"time": time.Since(start)},
 			"ProfileService:Get")
 	}(time.Now())
 
@@ -51,7 +51,7 @@ func (ls *logService) Create(profile *imgart.Profile) error {
 		ls.logger.DebugWithFields(
 			log.Fields{
 				"profile": profile,
-				"time":    time.Now().Sub(start)},
+				"time":    time.Since(start)},
 			"ProfileService:Create")
 	}(time.Now())
 
@@ -63,7 +63,7 @@ func (ls *logService) Update(profile *imgart.Profile) error {
 		ls.logger.DebugWithFields(
 			log.Fields{
 				"profile": profile,
-				"time":    time.Now().Sub(start)},
+				"time":    time.Since(start)},
 			"ProfileService:Update")
 	}(time.Now())
 
@@ -75,7 +75,7 @@ func (ls *logService) Delete(id string) error {
 		ls.logger.DebugWithFields(
 			log.Fields{
 				"id":   id,
-				"time": time.Now().Sub(start)},
+				"time": time.Since(start)},
 			"ProfileService:Delete")
 	}(time.Now())
 

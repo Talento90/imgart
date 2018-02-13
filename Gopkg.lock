@@ -58,15 +58,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/go-openapi/runtime"
-  packages = [
-    ".",
-    "logger",
-    "middleware",
-    "middleware/denco",
-    "middleware/header",
-    "middleware/untyped",
-    "security"
-  ]
+  packages = [".","logger","middleware","middleware/denco","middleware/header","middleware/untyped","security"]
   revision = "be1313bd8283bc82b48033942f0f3730eaef2d90"
 
 [[projects]]
@@ -95,16 +87,15 @@
 
 [[projects]]
   name = "github.com/go-redis/redis"
-  packages = [
-    ".",
-    "internal",
-    "internal/consistenthash",
-    "internal/hashtag",
-    "internal/pool",
-    "internal/proto"
-  ]
+  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto"]
   revision = "73b70592cdaa9e6abdfcfbf97b4a90d80728c836"
   version = "v6.8.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/golang/lint"
+  packages = [".","golint"]
+  revision = "e14d9b0f1d332b1420c1ffa32562ad2dc84d645d"
 
 [[projects]]
   name = "github.com/julienschmidt/httprouter"
@@ -115,11 +106,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/mailru/easyjson"
-  packages = [
-    "buffer",
-    "jlexer",
-    "jwriter"
-  ]
+  packages = ["buffer","jlexer","jwriter"]
   revision = "32fa128f234d041f196a9f3e0fea5ac9772c08e1"
 
 [[projects]]
@@ -143,63 +130,37 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/image"
-  packages = [
-    "bmp",
-    "tiff",
-    "tiff/lzw"
-  ]
+  packages = ["bmp","tiff","tiff/lzw"]
   revision = "f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = [
-    "context",
-    "idna"
-  ]
+  packages = ["context","idna"]
   revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
+  packages = ["unix","windows"]
   revision = "8b4580aae2a0dd0c231a45d3ccb8434ff533b840"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
-  packages = [
-    "collate",
-    "collate/build",
-    "internal/colltab",
-    "internal/gen",
-    "internal/tag",
-    "internal/triegen",
-    "internal/ucd",
-    "language",
-    "secure/bidirule",
-    "transform",
-    "unicode/bidi",
-    "unicode/cldr",
-    "unicode/norm",
-    "unicode/rangetable",
-    "width"
-  ]
+  packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable","width"]
   revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/tools"
+  packages = ["go/gcexportdata","go/gcimporter15","go/types/typeutil"]
+  revision = "f05340fad48926594a3c17968f98ffc30e075b59"
 
 [[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
-  packages = [
-    ".",
-    "bson",
-    "internal/json",
-    "internal/sasl",
-    "internal/scram"
-  ]
+  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [[projects]]
@@ -211,6 +172,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3adac2d969b0fab744afdf3a8cccdd8419d68504f1fa38f07204eede9c2bfb49"
+  inputs-digest = "18bfdab872d44af7c1a1632265295cea9deddfcd92f9fd317c0090b30e2c814c"
   solver-name = "gps-cdcl"
   solver-version = 1

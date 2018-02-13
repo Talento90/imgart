@@ -12,4 +12,4 @@ install:
 before_script:
   - dep ensure
 
-script: go test -v ./...
+script: make quality
