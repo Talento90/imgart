@@ -6,6 +6,8 @@ go:
 env:
   - "PATH=/home/travis/gopath/bin:$PATH"
 
+go_import_path: github.com/talento90/imgart
+
 before_script:
   - make deps
 
