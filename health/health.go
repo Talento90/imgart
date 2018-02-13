@@ -14,6 +14,7 @@ type Status struct {
 	Uptime          string            `json:"up_time"`
 	StartTime       string            `json:"start_time"`
 	MemoryAllocated uint64            `json:"memory_allocated"`
+	IsShuttingDown  bool              `json:"is_shutting_down"`
 	HealthCheckers  map[string]string `json:"health_checkers"`
 }
 
@@ -93,15 +94,13 @@ func (h *health) GetStatus() *Status {
 		Uptime:          time.Now().Sub(h.startTime).String(),
 		StartTime:       h.startTime.Format(time.RFC3339),
 		MemoryAllocated: mem.Alloc,
+		IsShuttingDown:  h.isShutdown,
 		HealthCheckers:  checkers,
 	}
 }
 
 // ServeHTTP that returns the health status
 func (h *health) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	h.mutex.Lock()
-	defer h.mutex.Unlock()
-
 	code := http.StatusOK
 	status := h.GetStatus()
 	bytes, _ := json.Marshal(status)
