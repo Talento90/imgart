@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+gin-bin
 
 # Test binary, build with `go test -c`
 *.test
