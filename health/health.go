@@ -14,6 +14,7 @@ type Status struct {
 	Uptime          string            `json:"up_time"`
 	StartTime       string            `json:"start_time"`
 	MemoryAllocated uint64            `json:"memory_allocated"`
+	IsShuttingDown  bool              `json:"is_shutting_down"`
 	HealthCheckers  map[string]string `json:"health_checkers"`
 }
 
@@ -30,31 +31,42 @@ type Health interface {
 	RegisterChecker(name string, check Checker)
 	// ServeHTTP handler for http applications
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
+	// Shutdown set isShutdown flag meaning the service is shutting down
+	Shutdown()
 }
 
 // New returns a new Health
 func New(name string) Health {
 	return &health{
-		name:      name,
-		mutex:     &sync.Mutex{},
-		startTime: time.Now(),
-		checkers:  map[string]Checker{},
+		name:       name,
+		mutex:      &sync.Mutex{},
+		startTime:  time.Now(),
+		checkers:   map[string]Checker{},
+		isShutdown: false,
 	}
 }
 
 type health struct {
-	mutex     *sync.Mutex
-	name      string
-	startTime time.Time
-	checkers  map[string]Checker
+	mutex      *sync.Mutex
+	name       string
+	isShutdown bool
+	startTime  time.Time
+	checkers   map[string]Checker
 }
 
-// RegisterChecker regist external dependencies health
+// RegisterChecker register an external dependencies health
 func (h *health) RegisterChecker(name string, check Checker) {
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
 
 	h.checkers[name] = check
+}
+
+func (h *health) Shutdown() {
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	h.isShutdown = true
 }
 
 // GetStatus method returns the current application health status
@@ -82,16 +94,21 @@ func (h *health) GetStatus() *Status {
 		Uptime:          time.Now().Sub(h.startTime).String(),
 		StartTime:       h.startTime.Format(time.RFC3339),
 		MemoryAllocated: mem.Alloc,
+		IsShuttingDown:  h.isShutdown,
 		HealthCheckers:  checkers,
 	}
 }
 
 // ServeHTTP that returns the health status
 func (h *health) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	code := http.StatusOK
 	status := h.GetStatus()
-
 	bytes, _ := json.Marshal(status)
 
-	w.WriteHeader(http.StatusOK)
+	if h.isShutdown {
+		code = http.StatusServiceUnavailable
+	}
+
+	w.WriteHeader(code)
 	w.Write(bytes)
 }

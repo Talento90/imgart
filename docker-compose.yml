@@ -7,7 +7,7 @@ services:
     environment:
       - REDIS_URL=redis-db:6379
       - MONGO_URL=mongo-db:27017
-    command: ["go", "run", "/go/src/github.com/talento90/imgart/cmd/imgartapi/main.go"]
+    command: ["gin", "-d", "/go/src/github.com/talento90/imgart/cmd/imgartapi/", "-p", "4005", "-i"]
     volumes:
       - .:/go/src/github.com/talento90/imgart
     links:

@@ -12,3 +12,7 @@
 
 # Ignore external dependencies
 vendor
+
+# Ignore idea
+.idea
+imgart.iml

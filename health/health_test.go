@@ -83,3 +83,23 @@ func TestServeHTTP(t *testing.T) {
 		t.Errorf("Expect service_test and got %s", s.Service)
 	}
 }
+
+func TestShutdown(t *testing.T) {
+	h := New("service_test")
+
+	h.Shutdown()
+
+	req, err := http.NewRequest("GET", "localhost/health", nil)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	rec := httptest.NewRecorder()
+
+	h.ServeHTTP(rec, req)
+
+	if rec.Result().StatusCode != http.StatusServiceUnavailable {
+		t.Errorf("Expect %d and got %d", http.StatusServiceUnavailable, rec.Result().StatusCode)
+	}
+}

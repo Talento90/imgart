@@ -41,7 +41,7 @@ func redisClient() (*redis.Client, error) {
 	return redis.NewClient(c)
 }
 
-func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session) *http.Server {
+func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session, h health.Health) *http.Server {
 	var imgService imgart.ImageService
 	{
 		redisCache := redis.New(rc)
@@ -61,15 +61,14 @@ func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session) *http.Server 
 		profileService = profile.NewLogService(l, profileService)
 	}
 
-	health := health.New("imgart")
-	health.RegisterChecker("redis", rc)
-	health.RegisterChecker("mongo", ms)
+	h.RegisterChecker("redis", rc)
+	h.RegisterChecker("mongo", ms)
 
 	serverDeps := &httpapi.ServerDependencies{
 		Logger:         l,
 		ImgService:     imgService,
 		ProfileService: profileService,
-		Health:         health,
+		Health:         h,
 	}
 
 	serverConfig, err := config.GetServerConfiguration()
@@ -113,11 +112,14 @@ func main() {
 		logger.Panic("Error connecting to Mongo", err)
 	}
 
-	server := httpServer(logger, redisClient, mongoSession)
+	health := health.New("imgart")
+
+	server := httpServer(logger, redisClient, mongoSession, health)
 
 	go func() {
 		<-gracefulShutdown
 		exitCode := 0
+		health.Shutdown()
 
 		logger.Info("Starting graceful shutdown")
 
