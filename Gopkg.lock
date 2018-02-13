@@ -92,12 +92,6 @@
   version = "v6.8.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/golang/lint"
-  packages = [".","golint"]
-  revision = "e14d9b0f1d332b1420c1ffa32562ad2dc84d645d"
-
-[[projects]]
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
   revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
@@ -152,12 +146,6 @@
   revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
 
 [[projects]]
-  branch = "master"
-  name = "golang.org/x/tools"
-  packages = ["go/gcexportdata","go/gcimporter15","go/types/typeutil"]
-  revision = "f05340fad48926594a3c17968f98ffc30e075b59"
-
-[[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
   packages = [".","bson","internal/json","internal/sasl","internal/scram"]
@@ -172,6 +160,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "18bfdab872d44af7c1a1632265295cea9deddfcd92f9fd317c0090b30e2c814c"
+  inputs-digest = "3adac2d969b0fab744afdf3a8cccdd8419d68504f1fa38f07204eede9c2bfb49"
   solver-name = "gps-cdcl"
   solver-version = 1

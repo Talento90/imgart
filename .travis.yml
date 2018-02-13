@@ -6,10 +6,7 @@ go:
 env:
   - "PATH=/home/travis/gopath/bin:$PATH"
 
-install:
-  - go get -u github.com/golang/dep/cmd/dep
-  
 before_script:
-  - dep ensure
+  - make deps
 
 script: make quality
