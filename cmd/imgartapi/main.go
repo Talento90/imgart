@@ -6,10 +6,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
+	"github.com/talento90/health"
 	"github.com/talento90/imgart/cache"
 	"github.com/talento90/imgart/config"
-	"github.com/talento90/imgart/health"
 	"github.com/talento90/imgart/httpapi"
 	"github.com/talento90/imgart/image"
 	"github.com/talento90/imgart/imgart"
@@ -112,22 +113,34 @@ func main() {
 		logger.Panic("Error connecting to Mongo", err)
 	}
 
-	health := health.New("imgart")
+	h := health.New("imgart", health.Options{CheckersTimeout: time.Second})
 
-	server := httpServer(logger, redisClient, mongoSession, health)
+	server := httpServer(logger, redisClient, mongoSession, h)
 
 	go func() {
 		<-gracefulShutdown
 		exitCode := 0
-		health.Shutdown()
+		h.Shutdown()
 
 		logger.Info("Starting graceful shutdown")
 
-		err = server.Shutdown(context.Background())
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+		done := make(chan error)
+		defer cancel()
 
-		if err != nil {
+		go func(ctx context.Context, done chan<- error) {
+			done <- server.Shutdown(ctx)
+		}(ctx, done)
+
+		select {
+		case err := <-done:
+			if err != nil {
+				exitCode = 1
+				logger.Error("Error closing server:", err)
+			}
+		case <-ctx.Done():
 			exitCode = 1
-			logger.Error("Error closing server:", err)
+			logger.Error("Timeout closing server:", ctx.Err())
 		}
 
 		mongoSession.Close()

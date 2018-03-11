@@ -4,8 +4,9 @@ import (
 	"io/ioutil"
 	"net/http/httptest"
 	"testing"
+	"time"
 
-	"github.com/talento90/imgart/health"
+	"github.com/talento90/health"
 	"github.com/talento90/imgart/image"
 	"github.com/talento90/imgart/log"
 	"github.com/talento90/imgart/mock"
@@ -24,7 +25,7 @@ func mockDependencies() *ServerDependencies {
 		ImgService:     imgService,
 		ProfileService: profileService,
 		Logger:         logger,
-		Health:         health.New("imgart"),
+		Health:         health.New("imgart", health.Options{CheckersTimeout: time.Second}),
 	}
 
 	return dep
