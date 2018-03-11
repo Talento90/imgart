@@ -43,6 +43,10 @@
   branch = "master"
   name = "github.com/go-openapi/runtime"
 
+[[constraint]]
+  name = "github.com/talento90/health"
+  version = "0.1.1"
+
 [[metadata.heroku]]
   root-package = "github.com/talento90/imgart"
   go-version = "go1.9"
