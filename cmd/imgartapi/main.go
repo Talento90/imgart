@@ -125,22 +125,13 @@ func main() {
 		logger.Info("Starting graceful shutdown")
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		done := make(chan error)
 		defer cancel()
 
-		go func(ctx context.Context, done chan<- error) {
-			done <- server.Shutdown(ctx)
-		}(ctx, done)
+		err := server.Shutdown(ctx)
 
-		select {
-		case err := <-done:
-			if err != nil {
-				exitCode = 1
-				logger.Error("Error closing server:", err)
-			}
-		case <-ctx.Done():
+		if err != nil {
 			exitCode = 1
-			logger.Error("Timeout closing server:", ctx.Err())
+			logger.Error("Error closing server:", err)
 		}
 
 		mongoSession.Close()
