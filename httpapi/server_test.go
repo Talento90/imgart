@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/talento90/health"
+	"github.com/talento90/go-health"
 	"github.com/talento90/imgart/image"
 	"github.com/talento90/imgart/log"
 	"github.com/talento90/imgart/mock"

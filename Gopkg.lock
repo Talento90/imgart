@@ -58,15 +58,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/go-openapi/runtime"
-  packages = [
-    ".",
-    "logger",
-    "middleware",
-    "middleware/denco",
-    "middleware/header",
-    "middleware/untyped",
-    "security"
-  ]
+  packages = [".","logger","middleware","middleware/denco","middleware/header","middleware/untyped","security"]
   revision = "be1313bd8283bc82b48033942f0f3730eaef2d90"
 
 [[projects]]
@@ -95,14 +87,7 @@
 
 [[projects]]
   name = "github.com/go-redis/redis"
-  packages = [
-    ".",
-    "internal",
-    "internal/consistenthash",
-    "internal/hashtag",
-    "internal/pool",
-    "internal/proto"
-  ]
+  packages = [".","internal","internal/consistenthash","internal/hashtag","internal/pool","internal/proto"]
   revision = "73b70592cdaa9e6abdfcfbf97b4a90d80728c836"
   version = "v6.8.0"
 
@@ -115,11 +100,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/mailru/easyjson"
-  packages = [
-    "buffer",
-    "jlexer",
-    "jwriter"
-  ]
+  packages = ["buffer","jlexer","jwriter"]
   revision = "32fa128f234d041f196a9f3e0fea5ac9772c08e1"
 
 [[projects]]
@@ -135,10 +116,10 @@
   version = "v1.0.3"
 
 [[projects]]
-  name = "github.com/talento90/health"
+  name = "github.com/talento90/go-health"
   packages = ["."]
-  revision = "9f9c94710f8a308664066a60a0444a102073baa4"
-  version = "v0.1.1"
+  revision = "1e6ba536fbd84b998ddcfd80d799f55c0d3d6ae8"
+  version = "v0.2.0"
 
 [[projects]]
   branch = "master"
@@ -149,63 +130,31 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/image"
-  packages = [
-    "bmp",
-    "tiff",
-    "tiff/lzw"
-  ]
+  packages = ["bmp","tiff","tiff/lzw"]
   revision = "f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = [
-    "context",
-    "idna"
-  ]
+  packages = ["context","idna"]
   revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
+  packages = ["unix","windows"]
   revision = "8b4580aae2a0dd0c231a45d3ccb8434ff533b840"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
-  packages = [
-    "collate",
-    "collate/build",
-    "internal/colltab",
-    "internal/gen",
-    "internal/tag",
-    "internal/triegen",
-    "internal/ucd",
-    "language",
-    "secure/bidirule",
-    "transform",
-    "unicode/bidi",
-    "unicode/cldr",
-    "unicode/norm",
-    "unicode/rangetable",
-    "width"
-  ]
+  packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable","width"]
   revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
 
 [[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
-  packages = [
-    ".",
-    "bson",
-    "internal/json",
-    "internal/sasl",
-    "internal/scram"
-  ]
+  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [[projects]]
@@ -217,6 +166,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9882fc0e0011d4d40a2a8fab444d0c40236dd0511cd74f1007cab9f01bf8ee83"
+  inputs-digest = "1666ab55ee394f3b6eb04f181c23362d8a964bb9ecb267a5a07edf0d6e9e9e32"
   solver-name = "gps-cdcl"
   solver-version = 1

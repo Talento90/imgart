@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/talento90/health"
+	"github.com/talento90/go-health"
 	"github.com/talento90/imgart/cache"
 	"github.com/talento90/imgart/config"
 	"github.com/talento90/imgart/httpapi"

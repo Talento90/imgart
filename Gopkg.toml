@@ -44,8 +44,8 @@
   name = "github.com/go-openapi/runtime"
 
 [[constraint]]
-  name = "github.com/talento90/health"
-  version = "0.1.1"
+  name = "github.com/talento90/go-health"
+  version = "0.2.0"
 
 [[metadata.heroku]]
   root-package = "github.com/talento90/imgart"

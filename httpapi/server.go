@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/talento90/health"
+	"github.com/talento90/go-health"
 	"github.com/talento90/imgart/errors"
 	"github.com/talento90/imgart/imgart"
 	"github.com/talento90/imgart/log"
