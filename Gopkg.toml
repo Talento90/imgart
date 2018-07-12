@@ -49,6 +49,6 @@
 
 [[metadata.heroku]]
   root-package = "github.com/talento90/imgart"
-  go-version = "go1.9"
+  go-version = "go1.10"
   ensure = "true"
   install = [ "./cmd/imgartapi" ]
