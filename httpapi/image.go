@@ -1,12 +1,15 @@
 package httpapi
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"image"
 	"image/jpeg"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/imgart/errors"
@@ -44,11 +47,37 @@ func getQuality(r *http.Request) int {
 	return jpeg.DefaultQuality
 }
 
+type imageResult struct {
+	img    image.Image
+	format string
+	err    error
+}
+
+func processImage(srv imgart.ImageService, imgSrc string, filters []imgart.Filter) chan imageResult {
+	ch := make(chan imageResult)
+
+	go func() {
+		defer close(ch)
+		img, format, err := srv.Process(imgSrc, filters)
+
+		ch <- imageResult{
+			img:    img,
+			format: format,
+			err:    err,
+		}
+	}()
+
+	return ch
+}
+
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	var filters []imgart.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("filters")
 	profileID := r.URL.Query().Get("profile")
+
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
 
 	if imgSrc == "" {
 		return errResponse(errors.EMalformed("Missing imgSrc query parameter", nil))
@@ -70,23 +99,28 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 		}
 	}
 
-	img, format, err := c.service.Process(imgSrc, filters)
+	process := processImage(c.service, imgSrc, filters)
 
-	if err != nil {
-		return errResponse(err)
+	select {
+	case <-ctx.Done():
+		return errResponse(ctx.Err())
+	case result := <-process:
+		if result.err != nil {
+			return errResponse(result.err)
+		}
+
+		q := getQuality(r)
+
+		w.Header().Set("Content-Type", fmt.Sprintf("image/%s", result.format))
+
+		bytes, err := imgart.Encode(result.format, result.img, q)
+
+		if err != nil {
+			return errResponse(err)
+		}
+
+		w.Write(bytes)
+
+		return response(http.StatusOK, nil)
 	}
-
-	q := getQuality(r)
-
-	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
-
-	bytes, err := imgart.Encode(format, img, q)
-
-	if err != nil {
-		return errResponse(err)
-	}
-
-	w.Write(bytes)
-
-	return response(http.StatusOK, nil)
 }

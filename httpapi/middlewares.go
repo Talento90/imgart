@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -66,19 +65,4 @@ func responseMiddleware(handler appHandler) appHandler {
 
 		return response
 	}
-}
-
-func cancellationMiddleware(handler appHandler) httprouter.Handle {
-	return httprouter.Handle(func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		ctx, cancel := context.WithTimeout(r.Context(), time.Second)
-
-		defer cancel()
-
-		select {
-		case <-ctx.Done():
-
-		}
-
-		handler(w, r, params)
-	})
 }
