@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -29,7 +30,7 @@ func NewBrightness() imgart.Effect {
 	}
 }
 
-func (r *brightness) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (r *brightness) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	percentage, err := floatBinder("percentage", params)
 
 	if err != nil {
@@ -38,5 +39,5 @@ func (r *brightness) Transform(img image.Image, params map[string]interface{}) (
 
 	img = imaging.AdjustBrightness(img, percentage)
 
-	return img, nil
+	return img, ctx.Err()
 }

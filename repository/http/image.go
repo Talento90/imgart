@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"image"
 	"io"
@@ -28,8 +29,16 @@ func NewImageRepository() imgart.ImageRepository {
 	}
 }
 
-func (d *httpdownloader) Get(path string) (image.Image, string, error) {
-	response, err := d.client.Get(path)
+func (d *httpdownloader) Get(ctx context.Context, path string) (image.Image, string, error) {
+	req, err := http.NewRequest(http.MethodGet, path, nil)
+
+	if err != nil {
+		return nil, "", errors.EInternal("Error trying to create http request", err)
+	}
+
+	req = req.WithContext(ctx)
+
+	response, err := d.client.Do(req)
 
 	if err != nil {
 		return nil, "", errors.EInternal("Error trying to download image", err)
@@ -43,7 +52,12 @@ func (d *httpdownloader) Get(path string) (image.Image, string, error) {
 
 	imgBytes := &bytes.Buffer{}
 
-	if _, err = io.CopyN(imgBytes, response.Body, maxImageSize); err != io.EOF {
+	if _, err := io.CopyN(imgBytes, response.Body, maxImageSize); err != io.EOF {
+
+		if errors.IsContextError(err) {
+			return nil, "", errors.EContextError(err)
+		}
+
 		return nil, "", errors.EValidation(fmt.Sprintf("Image size is bigger than: %d", maxImageSize), err)
 	}
 
@@ -53,5 +67,5 @@ func (d *httpdownloader) Get(path string) (image.Image, string, error) {
 		return nil, "", errors.EInternal("Error decoding image", err)
 	}
 
-	return img, imgType, nil
+	return img, imgType, ctx.Err()
 }

@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -29,7 +30,7 @@ func NewCrop() imgart.Effect {
 	}
 }
 
-func (o *crop) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (o *crop) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	rectangle, err := rectangleBinder("rectangle", params)
 
 	if err != nil {
@@ -38,5 +39,5 @@ func (o *crop) Transform(img image.Image, params map[string]interface{}) (image.
 
 	img = imaging.Crop(img, rectangle)
 
-	return img, nil
+	return img, ctx.Err()
 }

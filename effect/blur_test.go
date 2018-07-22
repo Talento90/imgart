@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"testing"
 
@@ -31,7 +32,7 @@ func TestBlurTransform(t *testing.T) {
 			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 			blur := NewBlur()
 
-			_, err := blur.Transform(img, tc.params)
+			_, err := blur.Transform(context.Background(), img, tc.params)
 
 			if tc.err != "" {
 				if err == nil || !errors.Is(tc.err, err) {

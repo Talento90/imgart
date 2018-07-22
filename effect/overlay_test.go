@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"testing"
 
@@ -40,7 +41,7 @@ func TestOverlayTransform(t *testing.T) {
 			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 			overlay := NewOverlay(mock.NewImageRepository())
 
-			_, err := overlay.Transform(img, tc.params)
+			_, err := overlay.Transform(context.Background(), img, tc.params)
 
 			if tc.err != "" {
 				if err == nil || !errors.Is(tc.err, err) {

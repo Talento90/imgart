@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -29,7 +30,7 @@ func NewGamma() imgart.Effect {
 	}
 }
 
-func (r *gamma) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (r *gamma) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	gamma, err := floatBinder("gamma", params)
 
 	if err != nil {
@@ -38,5 +39,5 @@ func (r *gamma) Transform(img image.Image, params map[string]interface{}) (image
 
 	img = imaging.AdjustGamma(img, gamma)
 
-	return img, nil
+	return img, ctx.Err()
 }

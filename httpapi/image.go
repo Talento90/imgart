@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"image"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -47,80 +46,62 @@ func getQuality(r *http.Request) int {
 	return jpeg.DefaultQuality
 }
 
-type imageResult struct {
-	img    image.Image
-	format string
-	err    error
-}
-
-func processImage(srv imgart.ImageService, imgSrc string, filters []imgart.Filter) chan imageResult {
-	ch := make(chan imageResult)
-
-	go func() {
-		defer close(ch)
-		img, format, err := srv.Process(imgSrc, filters)
-
-		ch <- imageResult{
-			img:    img,
-			format: format,
-			err:    err,
-		}
-	}()
-
-	return ch
-}
-
-func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+func getParameters(srv imgart.ProfileService, r *http.Request) (string, []imgart.Filter, error) {
 	var filters []imgart.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("filters")
 	profileID := r.URL.Query().Get("profile")
 
-	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
-	defer cancel()
-
 	if imgSrc == "" {
-		return errResponse(errors.EMalformed("Missing imgSrc query parameter", nil))
+		return imgSrc, filters, errors.EMalformed("Missing imgSrc query parameter", nil)
 	}
 
 	if filtersJSON != "" {
 		err := json.Unmarshal([]byte(filtersJSON), &filters)
 
 		if err != nil {
-			return errResponse(errors.EMalformed("effects query parameter is malformed", err))
+			return imgSrc, filters, errors.EMalformed("effects query parameter is malformed", err)
 		}
 	}
 
 	if profileID != "" {
-		profile, err := c.profileService.Get(profileID)
+		profile, err := srv.Get(profileID)
 
 		if err == nil {
 			filters = append(profile.Filters, filters...)
 		}
 	}
 
-	process := processImage(c.service, imgSrc, filters)
+	return imgSrc, filters, nil
+}
 
-	select {
-	case <-ctx.Done():
-		return errResponse(ctx.Err())
-	case result := <-process:
-		if result.err != nil {
-			return errResponse(result.err)
-		}
+func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
 
-		q := getQuality(r)
+	imgSrc, filters, err := getParameters(c.profileService, r)
 
-		w.Header().Set("Content-Type", fmt.Sprintf("image/%s", result.format))
-
-		bytes, err := imgart.Encode(result.format, result.img, q)
-
-		if err != nil {
-			return errResponse(err)
-		}
-
-		w.Write(bytes)
-
-		return response(http.StatusOK, nil)
+	if err != nil {
+		return errResponse(err)
 	}
+
+	img, format, err := c.service.Process(ctx, imgSrc, filters)
+
+	if err != nil {
+		return errResponse(err)
+	}
+
+	q := getQuality(r)
+
+	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
+
+	bytes, err := imgart.Encode(format, img, q)
+
+	if err != nil {
+		return errResponse(err)
+	}
+
+	w.Write(bytes)
+
+	return response(http.StatusOK, nil)
 }

@@ -1,6 +1,7 @@
 package image
 
 import (
+	"context"
 	"image"
 
 	"github.com/talento90/imgart/imgart"
@@ -19,8 +20,8 @@ type service struct {
 	effectRepo imgart.EffectRepository
 }
 
-func (s *service) Process(imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
-	img, imgType, err := s.imageRepo.Get(imgSrc)
+func (s *service) Process(ctx context.Context, imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
+	img, imgType, err := s.imageRepo.Get(ctx, imgSrc)
 
 	if err != nil {
 		return nil, imgType, err
@@ -33,14 +34,14 @@ func (s *service) Process(imgSrc string, filters []imgart.Filter) (image.Image, 
 			return nil, imgType, err
 		}
 
-		img, err = effect.Transform(img, filter.Parameters)
+		img, err = effect.Transform(ctx, img, filter.Parameters)
 
 		if err != nil {
 			return nil, imgType, err
 		}
 	}
 
-	return img, imgType, nil
+	return img, imgType, ctx.Err()
 }
 
 func (s *service) Effects() ([]imgart.Effect, error) {

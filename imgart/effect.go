@@ -1,6 +1,7 @@
 package imgart
 
 import (
+	"context"
 	"image"
 )
 
@@ -29,7 +30,7 @@ type Effect interface {
 	Parameters() Parameters
 
 	// Transform applies the specific transformation to the given image
-	Transform(img image.Image, params map[string]interface{}) (image.Image, error)
+	Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error)
 }
 
 // EffectRepository to store effects

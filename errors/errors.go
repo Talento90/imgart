@@ -1,5 +1,7 @@
 package errors
 
+import "context"
+
 // Error applicational
 type Error struct {
 	Type    Type
@@ -35,6 +37,10 @@ const (
 	Validation Type = "validation"
 	// AlreadyExists error
 	AlreadyExists Type = "already_exists"
+	// Timeout error
+	Timeout Type = "timeout"
+	// Cancelled error
+	Cancelled Type = "cancelled"
 )
 
 func (t Type) String() string {
@@ -49,6 +55,10 @@ func (t Type) String() string {
 		return "Validation error"
 	case AlreadyExists:
 		return "Item already exists"
+	case Cancelled:
+		return "Cancelled error"
+	case Timeout:
+		return "Timeout error"
 	}
 
 	return "Unknown error"
@@ -86,6 +96,24 @@ func EAlreadyExists(msg string, err error) error {
 // EInternal creates an error of type Internal
 func EInternal(msg string, err error) error {
 	return New(Internal, msg, err)
+}
+
+// EContextError creates an error of type Cancelled or Deadline
+func EContextError(err error) error {
+	if err == context.Canceled {
+		return New(Cancelled, "Operation cancelled", err)
+	}
+
+	if err == context.DeadlineExceeded {
+		return New(Timeout, "Operation timeout", err)
+	}
+
+	return nil
+}
+
+// IsContextError check if error is from context.Context package
+func IsContextError(err error) bool {
+	return err == context.Canceled || err == context.DeadlineExceeded
 }
 
 // Is method checks if an error is of a specific type
