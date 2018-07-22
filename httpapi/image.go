@@ -76,14 +76,14 @@ func getParameters(srv imgart.ProfileService, r *http.Request) (string, []imgart
 }
 
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
-	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
-	defer cancel()
-
 	imgSrc, filters, err := getParameters(c.profileService, r)
 
 	if err != nil {
 		return errResponse(err)
 	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
 
 	img, format, err := c.service.Process(ctx, imgSrc, filters)
 

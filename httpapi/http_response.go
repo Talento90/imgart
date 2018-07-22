@@ -33,7 +33,7 @@ func errResponse(err error) appResponse {
 	}
 
 	// Convert to Application Error if err is a Cancelled or DeadlineExceeded Error
-	if ctxErr := errors.EContextError(err); ctxErr != nil {
+	if ctxErr := errors.IsContextError(err); ctxErr != nil {
 		err = ctxErr
 	}
 

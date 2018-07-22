@@ -98,22 +98,17 @@ func EInternal(msg string, err error) error {
 	return New(Internal, msg, err)
 }
 
-// EContextError creates an error of type Cancelled or Deadline
-func EContextError(err error) error {
+// IsContextError creates an error of type Cancelled or Deadline
+func IsContextError(err error) error {
 	if err == context.Canceled {
 		return New(Cancelled, "Operation cancelled", err)
 	}
 
-	if err == context.DeadlineExceeded {
+	if err.Error() == context.DeadlineExceeded.Error() {
 		return New(Timeout, "Operation timeout", err)
 	}
 
 	return nil
-}
-
-// IsContextError check if error is from context.Context package
-func IsContextError(err error) bool {
-	return err == context.Canceled || err == context.DeadlineExceeded
 }
 
 // Is method checks if an error is of a specific type

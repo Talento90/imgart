@@ -41,6 +41,10 @@ func (d *httpdownloader) Get(ctx context.Context, path string) (image.Image, str
 	response, err := d.client.Do(req)
 
 	if err != nil {
+		if ctx.Err() != nil {
+			return nil, "", ctx.Err()
+		}
+
 		return nil, "", errors.EInternal("Error trying to download image", err)
 	}
 
@@ -54,8 +58,8 @@ func (d *httpdownloader) Get(ctx context.Context, path string) (image.Image, str
 
 	if _, err := io.CopyN(imgBytes, response.Body, maxImageSize); err != io.EOF {
 
-		if errors.IsContextError(err) {
-			return nil, "", errors.EContextError(err)
+		if ctx.Err() != nil {
+			return nil, "", ctx.Err()
 		}
 
 		return nil, "", errors.EValidation(fmt.Sprintf("Image size is bigger than: %d", maxImageSize), err)
