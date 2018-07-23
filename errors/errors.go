@@ -1,6 +1,8 @@
 package errors
 
-import "context"
+import (
+	"context"
+)
 
 // Error applicational
 type Error struct {

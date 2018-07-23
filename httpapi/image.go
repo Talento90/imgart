@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"image"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -75,6 +76,26 @@ func getParameters(srv imgart.ProfileService, r *http.Request) (string, []imgart
 	return imgSrc, filters, nil
 }
 
+type imageResult struct {
+	img    image.Image
+	format string
+	err    error
+}
+
+func processImage(ctx context.Context, srv imgart.ImageService, imgSrc string, filters []imgart.Filter) chan imageResult {
+	ch := make(chan imageResult)
+
+	go func() {
+		defer close(ch)
+
+		img, format, err := srv.Process(ctx, imgSrc, filters)
+
+		ch <- imageResult{img: img, format: format, err: err}
+	}()
+
+	return ch
+}
+
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	imgSrc, filters, err := getParameters(c.profileService, r)
 
@@ -85,23 +106,26 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
 	defer cancel()
 
-	img, format, err := c.service.Process(ctx, imgSrc, filters)
+	select {
+	case <-ctx.Done():
+		return errResponse(ctx.Err())
+	case result := <-processImage(ctx, c.service, imgSrc, filters):
+		if result.err != nil {
+			return errResponse(result.err)
+		}
 
-	if err != nil {
-		return errResponse(err)
+		q := getQuality(r)
+
+		w.Header().Set("Content-Type", fmt.Sprintf("image/%s", result.format))
+
+		bytes, err := imgart.Encode(result.format, result.img, q)
+
+		if err != nil {
+			return errResponse(err)
+		}
+
+		w.Write(bytes)
+
+		return response(http.StatusOK, nil)
 	}
-
-	q := getQuality(r)
-
-	w.Header().Set("Content-Type", fmt.Sprintf("image/%s", format))
-
-	bytes, err := imgart.Encode(format, img, q)
-
-	if err != nil {
-		return errResponse(err)
-	}
-
-	w.Write(bytes)
-
-	return response(http.StatusOK, nil)
 }

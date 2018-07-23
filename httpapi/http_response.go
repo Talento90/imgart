@@ -27,6 +27,7 @@ func response(statusCode int, body interface{}) appResponse {
 
 func errResponse(err error) appResponse {
 	statusCode := http.StatusInternalServerError
+
 	appError := appError{
 		ErrorType: errors.Internal.String(),
 		Message:   err.Error(),
