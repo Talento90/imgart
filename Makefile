@@ -8,8 +8,8 @@ quality:
 	go test -v -race ./...
 	go vet ./...
 	golint -set_exit_status $(go list ./...)
-	megacheck ./...
 	gocyclo -over 12 $(GO_PACKAGES)
+	# megacheck ./...
 	
 .PHONY: clean
 clean:
@@ -21,8 +21,6 @@ deps:
 	go get github.com/golang/lint/golint
 	go get honnef.co/go/tools/cmd/megacheck
 	go get github.com/fzipp/gocyclo
-	go get github.com/golang/dep/cmd/dep
-	dep ensure
 
 .PHONY: build
 build: deps

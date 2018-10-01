@@ -60,49 +60,49 @@ type logrusWrapper struct {
 }
 
 func (l *logrusWrapper) Debug(args ...interface{}) {
-	l.Logger.Debug(args)
+	l.Logger.Debug(args...)
 }
 
 func (l *logrusWrapper) DebugWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Debug(args)
+	l.Logger.WithFields(fields).Debug(args...)
 }
 
 func (l *logrusWrapper) Info(args ...interface{}) {
-	l.Logger.Info(args)
+	l.Logger.Info(args...)
 }
 
 func (l *logrusWrapper) InfoWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Info(args)
+	l.Logger.WithFields(fields).Info(args...)
 }
 
 func (l *logrusWrapper) Warn(args ...interface{}) {
-	l.Logger.Warn(args)
+	l.Logger.Warn(args...)
 }
 
 func (l *logrusWrapper) WarnWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Warn(args)
+	l.Logger.WithFields(fields).Warn(args...)
 }
 
 func (l *logrusWrapper) Error(args ...interface{}) {
-	l.Logger.Error(args)
+	l.Logger.Error(args...)
 }
 
 func (l *logrusWrapper) ErrorWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Error(args)
+	l.Logger.WithFields(fields).Error(args...)
 }
 
 func (l *logrusWrapper) Fatal(args ...interface{}) {
-	l.Logger.Fatal(args)
+	l.Logger.Fatal(args...)
 }
 
 func (l *logrusWrapper) FatalWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Fatal(args)
+	l.Logger.WithFields(fields).Fatal(args...)
 }
 
 func (l *logrusWrapper) Panic(args ...interface{}) {
-	l.Logger.Panic(args)
+	l.Logger.Panic(args...)
 }
 
 func (l *logrusWrapper) PanicWithFields(fields map[string]interface{}, args ...interface{}) {
-	l.Logger.WithFields(fields).Panic(args)
+	l.Logger.WithFields(fields).Panic(args...)
 }

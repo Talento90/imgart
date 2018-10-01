@@ -1,12 +1,10 @@
 language: go
 
 go:
-  - 1.9
+  - 1.11
 
 env:
-  - "PATH=/home/travis/gopath/bin:$PATH"
-
-go_import_path: github.com/talento90/imgart
+  - GO111MODULE=on
 
 before_script:
   - make deps
