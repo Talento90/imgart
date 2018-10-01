@@ -1,8 +1,9 @@
-FROM golang:1.10
+FROM golang:1.11
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
 # We need to add ${GOPATH}/bin to PATH to have access dlv
 ENV PATH ${GOPATH}/bin:$PATH
+ENV GO111MODULE=on
 
 # Setting working directory
 WORKDIR ${GOPATH}/src/github.com/talento90/imgart
