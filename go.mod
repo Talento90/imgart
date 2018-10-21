@@ -23,7 +23,7 @@ require (
 	github.com/go-openapi/validate v0.0.0-20180825180342-e0648ff40507 // indirect
 	github.com/go-redis/redis v6.14.1+incompatible
 	github.com/golang/dep v0.5.0 // indirect
-	github.com/golang/lint v0.0.0-20180702182130-06c8688daad7 // indirect
+	github.com/golang/lint v0.0.0-20181011164241-5906bd5c48cd // indirect
 	github.com/jmank88/nuts v0.3.0 // indirect
 	github.com/julienschmidt/httprouter v0.0.0-20180715161854-348b672cd90d
 	github.com/kisielk/gotool v1.0.0 // indirect

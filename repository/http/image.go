@@ -9,9 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/talento90/imgart/imgart"
-
 	"github.com/talento90/imgart/errors"
+	"github.com/talento90/imgart/imgart"
 )
 
 const maxImageSize = 1024 * 1024 * 5
@@ -41,11 +40,7 @@ func (d *httpdownloader) Get(ctx context.Context, path string) (image.Image, str
 	response, err := d.client.Do(req)
 
 	if err != nil {
-		if ctx.Err() != nil {
-			return nil, "", ctx.Err()
-		}
-
-		return nil, "", errors.EInternal("Error trying to download image", err)
+		return nil, "", err
 	}
 
 	defer response.Body.Close()

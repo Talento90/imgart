@@ -5,7 +5,6 @@ import (
 	"image"
 
 	"github.com/talento90/imgart/cache"
-
 	"github.com/talento90/imgart/imgart"
 )
 
