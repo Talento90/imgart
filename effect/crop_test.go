@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"testing"
 
@@ -30,7 +31,7 @@ func TestCropTransform(t *testing.T) {
 			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 			crop := NewCrop()
 
-			_, err := crop.Transform(img, tc.params)
+			_, err := crop.Transform(context.Background(), img, tc.params)
 
 			if tc.err != "" {
 				if err == nil || !errors.Is(tc.err, err) {

@@ -1,12 +1,15 @@
 package httpapi
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"image"
 	"image/jpeg"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/imgart/errors"
@@ -44,33 +47,52 @@ func getQuality(r *http.Request) int {
 	return jpeg.DefaultQuality
 }
 
-func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+func getParameters(srv imgart.ProfileService, r *http.Request) (string, []imgart.Filter, error) {
 	var filters []imgart.Filter
 	imgSrc := r.URL.Query().Get("imgSrc")
 	filtersJSON := r.URL.Query().Get("filters")
 	profileID := r.URL.Query().Get("profile")
 
 	if imgSrc == "" {
-		return errResponse(errors.EMalformed("Missing imgSrc query parameter", nil))
+		return imgSrc, filters, errors.EMalformed("Missing imgSrc query parameter", nil)
 	}
 
 	if filtersJSON != "" {
 		err := json.Unmarshal([]byte(filtersJSON), &filters)
 
 		if err != nil {
-			return errResponse(errors.EMalformed("effects query parameter is malformed", err))
+			return imgSrc, filters, errors.EMalformed("effects query parameter is malformed", err)
 		}
 	}
 
 	if profileID != "" {
-		profile, err := c.profileService.Get(profileID)
+		profile, err := srv.Get(profileID)
 
 		if err == nil {
 			filters = append(profile.Filters, filters...)
 		}
 	}
 
-	img, format, err := c.service.Process(imgSrc, filters)
+	return imgSrc, filters, nil
+}
+
+type imageResult struct {
+	img    image.Image
+	format string
+	err    error
+}
+
+func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
+	imgSrc, filters, err := getParameters(c.profileService, r)
+
+	if err != nil {
+		return errResponse(err)
+	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
+
+	img, format, err := c.service.Process(ctx, imgSrc, filters)
 
 	if err != nil {
 		return errResponse(err)

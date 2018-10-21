@@ -1,10 +1,10 @@
 package image
 
 import (
+	"context"
 	"image"
 
 	"github.com/talento90/imgart/cache"
-
 	"github.com/talento90/imgart/imgart"
 )
 
@@ -21,14 +21,14 @@ func NewCacheService(cache cache.Image, service imgart.ImageService) imgart.Imag
 	}
 }
 
-func (cs *cacheService) Process(imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
+func (cs *cacheService) Process(ctx context.Context, imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
 	img, format, err := cs.cache.Get(imgSrc, filters)
 
 	if err == nil {
 		return img, format, nil
 	}
 
-	img, format, err = cs.service.Process(imgSrc, filters)
+	img, format, err = cs.service.Process(ctx, imgSrc, filters)
 
 	if err == nil {
 		err := cs.cache.Set(imgSrc, filters, format, img)

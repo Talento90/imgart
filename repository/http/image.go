@@ -2,15 +2,15 @@ package http
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"image"
 	"io"
 	"net/http"
 	"time"
 
-	"github.com/talento90/imgart/imgart"
-
 	"github.com/talento90/imgart/errors"
+	"github.com/talento90/imgart/imgart"
 )
 
 const maxImageSize = 1024 * 1024 * 5
@@ -28,11 +28,19 @@ func NewImageRepository() imgart.ImageRepository {
 	}
 }
 
-func (d *httpdownloader) Get(path string) (image.Image, string, error) {
-	response, err := d.client.Get(path)
+func (d *httpdownloader) Get(ctx context.Context, path string) (image.Image, string, error) {
+	req, err := http.NewRequest(http.MethodGet, path, nil)
 
 	if err != nil {
-		return nil, "", errors.EInternal("Error trying to download image", err)
+		return nil, "", errors.EInternal("Error trying to create http request", err)
+	}
+
+	req = req.WithContext(ctx)
+
+	response, err := d.client.Do(req)
+
+	if err != nil {
+		return nil, "", err
 	}
 
 	defer response.Body.Close()
@@ -43,7 +51,12 @@ func (d *httpdownloader) Get(path string) (image.Image, string, error) {
 
 	imgBytes := &bytes.Buffer{}
 
-	if _, err = io.CopyN(imgBytes, response.Body, maxImageSize); err != io.EOF {
+	if _, err := io.CopyN(imgBytes, response.Body, maxImageSize); err != io.EOF {
+
+		if ctx.Err() != nil {
+			return nil, "", ctx.Err()
+		}
+
 		return nil, "", errors.EValidation(fmt.Sprintf("Image size is bigger than: %d", maxImageSize), err)
 	}
 
@@ -53,5 +66,5 @@ func (d *httpdownloader) Get(path string) (image.Image, string, error) {
 		return nil, "", errors.EInternal("Error decoding image", err)
 	}
 
-	return img, imgType, nil
+	return img, imgType, ctx.Err()
 }

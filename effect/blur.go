@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -29,7 +30,7 @@ func NewBlur() imgart.Effect {
 	}
 }
 
-func (r *blur) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (r *blur) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	sigma, err := floatBinder("sigma", params)
 
 	if err != nil {
@@ -38,5 +39,5 @@ func (r *blur) Transform(img image.Image, params map[string]interface{}) (image.
 
 	img = imaging.Blur(img, sigma)
 
-	return img, nil
+	return img, ctx.Err()
 }

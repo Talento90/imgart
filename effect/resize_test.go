@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"testing"
 
@@ -39,7 +40,7 @@ func TestResizeTransform(t *testing.T) {
 			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 			resize := NewResize()
 
-			_, err := resize.Transform(img, tc.params)
+			_, err := resize.Transform(context.Background(), img, tc.params)
 
 			if tc.err != "" {
 				if err == nil || !errors.Is(tc.err, err) {

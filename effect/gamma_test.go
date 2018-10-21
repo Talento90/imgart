@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"testing"
 
@@ -27,7 +28,7 @@ func TestGammaTransform(t *testing.T) {
 			img := image.NewRGBA(image.Rect(0, 0, 100, 50))
 			gamma := NewGamma()
 
-			_, err := gamma.Transform(img, tc.params)
+			_, err := gamma.Transform(context.Background(), img, tc.params)
 
 			if tc.err != "" {
 				if err == nil || !errors.Is(tc.err, err) {

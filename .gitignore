@@ -4,6 +4,8 @@
 *.so
 *.dylib
 gin-bin
+debug
+imgartapi
 
 # Test binary, build with `go test -c`
 *.test

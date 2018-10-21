@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"context"
 	"image"
 
 	"github.com/talento90/imgart/imgart"
@@ -13,6 +14,6 @@ func NewImageRepository() imgart.ImageRepository {
 
 type httpMock struct{}
 
-func (h *httpMock) Get(path string) (image.Image, string, error) {
+func (h *httpMock) Get(ctx context.Context, path string) (image.Image, string, error) {
 	return image.NewRGBA(image.Rect(0, 0, 100, 50)), "jpeg", nil
 }

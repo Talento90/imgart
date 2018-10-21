@@ -2,6 +2,7 @@ package imgart
 
 import (
 	"bytes"
+	"context"
 	"image"
 	"image/jpeg"
 	"image/png"
@@ -24,13 +25,13 @@ type ImageService interface {
 	// Effect returns a effect by the given ID
 	Effect(id string) (Effect, error)
 	// Process an image with a set of filters
-	Process(imgSrc string, filters []Filter) (image.Image, string, error)
+	Process(ctx context.Context, imgSrc string, filters []Filter) (image.Image, string, error)
 }
 
 // ImageRepository interface layer to get images
 type ImageRepository interface {
 	// Get an image by the given path
-	Get(path string) (image.Image, string, error)
+	Get(ctx context.Context, path string) (image.Image, string, error)
 }
 
 // Encode image by their format (png, jpeg, bmp)

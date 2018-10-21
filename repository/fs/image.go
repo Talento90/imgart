@@ -1,6 +1,7 @@
 package fs
 
 import (
+	"context"
 	"fmt"
 	"image"
 	"os"
@@ -17,7 +18,7 @@ func NewImageRepository() imgart.ImageRepository {
 	return &fsdownloader{}
 }
 
-func (d *fsdownloader) Get(path string) (image.Image, string, error) {
+func (d *fsdownloader) Get(ctx context.Context, path string) (image.Image, string, error) {
 	file, err := os.Open(path)
 
 	if err == os.ErrNotExist {
@@ -34,5 +35,5 @@ func (d *fsdownloader) Get(path string) (image.Image, string, error) {
 		return nil, "", errors.EInternal("Error decoding image", err)
 	}
 
-	return img, imgType, nil
+	return img, imgType, ctx.Err()
 }

@@ -2,7 +2,9 @@ package httpapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"runtime/debug"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/talento90/go-health"
@@ -55,6 +57,7 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 
 	router.PanicHandler = func(w http.ResponseWriter, r *http.Request, panic interface{}) {
 		dep.Logger.Error("Panic error:", panic)
+		dep.Logger.Error(fmt.Sprintf("Stack trace: %s: %s", panic, debug.Stack()))
 
 		err := appError{
 			ErrorType: errors.Internal.String(),

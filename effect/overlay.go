@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -44,7 +45,7 @@ func NewOverlay(imgRepository imgart.ImageRepository) imgart.Effect {
 	}
 }
 
-func (o *overlay) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (o *overlay) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	position, err := pointBinder("position", params)
 
 	if err != nil {
@@ -63,7 +64,7 @@ func (o *overlay) Transform(img image.Image, params map[string]interface{}) (ima
 		opacity = 100
 	}
 
-	overlayImg, _, err := o.imgRepository.Get(url.String())
+	overlayImg, _, err := o.imgRepository.Get(ctx, url.String())
 
 	if err != nil {
 		return nil, err
@@ -71,5 +72,5 @@ func (o *overlay) Transform(img image.Image, params map[string]interface{}) (ima
 
 	img = imaging.Overlay(img, overlayImg, position, opacity)
 
-	return img, nil
+	return img, ctx.Err()
 }

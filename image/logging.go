@@ -1,6 +1,7 @@
 package image
 
 import (
+	"context"
 	"image"
 	"time"
 
@@ -22,12 +23,12 @@ func NewLogService(logger log.Logger, service imgart.ImageService) imgart.ImageS
 	}
 }
 
-func (ls *logService) Process(imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
+func (ls *logService) Process(ctx context.Context, imgSrc string, filters []imgart.Filter) (image.Image, string, error) {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(log.Fields{"imgSrc": imgSrc, "time": time.Since(start)}, "ImageService:Process")
 	}(time.Now())
 
-	return ls.service.Process(imgSrc, filters)
+	return ls.service.Process(ctx, imgSrc, filters)
 }
 
 func (ls *logService) Effects() ([]imgart.Effect, error) {

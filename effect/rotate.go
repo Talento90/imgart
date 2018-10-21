@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 	"image/color"
 
@@ -38,7 +39,7 @@ func NewRotate() imgart.Effect {
 	}
 }
 
-func (r *rotate) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (r *rotate) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	angle, err := floatBinder("angle", params)
 
 	if err != nil {
@@ -53,5 +54,5 @@ func (r *rotate) Transform(img image.Image, params map[string]interface{}) (imag
 
 	img = imaging.Rotate(img, angle, bgColor)
 
-	return img, nil
+	return img, ctx.Err()
 }

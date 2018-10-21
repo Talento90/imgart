@@ -1,6 +1,7 @@
 package effect
 
 import (
+	"context"
 	"image"
 
 	"github.com/disintegration/imaging"
@@ -43,7 +44,7 @@ func NewResize() imgart.Effect {
 	}
 }
 
-func (r *resize) Transform(img image.Image, params map[string]interface{}) (image.Image, error) {
+func (r *resize) Transform(ctx context.Context, img image.Image, params map[string]interface{}) (image.Image, error) {
 	width, err := integerBinder("width", params)
 
 	if err != nil {
@@ -64,5 +65,5 @@ func (r *resize) Transform(img image.Image, params map[string]interface{}) (imag
 
 	img = imaging.Resize(img, width, height, filter)
 
-	return img, nil
+	return img, ctx.Err()
 }

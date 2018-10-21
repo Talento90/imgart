@@ -27,9 +27,15 @@ func response(statusCode int, body interface{}) appResponse {
 
 func errResponse(err error) appResponse {
 	statusCode := http.StatusInternalServerError
+
 	appError := appError{
 		ErrorType: errors.Internal.String(),
 		Message:   err.Error(),
+	}
+
+	// Convert to Application Error if err is a Cancelled or DeadlineExceeded Error
+	if ctxErr := errors.IsContextError(err); ctxErr != nil {
+		err = ctxErr
 	}
 
 	if e, ok := err.(*errors.Error); ok {
@@ -44,6 +50,10 @@ func errResponse(err error) appResponse {
 			statusCode = http.StatusBadRequest
 		case errors.AlreadyExists:
 			statusCode = http.StatusConflict
+		case errors.Timeout:
+			statusCode = http.StatusRequestTimeout
+		case errors.Cancelled:
+			statusCode = http.StatusNoContent
 		}
 	}
 
