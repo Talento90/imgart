@@ -18,6 +18,7 @@ clean:
 
 .PHONY: deps
 deps:
+	go mod download
 	go get github.com/golang/lint/golint
 	go get honnef.co/go/tools/cmd/megacheck
 	go get github.com/fzipp/gocyclo
