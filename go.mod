@@ -39,7 +39,7 @@ require (
 	github.com/sirupsen/logrus v1.1.0
 	github.com/talento90/go-health v0.2.0
 	golang.org/x/crypto v0.0.0-20180927165925-5295e8364332 // indirect
-	golang.org/x/image v0.0.0-20180926015637-991ec62608f3
+	golang.org/x/image v0.0.0-20190118043309-183bebdce1b2
 	golang.org/x/lint v0.0.0-20180702182130-06c8688daad7 // indirect
 	golang.org/x/net v0.0.0-20180926154720-4dfa2610cdf3 // indirect
 	golang.org/x/sys v0.0.0-20180927150500-dad3d9fb7b6e // indirect

@@ -2,9 +2,9 @@ package config
 
 import (
 	"os"
-	"strconv"
 	"time"
 
+	goredis "github.com/go-redis/redis"
 	"github.com/talento90/imgart/httpapi"
 	"github.com/talento90/imgart/log"
 	"github.com/talento90/imgart/repository/mongo"
@@ -44,16 +44,16 @@ func GetMongoConfiguration() (mongo.Configuration, error) {
 
 // GetRedisConfiguration returns the redis configuration
 func GetRedisConfiguration() (redis.Configuration, error) {
-	db, err := strconv.Atoi(getEnv("REDIS_SERVICE_DB", "0"))
+	db, err := goredis.ParseURL(getEnv("REDIS_URL", "localhost:6379"))
 
 	if err != nil {
-		db = 0
+		return redis.Configuration{}, err
 	}
 
 	config := redis.Configuration{
-		Address:  getEnv("REDIS_URL", "localhost:6379"),
-		Password: getEnv("REDIS_PASSWORD", ""),
-		Database: db,
+		Address:  db.Addr,
+		Password: db.Password,
+		Database: db.DB,
 	}
 
 	return config, config.Validate()

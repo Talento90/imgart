@@ -5,7 +5,7 @@ services:
     ports:
       - "4005:4005"
     environment:
-      - REDIS_URL=redis-db:6379
+      - REDIS_URL=redis://redis-db:6379/0
       - MONGO_URL=mongo-db:27017
     command: ["gin", "-d", "/go/src/github.com/talento90/imgart/cmd/imgartapi/", "-p", "4005", "-i"]
     volumes:
