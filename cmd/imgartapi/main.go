@@ -29,8 +29,6 @@ func mongoClient() (*mongo.Client, error) {
 		return nil, err
 	}
 
-	client := mongo.NewClient(c)
-
 	return mongo.NewClient(c)
 }
 
