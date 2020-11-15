@@ -7,7 +7,6 @@ default: quality
 quality:
 	go test -v -race ./...
 	go vet ./...
-	gocyclo -over 15 $(GO_PACKAGES)
 	golangci-lint run
 	
 .PHONY: clean
@@ -19,7 +18,6 @@ clean:
 deps:
 	go mod download
 	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.32.2
-	go get github.com/fzipp/gocyclo
 
 .PHONY: build
 build: deps
