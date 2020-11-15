@@ -21,7 +21,7 @@ func NewLogService(logger log.Logger, service imgart.ProfileService) imgart.Prof
 	}
 }
 
-func (ls *logService) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
+func (ls *logService) GetAll(limit int64, skip int64) (*[]imgart.Profile, error) {
 	defer func(start time.Time) {
 		ls.logger.DebugWithFields(
 			log.Fields{

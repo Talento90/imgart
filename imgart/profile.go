@@ -14,7 +14,7 @@ type Profile struct {
 
 // ProfileRepository stores profiles
 type ProfileRepository interface {
-	GetAll(limit int, skip int) (*[]Profile, error)
+	GetAll(limit int64, skip int64) (*[]Profile, error)
 	Get(id string) (*Profile, error)
 	Create(profile *Profile) error
 	Update(profile *Profile) error
@@ -23,7 +23,7 @@ type ProfileRepository interface {
 
 // ProfileService handles profile operations
 type ProfileService interface {
-	GetAll(limit int, skip int) (*[]Profile, error)
+	GetAll(limit int64, skip int64) (*[]Profile, error)
 	Get(id string) (*Profile, error)
 	Create(profile *Profile) error
 	Update(profile *Profile) error

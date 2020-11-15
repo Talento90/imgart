@@ -15,7 +15,7 @@ func NewService(repository imgart.ProfileRepository) imgart.ProfileService {
 	}
 }
 
-func (s *service) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
+func (s *service) GetAll(limit int64, skip int64) (*[]imgart.Profile, error) {
 	return s.repository.GetAll(limit, skip)
 }
 

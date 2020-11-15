@@ -1,16 +1,19 @@
 package mongo
 
 import (
+	"context"
 	"time"
 
 	"github.com/talento90/imgart/errors"
 	"github.com/talento90/imgart/imgart"
-	mgo "gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type profileRepository struct {
 	collection string
-	session    *Session
+	client     *Client
 }
 
 func handleError(err error) error {
@@ -18,84 +21,81 @@ func handleError(err error) error {
 		return nil
 	}
 
-	if err == mgo.ErrNotFound {
+	if err == mongo.ErrNilDocument {
 		return errors.ENotExists("Profile does not exists", err)
-	}
-
-	if mgo.IsDup(err) {
-		return errors.EAlreadyExists("Profile already exists", err)
 	}
 
 	return errors.EInternal("Error occurred", err)
 }
 
 // NewProfileRepository returns a profile mongo repository
-func NewProfileRepository(session *Session) imgart.ProfileRepository {
+func NewProfileRepository(client *Client) imgart.ProfileRepository {
 	return &profileRepository{
 		collection: "profiles",
-		session:    session,
+		client:     client,
 	}
 }
 
-func (r *profileRepository) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
-	session := r.session.Copy()
+func (r *profileRepository) GetAll(limit int64, skip int64) (*[]imgart.Profile, error) {
+	db := r.client.Client.Database(r.client.Database)
+	col := db.Collection(r.collection)
+	opt := options.Find().SetSkip(skip).SetLimit(limit)
+	ctx := context.Background()
 
-	defer session.Close()
-	c := session.DB(r.session.Database).C(r.collection)
+	c, err := col.Find(ctx, bson.D{{}}, opt)
+
+	if err != nil {
+		return nil, handleError(err)
+	}
 
 	profiles := make([]imgart.Profile, 0, limit)
-	err := c.Find(nil).Skip(skip).Limit(limit).All(&profiles)
 
-	return &profiles, handleError(err)
+	err = c.All(ctx, &profiles)
+
+	return &profiles, err
 }
 
 func (r *profileRepository) Get(id string) (*imgart.Profile, error) {
-	session := r.session.Copy()
+	db := r.client.Client.Database(r.client.Database)
+	col := db.Collection(r.collection)
+	opt := options.FindOne()
 
-	defer session.Close()
-
-	c := session.DB(r.session.Database).C(r.collection)
+	result := col.FindOne(context.Background(), bson.M{"_id": id}, opt)
 
 	profile := &imgart.Profile{}
-	err := c.FindId(id).One(profile)
+	err := result.Decode(profile)
 
 	return profile, handleError(err)
 }
 
 func (r *profileRepository) Create(profile *imgart.Profile) error {
-	session := r.session.Copy()
-	defer session.Close()
-
-	c := session.DB(r.session.Database).C(r.collection)
+	db := r.client.Client.Database(r.client.Database)
+	col := db.Collection(r.collection)
 
 	profile.Created = time.Now().UTC()
 	profile.Updated = time.Now().UTC()
 
-	err := c.Insert(profile)
+	_, err := col.InsertOne(context.Background(), profile)
 
 	return handleError(err)
 }
 
 func (r *profileRepository) Update(profile *imgart.Profile) error {
-	session := r.session.Copy()
-	defer session.Close()
-
-	c := session.DB(r.session.Database).C(r.collection)
+	db := r.client.Client.Database(r.client.Database)
+	col := db.Collection(r.collection)
 
 	profile.Updated = time.Now().UTC()
 
-	err := c.UpdateId(profile.ID, profile)
+	_, err := col.ReplaceOne(context.Background(), bson.M{"_id": profile.ID}, profile)
 
 	return handleError(err)
 }
 
 func (r *profileRepository) Delete(id string) error {
-	session := r.session.Copy()
-	defer session.Close()
+	db := r.client.Client.Database(r.client.Database)
+	col := db.Collection(r.collection)
 
-	c := session.DB(r.session.Database).C(r.collection)
-
-	err := c.RemoveId(id)
+	_, err := col.DeleteOne(context.Background(), bson.M{"_id": id})
 
 	return handleError(err)
 }

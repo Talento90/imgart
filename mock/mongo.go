@@ -21,7 +21,7 @@ func NewProfileRepository() imgart.ProfileRepository {
 	}
 }
 
-func (r *profileRepo) GetAll(limit int, skip int) (*[]imgart.Profile, error) {
+func (r *profileRepo) GetAll(limit int64, skip int64) (*[]imgart.Profile, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 

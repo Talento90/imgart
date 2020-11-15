@@ -1,4 +1,4 @@
-FROM golang:1.11
+FROM golang:1.15-alpine
 LABEL maintainer "Marco Talento <marcotalento90@gmail.com>"
 
 # We need to add ${GOPATH}/bin to PATH to have access dlv
@@ -12,7 +12,7 @@ WORKDIR ${GOPATH}/src/github.com/talento90/imgart
 COPY . .
 
 # Get delve debugger and gin code reloader
-RUN go get github.com/derekparker/delve/cmd/dlv
+RUN go get github.com/go-delve/delve/cmd/dlv
 RUN go get github.com/codegangsta/gin
 
 # Build our application

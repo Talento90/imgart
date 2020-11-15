@@ -22,14 +22,14 @@ import (
 	"github.com/talento90/imgart/repository/redis"
 )
 
-func mongoSession() (*mongo.Session, error) {
+func mongoClient() (*mongo.Client, error) {
 	c, err := config.GetMongoConfiguration()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return mongo.NewSession(c)
+	return mongo.NewClient(c)
 }
 
 func redisClient() (*redis.Client, error) {
@@ -42,7 +42,7 @@ func redisClient() (*redis.Client, error) {
 	return redis.NewClient(c)
 }
 
-func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Session, h health.Health) *http.Server {
+func httpServer(l log.Logger, rc *redis.Client, ms *mongo.Client, h health.Health) *http.Server {
 	var imgService imgart.ImageService
 	{
 		redisCache := redis.New(rc)
@@ -107,7 +107,7 @@ func main() {
 		logger.Panic("Error connecting to Redis", err)
 	}
 
-	mongoSession, err := mongoSession()
+	mongoClient, err := mongoClient()
 
 	if err != nil {
 		logger.Panic("Error connecting to Mongo", err)
@@ -115,7 +115,7 @@ func main() {
 
 	h := health.New("imgart", health.Options{CheckersTimeout: time.Second})
 
-	server := httpServer(logger, redisClient, mongoSession, h)
+	server := httpServer(logger, redisClient, mongoClient, h)
 
 	go func() {
 		<-gracefulShutdown
@@ -134,11 +134,12 @@ func main() {
 			logger.Error("Error closing server:", err)
 		}
 
-		mongoSession.Close()
+		if err := mongoClient.Disconnect(ctx); err != nil {
+			exitCode = 1
+			logger.Error("Error closing mongo:", err)
+		}
 
-		err = redisClient.Close()
-
-		if err != nil {
+		if err := redisClient.Close(); err != nil {
 			exitCode = 1
 			logger.Error("Error closing redis:", err)
 		}

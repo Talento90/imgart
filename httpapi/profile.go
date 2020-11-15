@@ -25,7 +25,7 @@ func (c *profilesController) getAll(w http.ResponseWriter, r *http.Request, para
 	limit := intBinder(query.Get("limit"), 5)
 	skip := intBinder(query.Get("skip"), 0)
 
-	profiles, err := c.service.GetAll(limit, skip)
+	profiles, err := c.service.GetAll(int64(limit), int64(skip))
 
 	if err != nil {
 		return errResponse(err)
