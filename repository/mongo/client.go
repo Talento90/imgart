@@ -22,6 +22,10 @@ func NewClient(c Configuration) (*Client, error) {
 		return nil, err
 	}
 
+	if err := client.Connect(context.Background()); err != nil {
+		return nil, err
+	}
+
 	return &Client{Client: client, Database: c.Database}, nil
 }
 

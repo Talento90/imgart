@@ -1,5 +1,7 @@
 module github.com/talento90/imgart
 
+go 1.15
+
 require (
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/aws/aws-sdk-go v1.35.28 // indirect
@@ -28,5 +30,3 @@ require (
 	golang.org/x/sys v0.0.0-20201113233024-12cec1faf1ba // indirect
 	golang.org/x/text v0.3.4 // indirect
 )
-
-go 1.15
