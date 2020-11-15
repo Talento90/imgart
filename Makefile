@@ -7,7 +7,6 @@ default: quality
 quality:
 	go test -v -race ./...
 	go vet ./...
-	golint -set_exit_status $(go list ./...)
 	gocyclo -over 15 $(GO_PACKAGES)
 	golangci-lint run
 	
@@ -19,7 +18,6 @@ clean:
 .PHONY: deps
 deps:
 	go mod download
-	go get golang.org/x/lint
 	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.32.2
 	go get github.com/fzipp/gocyclo
 
