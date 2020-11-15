@@ -67,7 +67,10 @@ func NewServer(config *Configuration, dep *ServerDependencies) http.Server {
 		json, _ := json.Marshal(err)
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(json)
+
+		if _, err := w.Write(json); err != nil {
+			errResponse(err)
+		}
 	}
 
 	return http.Server{

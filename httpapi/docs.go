@@ -23,7 +23,11 @@ func RedocSpec() http.Handler {
 func Spec(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Set("Content-Type", "application/json")
 
-	w.Write([]byte(specJSON))
+	_, err := w.Write([]byte(specJSON))
+
+	if err != nil {
+		errResponse(err)
+	}
 }
 
 const specJSON = `

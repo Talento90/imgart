@@ -88,15 +88,16 @@ func TestCreateProfile(t *testing.T) {
 func TestUpdateProfile(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&imgart.Profile{
+	err := dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
 		Filters: []imgart.Filter{
-			imgart.Filter{
-				ID:         "rotate",
-				Parameters: map[string]interface{}{"angle": 90.0},
-			},
+			{ID: "rotate", Parameters: map[string]interface{}{"angle": 90.0}},
 		},
 	})
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	handler := createRouter(dep)
 	server := httptest.NewServer(handler)
@@ -191,7 +192,7 @@ func TestUpdateProfile(t *testing.T) {
 func TestDeleteProfile(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&imgart.Profile{
+	err := dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
 		Filters: []imgart.Filter{
 			imgart.Filter{
@@ -200,6 +201,10 @@ func TestDeleteProfile(t *testing.T) {
 			},
 		},
 	})
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	handler := createRouter(dep)
 	server := httptest.NewServer(handler)
@@ -259,15 +264,16 @@ func TestDeleteProfile(t *testing.T) {
 func TestGetProfileById(t *testing.T) {
 	dep := mockDependencies()
 
-	dep.ProfileService.Create(&imgart.Profile{
+	err := dep.ProfileService.Create(&imgart.Profile{
 		ID: "test",
 		Filters: []imgart.Filter{
-			imgart.Filter{
-				ID:         "rotate",
-				Parameters: map[string]interface{}{"angle": 90.0},
-			},
+			{ID: "rotate", Parameters: map[string]interface{}{"angle": 90.0}},
 		},
 	})
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	handler := createRouter(dep)
 	server := httptest.NewServer(handler)
@@ -334,15 +340,16 @@ func TestGetProfiles(t *testing.T) {
 	dep := mockDependencies()
 
 	for i := 1; i <= 10; i++ {
-		dep.ProfileService.Create(&imgart.Profile{
+		err := dep.ProfileService.Create(&imgart.Profile{
 			ID: fmt.Sprintf("test-%d", i),
 			Filters: []imgart.Filter{
-				imgart.Filter{
-					ID:         "rotate",
-					Parameters: map[string]interface{}{"angle": 90.0},
-				},
+				{ID: "rotate", Parameters: map[string]interface{}{"angle": 90.0}},
 			},
 		})
+
+		if err != nil {
+			t.Error(err)
+		}
 	}
 
 	handler := createRouter(dep)

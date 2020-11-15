@@ -61,7 +61,10 @@ func responseMiddleware(handler appHandler) appHandler {
 
 		w.Header().Set("Content-Type", contentType)
 		w.WriteHeader(response.statusCode)
-		w.Write(bytes)
+
+		if _, err := w.Write(bytes); err != nil {
+			return errResponse(err)
+		}
 
 		return response
 	}

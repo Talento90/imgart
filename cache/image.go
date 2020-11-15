@@ -82,7 +82,9 @@ func (c *imageCache) Set(url string, filters []imgart.Filter, format string, img
 
 	bytes, err := imgart.Encode(format, img, jpeg.DefaultQuality)
 
-	c.cache.Set(hash, bytes, time.Minute)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return c.cache.Set(hash, bytes, time.Minute)
 }

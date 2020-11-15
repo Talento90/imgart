@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"image"
 	"image/jpeg"
 	"net/http"
 	"strconv"
@@ -76,12 +75,6 @@ func getParameters(srv imgart.ProfileService, r *http.Request) (string, []imgart
 	return imgSrc, filters, nil
 }
 
-type imageResult struct {
-	img    image.Image
-	format string
-	err    error
-}
-
 func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) appResponse {
 	imgSrc, filters, err := getParameters(c.profileService, r)
 
@@ -108,7 +101,9 @@ func (c *imagesController) transformImage(w http.ResponseWriter, r *http.Request
 		return errResponse(err)
 	}
 
-	w.Write(bytes)
+	if _, err := w.Write(bytes); err != nil {
+		return errResponse(err)
+	}
 
 	return response(http.StatusOK, nil)
 }

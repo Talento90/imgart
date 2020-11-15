@@ -151,5 +151,7 @@ func main() {
 
 	logger.Info("Server listening on port: ", server.Addr)
 
-	http.ListenAndServe(":"+server.Addr, server.Handler)
+	if err := http.ListenAndServe(":"+server.Addr, server.Handler); err != nil {
+		logger.Error("Error starting server", err)
+	}
 }
